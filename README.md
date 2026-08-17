@@ -16,8 +16,6 @@ proxy-rule/
 │   │   └── custom-fallback.txt   #   手写自定义规则 → 兜底（手工维护）
 │   ├── surge/                    # Surge 专项规则集（*.txt，爬虫自动生成）
 │   └── loon/                     # Loon 专项规则集（*.lsr，爬虫自动生成）
-├── clash/
-│   └── config.yaml               # 完整 mihomo 配置（无节点/无订阅地址，可直连订阅）
 ├── crawler/
 │   ├── update_rules.py           # 规则更新爬虫
 │   └── requirements.txt
@@ -89,32 +87,6 @@ https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/loon/custom
 raw.githubusercontent 备用链接：`https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/surge/<file>`（Loon 同理换成 `rules/loon/*.lsr`）。
 Loon 建议直接用 raw 链接（与 kelee.one / skk.moe 等规则源一致）；jsdelivr `@main` 有边缘缓存延迟，内容更新后可能数小时才刷新。
 
-## 配置从 GitHub 订阅（主配置不含节点）
-
-`clash/config.yaml` 为完整 mihomo 配置（规则/分组/全局设置），**不含节点、不含订阅地址**
-——仓库公开，订阅 URL 放入公开仓库会导致流量被他人使用甚至机场封号。
-
-节点由 Clash Verge 本地「合并配置」注入 `proxy-providers`（机场订阅），
-mihomo 的 provider 本身就是独立订阅（独立更新间隔 + 健康检查）。
-
-**Clash Verge 设置步骤：**
-
-1. 订阅 → 新建配置文件，URL 填：
-   `https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/clash/config.yaml`
-   （国内直连可达；或 raw: `https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/clash/config.yaml`）
-2. 新建「合并配置」，内容为本地 `Verge-merge-providers.yaml`（含 订阅 URL，勿上传仓库）
-3. 激活 GitHub 配置，设更新间隔 1440 分钟；节点由 provider 自动拉取
-
-```
-# Verge-merge-providers.yaml（示例，替换为你的订阅）
-proxy-providers:
-  myprovider:
-    type: http
-    interval: 3600
-    health-check: { enable: true, url: "https://www.gstatic.com/generate_204", interval: 6 }
-    url: "https://your-subscription-url"
-    path: "./proxy_providers/myprovider.yaml"
-```
 ## 在 Clash / mihomo 中使用
 
 在 `rule-providers` 中添加（示例以 jsdelivr CDN 为主，国内可达；也可换用 raw 链接）：
