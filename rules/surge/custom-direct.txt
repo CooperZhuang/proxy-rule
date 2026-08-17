@@ -1,5 +1,5 @@
 # Surge 规则集 (由 crawler/update_rules.py 生成)
-# 来源: rules/custom-direct.txt   策略: DIRECT
+# 来源: rules/clash/custom-direct.txt   策略: DIRECT
 # 用法: [Rule] 段 `Rule Set = <url>`
 
 DOMAIN,www.ijinshan.com,DIRECT

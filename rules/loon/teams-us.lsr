@@ -1,5 +1,5 @@
 # Loon 规则集 (由 crawler/update_rules.py 生成)
-# 来源: rules/teams-us.txt   策略: 🇺🇲 美国节点
+# 来源: rules/clash/teams-us.txt   策略: 🇺🇲 美国节点
 # 用法: [Rule] 段 `RULE-SET,<url>`
 
 DOMAIN-SUFFIX,aadrm.com,🇺🇲 美国节点

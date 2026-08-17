@@ -1,5 +1,5 @@
 # Surge 规则集 (由 crawler/update_rules.py 生成)
-# 来源: rules/game-cdn-direct.txt   策略: DIRECT
+# 来源: rules/clash/game-cdn-direct.txt   策略: DIRECT
 # 用法: [Rule] 段 `Rule Set = <url>`
 
 DOMAIN-SUFFIX,dl.delivery.mp.microsoft.com,DIRECT

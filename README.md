@@ -7,14 +7,15 @@
 
 ```
 proxy-rule/
-├── rules/                        # 分流规则集（rule-providers 拉取的目标）
-│   ├── teams-us.txt              # Microsoft 365/Teams 依赖端点 → 🇺🇲 美国节点（自动生成）
-│   ├── steam-direct.txt          # Steam 直连（基础手工维护 + 上游自动合并）
-│   ├── game-cdn-direct.txt       # 游戏平台下载 CDN 直连（手工维护）
-│   ├── custom-direct.txt         # 手写自定义直连规则（手工维护）
-│   ├── custom-fallback.txt       # 手写自定义规则 → 兜底分流组（手工维护）
-│   ├── surge/                   # Surge 专项规则集（爬虫自动生成）
-│   └── loon/                    # Loon 专项规则集（爬虫自动生成）
+├── rules/                        # 分流规则集（按客户端分专项目录）
+│   ├── clash/                    # Clash / mihomo（*.txt）
+│   │   ├── teams-us.txt          #   Microsoft 365/Teams 依赖端点 → 🇺🇲 美国节点（自动生成）
+│   │   ├── steam-direct.txt      #   Steam 直连（基础手工维护 + 上游自动合并）
+│   │   ├── game-cdn-direct.txt   #   游戏平台下载 CDN 直连（手工维护）
+│   │   ├── custom-direct.txt     #   手写自定义直连规则（手工维护）
+│   │   └── custom-fallback.txt   #   手写自定义规则 → 兜底分流组（手工维护）
+│   ├── surge/                    # Surge 专项规则集（*.txt，爬虫自动生成）
+│   └── loon/                     # Loon 专项规则集（*.lsr，爬虫自动生成）
 ├── crawler/
 │   ├── update_rules.py           # 规则更新爬虫
 │   └── requirements.txt
@@ -60,14 +61,14 @@ Rule Set = https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/surge/
 **Loon**（`[Rule]` 段）：
 
 ```
-RULE-SET,https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/loon/teams-us.txt
-RULE-SET,https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/loon/steam-direct.txt
-RULE-SET,https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/loon/game-cdn-direct.txt
-RULE-SET,https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/loon/custom-direct.txt
-RULE-SET,https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/loon/custom-fallback.txt
+RULE-SET,https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/loon/teams-us.lsr
+RULE-SET,https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/loon/steam-direct.lsr
+RULE-SET,https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/loon/game-cdn-direct.lsr
+RULE-SET,https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/loon/custom-direct.lsr
+RULE-SET,https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/loon/custom-fallback.lsr
 ```
 
-raw.githubusercontent 备用链接：`https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/surge/<file>`（Loon 同理换成 `rules/loon/`）
+raw.githubusercontent 备用链接：`https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/surge/<file>`（Loon 同理换成 `rules/loon/*.lsr`）
 
 ## 在 Clash / mihomo 中使用
 
@@ -80,35 +81,35 @@ rule-providers:
     behavior: classical
     format: text
     interval: 43200
-    url: https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/teams-us.txt
+    url: https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/clash/teams-us.txt
     path: ./ruleset/teams_us.txt
   steam_direct:
     type: http
     behavior: classical
     format: text
     interval: 43200
-    url: https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/steam-direct.txt
+    url: https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/clash/steam-direct.txt
     path: ./ruleset/steam_direct.txt
   game_cdn_direct:
     type: http
     behavior: classical
     format: text
     interval: 43200
-    url: https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/game-cdn-direct.txt
+    url: https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/clash/game-cdn-direct.txt
     path: ./ruleset/game_cdn_direct.txt
   custom_direct:
     type: http
     behavior: classical
     format: text
     interval: 43200
-    url: https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/custom-direct.txt
+    url: https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/clash/custom-direct.txt
     path: ./ruleset/custom_direct.txt
   custom_fallback:
     type: http
     behavior: classical
     format: text
     interval: 43200
-    url: https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/custom-fallback.txt
+    url: https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/clash/custom-fallback.txt
     path: ./ruleset/custom_fallback.txt
 ```
 
@@ -146,8 +147,8 @@ Clash 侧 `interval: 43200`（12 小时）自动拉取最新规则。
 
 - 需要调整 Teams 覆盖范围：修改 `crawler/update_rules.py` 中的
   `TEAMS_DOMAIN_AREAS` / `TEAMS_IP_AREAS` / `CERT_CRL_DOMAINS` 后重新运行爬虫。
-- 手工规则直接编辑 `rules/*.txt`（`teams-us.txt` 除外，会被爬虫覆盖）；
-  修改后运行一次爬虫即可同步 `rules/surge/` 与 `rules/loon/` 专项格式。
+- 手工规则直接编辑 `rules/clash/*.txt`（`teams-us.txt` 除外，会被爬虫覆盖）；
+  修改后运行一次爬虫即可同步 `rules/surge/*.txt` 与 `rules/loon/*.lsr` 专项格式。
 - Surge/Loon 策略名：编辑 `crawler/update_rules.py` 的 `CLIENT_POLICIES`。
 - Surge 与 Loon 格式如需分叉：在 `crawler/update_rules.py` 的 `_write_client_set`
   中按客户端分支即可（`SURGE_DIR` / `LOON_DIR` 相互独立）。

@@ -1,5 +1,5 @@
 # Loon 规则集 (由 crawler/update_rules.py 生成)
-# 来源: rules/steam-direct.txt   策略: DIRECT
+# 来源: rules/clash/steam-direct.txt   策略: DIRECT
 # 用法: [Rule] 段 `RULE-SET,<url>`
 
 DOMAIN,steamcdn-a.akamaihd.net,DIRECT

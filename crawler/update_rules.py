@@ -65,8 +65,14 @@ CLIENT_POLICIES = {
     "custom-fallback": "🐟 兜底分流",
 }
 # 每个客户端独立目录，便于将来格式分叉（专项专用）
+CLASH_DIR = RULES_DIR / "clash"
 SURGE_DIR = RULES_DIR / "surge"
 LOON_DIR = RULES_DIR / "loon"
+# 每客户端规则文件后缀（专项专用）
+CLIENT_EXT = {
+    "surge": "txt",    # Surge 规则集
+    "loon": "lsr",     # Loon 规则集为 .lsr 格式
+}
 CLIENT_HEADERS = {
     "surge": (
         "# Surge 规则集 (由 crawler/update_rules.py 生成)",
@@ -141,13 +147,13 @@ def _write_client_set(client: str, out_dir: pathlib.Path) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     header, usage = CLIENT_HEADERS[client]
     for name, policy in CLIENT_POLICIES.items():
-        src = RULES_DIR / f"{name}.txt"
+        src = CLASH_DIR / f"{name}.txt"
         if not src.exists():
             print(f"[{client}] 跳过缺失的 {name}.txt")
             continue
         out_lines = [
             header,
-            f"# 来源: rules/{name}.txt   策略: {policy}",
+            f"# 来源: rules/clash/{name}.txt   策略: {policy}",
             usage,
             "",
         ]
@@ -155,7 +161,7 @@ def _write_client_set(client: str, out_dir: pathlib.Path) -> None:
             conv = _to_client(line, policy)
             if conv:
                 out_lines.append(conv)
-        dst = out_dir / f"{name}.txt"
+        dst = out_dir / f"{name}.{CLIENT_EXT[client]}"
         dst.write_text("\n".join(out_lines) + "\n", encoding="utf-8")
         print(f"[{client}] 已写入 {dst.relative_to(REPO_ROOT)} ({len(out_lines) - 4} 条)")
 
@@ -204,13 +210,13 @@ def update_teams() -> None:
     lines += [f"IP-CIDR,{ip}" for ip in sorted(ips_v4, key=_ipv4_sort_key)]
     lines += [f"IP-CIDR6,{ip}" for ip in sorted(ips_v6)]
 
-    out = RULES_DIR / "teams-us.txt"
+    out = CLASH_DIR / "teams-us.txt"
     out.write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"[teams] 已写入 {out.relative_to(REPO_ROOT)} ({len(lines)} 行)")
 
 
 def update_steam() -> None:
-    out = RULES_DIR / "steam-direct.txt"
+    out = CLASH_DIR / "steam-direct.txt"
     base = out.read_text(encoding="utf-8") if out.exists() else ""
     rules: set[str] = set()
     for line in base.splitlines():
@@ -251,6 +257,7 @@ def main() -> None:
     args = ap.parse_args()
 
     RULES_DIR.mkdir(parents=True, exist_ok=True)
+    CLASH_DIR.mkdir(parents=True, exist_ok=True)
 
     if not args.skip_teams:
         update_teams()

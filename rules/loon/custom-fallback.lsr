@@ -1,5 +1,5 @@
 # Loon 规则集 (由 crawler/update_rules.py 生成)
-# 来源: rules/custom-fallback.txt   策略: 🐟 兜底分流
+# 来源: rules/clash/custom-fallback.txt   策略: 🐟 兜底分流
 # 用法: [Rule] 段 `RULE-SET,<url>`
 
 DOMAIN-SUFFIX,1cloudfile.com,🐟 兜底分流
