@@ -1,0 +1,531 @@
+# mihomo 配置
+# 日期：2026-08-17
+# 结构：保留 iKeLee 模板的底层增强（sniffer / tcp-concurrent / geo 自动更新 / 订阅参数 / 地区筛选）
+#      分组层恢复原 default.yaml 的完整结构（手动/加速/苹果/AI/网易云/电报/拦截/兜底）
+# 规则源：skk.moe（原版）+ 用户自定义规则集（GitHub CooperZhuang/proxy-rule，每日自动更新）
+# 节点源：不含节点/订阅地址；节点由本机 proxy-providers 拉取（机场订阅）
+# 组名约定：Clash / Surge / Loon 三端统一精简（地区组 香港/台湾/日本/新国/美国；兜底组 兜底；DIRECT/REJECT-DROP 不变）
+# 适用版本：所有使用 mihomo 核心的程序
+port: 7890
+socks-port: 7891
+mixed-port: 7892
+redir-port: 7893
+tproxy-port: 7894
+
+unified-delay: true
+geodata-mode: false
+geodata-loader: standard
+geo-auto-update: true
+geo-update-interval: 24
+tcp-concurrent: true
+find-process-mode: strict
+# 注：原模板的 global-client-fingerprint 已被新版 mihomo 移除（需在节点上单独设置 client-fingerprint），故删除
+
+allow-lan: true
+mode: rule
+log-level: info
+ipv6: true
+udp: true
+
+external-controller: 0.0.0.0:9090
+# external-ui: ui
+# external-ui-url: 'https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip'
+
+geox-url:
+  # geoip: 'https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/geoip.dat'
+  # geosite: 'https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/geosite.dat'
+  mmdb: "https://geodata.kelee.one/Country-Masaiki.mmdb"
+  asn: "https://geodata.kelee.one/GeoLite2-ASN-P3TERX.mmdb"
+
+profile:
+  store-selected: true
+  store-fake-ip: true
+
+sniffer:
+  enable: true
+  force-dns-mapping: true
+  parse-pure-ip: true
+  override-destination: true
+  sniff:
+    HTTP:
+      ports: [80, 8080-8880]
+      override-destination: true
+    TLS:
+      ports: [443, 8443]
+    QUIC:
+      ports: [443, 8443]
+  force-domain:
+    - +.v2ex.com
+
+  skip-domain:
+    - Mijia Cloud
+
+tun:
+  enable: true
+  stack: system
+  dns-hijack:
+    - any:53
+  auto-route: true
+  auto-detect-interface: true
+
+# P2P下载端口
+listeners:
+  - name: socks5-in-1
+    type: socks
+    port: 10808
+    listen: 0.0.0.0
+    udp: true
+    users: []
+    proxy: DIRECT
+
+dns:
+  enable: true
+  prefer-h3: true
+  listen: 0.0.0.0:1053
+  ipv6: false
+  enhanced-mode: fake-ip
+  fake-ip-range: 28.0.0.1/8
+  fake-ip-filter:
+    - "*"
+    - +.lan
+  default-nameserver:
+    - 223.5.5.5
+    - 223.6.6.6
+  nameserver:
+    - https://223.5.5.5/dns-query
+    - https://223.6.6.6/dns-query
+  # [合并] 解析订阅/节点域名走 DoH，防止被污染导致真实订阅更新失败（原 default.yaml 自带）
+  proxy-server-nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+    - tls://223.5.5.5
+
+# [节点源] 本配置不包含节点与订阅地址（公开仓库安全考虑）
+# 节点由本机 Clash Verge 的 proxy-providers 拉取（机场订阅），本地使用
+# 如需独立使用，在此填写订阅:
+# proxy-providers:
+#   myprovider:
+#     type: http
+#     interval: 3600
+#     health-check: { enable: true, url: "https://www.gstatic.com/generate_204", interval: 6 }
+#     url: "https://your-subscription-url"
+#     path: "./proxy_providers/myprovider.yaml"
+# 锚点 - 地区节点筛选组（采用 iKeLee 正负双向正则，排除回国/校园/游戏节点）
+FilterHK: &FilterHK '^(?=.*((?i)🇭🇰|香港|(\b(HK|HKG|Hong)(\d+)?\b)))(?!.*((?i)回国|校园|游戏|🎮|(\b(GAME)\b))).*$'
+FilterTW: &FilterTW '^(?=.*((?i)🇹🇼|台湾|(\b(TW|TWN|Tai|Taiwan)(\d+)?\b)))(?!.*((?i)回国|校园|游戏|🎮|(\b(GAME)\b))).*$'
+FilterJP: &FilterJP '^(?=.*((?i)🇯🇵|日本|川日|东京|大阪|泉日|埼玉|(\b(JP|JPN|Japan)(\d+)?\b)))(?!.*((?i)回国|校园|游戏|🎮|(\b(GAME)\b))).*$'
+FilterUS: &FilterUS '^(?=.*((?i)🇺🇸|美国|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|(\b(US|USA|United States)(\d+)?\b)))(?!.*((?i)回国|校园|游戏|🎮|(\b(GAME)\b))).*$'
+FilterSG: &FilterSG '^(?=.*((?i)🇸🇬|新加坡|狮|(\b(SG|SGP|Singapore)(\d+)?\b)))(?!.*((?i)回国|校园|游戏|🎮|(\b(GAME)\b))).*$'
+
+# 策略组（恢复原 default.yaml 完整结构；地区组采用 iKeLee 增强筛选）
+proxy-groups:
+  - name: 手动
+    type: select
+    include-all-providers: true
+  - name: 加速
+    type: select
+    proxies:
+      - 自动
+      - 手动
+      - 香港
+      - 日本
+      - 美国
+      - 台湾
+      - 新国
+      - DIRECT
+  - name: 苹果
+    type: select
+    proxies:
+      - 自动
+      - 手动
+      - 香港
+      - 日本
+      - 美国
+      - 台湾
+      - 新国
+      - DIRECT
+  - name: AI
+    type: select
+    proxies:
+      - 美国
+      - 自动
+      - 手动
+      - 香港
+      - 日本
+      - 台湾
+      - 新国
+      - DIRECT
+  - name: 网易云
+    type: select
+    proxies:
+      - DIRECT
+      - 自动
+      - 手动
+      - 香港
+      - 日本
+      - 美国
+      - 台湾
+      - 新国
+  - name: 电报
+    type: select
+    proxies:
+      - 自动
+      - 手动
+      - 香港
+      - 日本
+      - 美国
+      - 台湾
+      - 新国
+      - DIRECT
+  - name: 拦截
+    type: select
+    proxies:
+      - REJECT
+  - name: 兜底
+    type: select
+    proxies:
+      - 香港
+      - 自动
+      - 手动
+      - 日本
+      - 美国
+      - 台湾
+      - 新国
+      - DIRECT
+  - name: 自动
+    type: url-test
+    lazy: true
+    url: https://www.gstatic.com/generate_204
+    interval: 900
+    tolerance: 20
+    include-all-providers: true
+  - name: 香港
+    filter: *FilterHK
+    type: url-test
+    lazy: true
+    url: https://www.gstatic.com/generate_204
+    interval: 900
+    tolerance: 20
+    include-all-providers: true
+  - name: 日本
+    filter: *FilterJP
+    type: url-test
+    lazy: true
+    url: https://www.gstatic.com/generate_204
+    interval: 900
+    tolerance: 20
+    include-all-providers: true
+  - name: 美国
+    filter: *FilterUS
+    type: url-test
+    lazy: true
+    url: https://www.gstatic.com/generate_204
+    interval: 900
+    tolerance: 20
+    include-all-providers: true
+  - name: 台湾
+    filter: *FilterTW
+    type: url-test
+    lazy: true
+    url: https://www.gstatic.com/generate_204
+    interval: 900
+    tolerance: 20
+    include-all-providers: true
+  - name: 新国
+    filter: *FilterSG
+    type: url-test
+    lazy: true
+    url: https://www.gstatic.com/generate_204
+    interval: 900
+    tolerance: 20
+    include-all-providers: true
+
+# 订阅规则（skk.moe 完整规则集 + 用户自定义 steam）
+rule-providers:
+  reject_non_ip_no_drop:
+    type: http
+    behavior: classical
+    format: text
+    interval: 43200
+    url: https://ruleset.skk.moe/Clash/non_ip/reject-no-drop.txt
+    path: ./sukkaw_ruleset/reject_non_ip_no_drop.txt
+  reject_non_ip_drop:
+    type: http
+    behavior: classical
+    format: text
+    interval: 43200
+    url: https://ruleset.skk.moe/Clash/non_ip/reject-drop.txt
+    path: ./sukkaw_ruleset/reject_non_ip_drop.txt
+  reject_non_ip:
+    type: http
+    behavior: classical
+    format: text
+    interval: 43200
+    url: https://ruleset.skk.moe/Clash/non_ip/reject.txt
+    path: ./sukkaw_ruleset/reject_non_ip.txt
+  reject_domainset:
+    type: http
+    behavior: domain
+    format: text
+    interval: 43200
+    url: https://ruleset.skk.moe/Clash/domainset/reject.txt
+    path: ./sukkaw_ruleset/reject_domainset.txt
+  reject_ip:
+    type: http
+    behavior: classical
+    format: text
+    interval: 43200
+    url: https://ruleset.skk.moe/Clash/ip/reject.txt
+    path: ./sukkaw_ruleset/reject_ip.txt
+  sogouinput:
+    type: http
+    behavior: classical
+    format: text
+    interval: 43200
+    url: https://ruleset.skk.moe/Clash/non_ip/sogouinput.txt
+    path: ./sukkaw_ruleset/sogouinput.txt
+  cdn_domainset:
+    type: http
+    behavior: domain
+    format: text
+    interval: 43200
+    url: https://ruleset.skk.moe/Clash/domainset/cdn.txt
+    path: ./sukkaw_ruleset/cdn_domainset.txt
+  cdn_non_ip:
+    type: http
+    behavior: classical
+    format: text
+    interval: 43200
+    url: https://ruleset.skk.moe/Clash/non_ip/cdn.txt
+    path: ./sukkaw_ruleset/cdn_non_ip.txt
+  stream_non_ip:
+    type: http
+    behavior: classical
+    format: text
+    interval: 43200
+    url: https://ruleset.skk.moe/Clash/non_ip/stream.txt
+    path: ./sukkaw_ruleset/stream_non_ip.txt
+  stream_ip:
+    type: http
+    behavior: classical
+    format: text
+    interval: 43200
+    url: https://ruleset.skk.moe/Clash/ip/stream.txt
+    path: ./sukkaw_ruleset/stream_ip.txt
+  ai_non_ip:
+    type: http
+    behavior: classical
+    format: text
+    interval: 43200
+    url: https://ruleset.skk.moe/Clash/non_ip/ai.txt
+    path: ./sukkaw_ruleset/ai_non_ip.txt
+  telegram_non_ip:
+    type: http
+    behavior: classical
+    format: text
+    interval: 43200
+    url: https://ruleset.skk.moe/Clash/non_ip/telegram.txt
+    path: ./sukkaw_ruleset/telegram_non_ip.txt
+  telegram_ip:
+    type: http
+    behavior: classical
+    format: text
+    interval: 43200
+    url: https://ruleset.skk.moe/Clash/ip/telegram.txt
+    path: ./sukkaw_ruleset/telegram_ip.txt
+  apple_cdn:
+    type: http
+    behavior: domain
+    format: text
+    interval: 43200
+    url: https://ruleset.skk.moe/Clash/domainset/apple_cdn.txt
+    path: ./sukkaw_ruleset/apple_cdn.txt
+  apple_services:
+    type: http
+    behavior: classical
+    format: text
+    interval: 43200
+    url: https://ruleset.skk.moe/Clash/non_ip/apple_services.txt
+    path: ./sukkaw_ruleset/apple_services.txt
+  apple_cn_non_ip:
+    type: http
+    behavior: classical
+    format: text
+    interval: 43200
+    url: https://ruleset.skk.moe/Clash/non_ip/apple_cn.txt
+    path: ./sukkaw_ruleset/apple_cn_non_ip.txt
+  microsoft_cdn_non_ip:
+    type: http
+    behavior: classical
+    format: text
+    interval: 43200
+    url: https://ruleset.skk.moe/Clash/non_ip/microsoft_cdn.txt
+    path: ./sukkaw_ruleset/microsoft_cdn_non_ip.txt
+  microsoft_non_ip:
+    type: http
+    behavior: classical
+    format: text
+    interval: 43200
+    url: https://ruleset.skk.moe/Clash/non_ip/microsoft.txt
+    path: ./sukkaw_ruleset/microsoft_non_ip.txt
+  neteasemusic_non_ip:
+    type: http
+    behavior: classical
+    format: text
+    interval: 43200
+    url: https://ruleset.skk.moe/Clash/non_ip/neteasemusic.txt
+    path: ./sukkaw_ruleset/neteasemusic_non_ip.txt
+  neteasemusic_ip:
+    type: http
+    behavior: classical
+    format: text
+    interval: 43200
+    url: https://ruleset.skk.moe/Clash/ip/neteasemusic.txt
+    path: ./sukkaw_ruleset/neteasemusic_ip.txt
+  download_domainset:
+    type: http
+    behavior: domain
+    format: text
+    interval: 43200
+    url: https://ruleset.skk.moe/Clash/domainset/download.txt
+    path: ./sukkaw_ruleset/download_domainset.txt
+  download_non_ip:
+    type: http
+    behavior: classical
+    format: text
+    interval: 43200
+    url: https://ruleset.skk.moe/Clash/non_ip/download.txt
+    path: ./sukkaw_ruleset/download_non_ip.txt
+  lan_non_ip:
+    type: http
+    behavior: classical
+    format: text
+    interval: 43200
+    url: https://ruleset.skk.moe/Clash/non_ip/lan.txt
+    path: ./sukkaw_ruleset/lan_non_ip.txt
+  lan_ip:
+    type: http
+    behavior: classical
+    format: text
+    interval: 43200
+    url: https://ruleset.skk.moe/Clash/ip/lan.txt
+    path: ./sukkaw_ruleset/lan_ip.txt
+  domestic_non_ip:
+    type: http
+    behavior: classical
+    format: text
+    interval: 43200
+    url: https://ruleset.skk.moe/Clash/non_ip/domestic.txt
+    path: ./sukkaw_ruleset/domestic_non_ip.txt
+  direct_non_ip:
+    type: http
+    behavior: classical
+    format: text
+    interval: 43200
+    url: https://ruleset.skk.moe/Clash/non_ip/direct.txt
+    path: ./sukkaw_ruleset/direct_non_ip.txt
+  global_non_ip:
+    type: http
+    behavior: classical
+    format: text
+    interval: 43200
+    url: https://ruleset.skk.moe/Clash/non_ip/global.txt
+    path: ./sukkaw_ruleset/global_non_ip.txt
+  domestic_ip:
+    type: http
+    behavior: classical
+    format: text
+    interval: 43200
+    url: https://ruleset.skk.moe/Clash/ip/domestic.txt
+    path: ./sukkaw_ruleset/domestic_ip.txt
+  china_ip:
+    type: http
+    behavior: ipcidr
+    format: text
+    interval: 43200
+    url: https://ruleset.skk.moe/Clash/ip/china_ip.txt
+    path: ./sukkaw_ruleset/china_ip.txt
+  china_ip_ipv6:
+    type: http
+    behavior: ipcidr
+    format: text
+    interval: 43200
+    url: https://ruleset.skk.moe/Clash/ip/china_ip_ipv6.txt
+    path: ./sukkaw_ruleset/china_ipv6.txt
+  # [GitHub] 用户自定义规则集 proxy-rule（jsdelivr CDN；teams_us 每日自动更新）
+  teams_us:
+    type: http
+    behavior: classical
+    format: text
+    interval: 43200
+    url: https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/clash/teams-us.txt
+    path: ./sukkaw_ruleset/teams_us.txt
+  steam_direct:
+    type: http
+    behavior: classical
+    format: text
+    interval: 43200
+    url: https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/clash/steam-direct.txt
+    path: ./sukkaw_ruleset/steam_direct.txt
+  game_cdn_direct:
+    type: http
+    behavior: classical
+    format: text
+    interval: 43200
+    url: https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/clash/game-cdn-direct.txt
+    path: ./sukkaw_ruleset/game_cdn_direct.txt
+  custom_direct:
+    type: http
+    behavior: classical
+    format: text
+    interval: 43200
+    url: https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/clash/custom-direct.txt
+    path: ./sukkaw_ruleset/custom_direct.txt
+  custom_fallback:
+    type: http
+    behavior: classical
+    format: text
+    interval: 43200
+    url: https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/clash/custom-fallback.txt
+    path: ./sukkaw_ruleset/custom_fallback.txt
+
+# 规则指向
+rules:
+  # ========== Microsoft Teams → 美国节点（GitHub 规则集 teams_us，每日自动更新）==========
+  - RULE-SET,teams_us,美国
+  # ========== 手写自定义规则（GitHub 规则集 custom_*）==========
+  - RULE-SET,custom_direct,DIRECT
+  - RULE-SET,custom_fallback,兜底
+  - RULE-SET,reject_non_ip,拦截
+  - RULE-SET,reject_domainset,拦截
+  - RULE-SET,reject_ip,拦截
+  - RULE-SET,reject_non_ip_drop,REJECT-DROP
+  - RULE-SET,reject_non_ip_no_drop,拦截
+  - RULE-SET,sogouinput,拦截
+  - RULE-SET,cdn_domainset,兜底
+  - RULE-SET,cdn_non_ip,兜底
+  - RULE-SET,steam_direct,DIRECT
+  - RULE-SET,game_cdn_direct,DIRECT
+  - RULE-SET,stream_non_ip,兜底
+  - RULE-SET,stream_ip,兜底
+  - RULE-SET,ai_non_ip,AI
+  - RULE-SET,telegram_non_ip,电报
+  - RULE-SET,telegram_ip,电报
+  - RULE-SET,apple_cdn,苹果
+  - RULE-SET,apple_services,苹果
+  - RULE-SET,apple_cn_non_ip,苹果
+  - RULE-SET,microsoft_cdn_non_ip,苹果
+  - RULE-SET,microsoft_non_ip,苹果
+  - RULE-SET,download_domainset,苹果
+  - RULE-SET,download_non_ip,苹果
+  - RULE-SET,neteasemusic_non_ip,网易云
+  - RULE-SET,neteasemusic_ip,网易云
+  - RULE-SET,lan_non_ip,DIRECT
+  - RULE-SET,lan_ip,DIRECT
+  - RULE-SET,domestic_non_ip,DIRECT
+  - RULE-SET,direct_non_ip,DIRECT
+  - RULE-SET,global_non_ip,兜底
+  - RULE-SET,domestic_ip,DIRECT
+  - RULE-SET,china_ip,DIRECT
+  - GEOIP,CN,DIRECT
+  - MATCH,兜底
