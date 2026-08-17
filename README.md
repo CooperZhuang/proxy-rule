@@ -60,14 +60,15 @@ Rule Set = https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/surge/
 
 ```
 [Remote Rule]
-https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/loon/teams-us.lsr, policy=美国时延优选, tag=proxy-rule Teams→US, enabled=true
-https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/loon/steam-direct.lsr, policy=DIRECT, tag=proxy-rule Steam直连, enabled=true
-https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/loon/game-cdn-direct.lsr, policy=DIRECT, tag=proxy-rule 游戏CDN直连, enabled=true
-https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/loon/custom-direct.lsr, policy=DIRECT, tag=proxy-rule 自定义直连, enabled=true
-https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/loon/custom-fallback.lsr, policy=兜底后备策略, tag=proxy-rule 自定义兜底, enabled=true
+https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/loon/teams-us.lsr, policy=美国时延优选, tag=proxy-rule Teams→US, enabled=true
+https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/loon/steam-direct.lsr, policy=DIRECT, tag=proxy-rule Steam直连, enabled=true
+https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/loon/game-cdn-direct.lsr, policy=DIRECT, tag=proxy-rule 游戏CDN直连, enabled=true
+https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/loon/custom-direct.lsr, policy=DIRECT, tag=proxy-rule 自定义直连, enabled=true
+https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/loon/custom-fallback.lsr, policy=兜底后备策略, tag=proxy-rule 自定义兜底, enabled=true
 ```
 
-raw.githubusercontent 备用链接：`https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/surge/<file>`（Loon 同理换成 `rules/loon/*.lsr`）
+raw.githubusercontent 备用链接：`https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/surge/<file>`（Loon 同理换成 `rules/loon/*.lsr`）。
+Loon 建议直接用 raw 链接（与 kelee.one / skk.moe 等规则源一致）；jsdelivr `@main` 有边缘缓存延迟，内容更新后可能数小时才刷新。
 
 ## 在 Clash / mihomo 中使用
 
