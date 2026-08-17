@@ -1,0 +1,5 @@
+# 手写自定义直连规则
+# 手工维护，crawler 不修改此文件
+# 示例（需配 classical 规则集时启用）: DOMAIN-KEYWORD,google,🇸🇬 狮城节点
+DOMAIN,www.ijinshan.com
+DOMAIN,time.is

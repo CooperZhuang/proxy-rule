@@ -1,0 +1,7 @@
+# 游戏平台下载 CDN 直连（微软/Xbox/Ubisoft/Epic 国内 CDN 绕过）
+# 手工维护，crawler 不修改此文件
+DOMAIN-SUFFIX,dl.delivery.mp.microsoft.com
+DOMAIN-SUFFIX,uplaypc-s-ubisoft.cdn.ubionline.com.cn
+DOMAIN-SUFFIX,epicgames-download1-1251447533.file.myqcloud.com
+DOMAIN-SUFFIX,assets1.xboxlive.cn
+DOMAIN-SUFFIX,assets2.xboxlive.cn

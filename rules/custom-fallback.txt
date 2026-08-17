@@ -1,0 +1,4 @@
+# 手写自定义规则 → 兜底分流组
+# 手工维护，crawler 不修改此文件
+DOMAIN-SUFFIX,1cloudfile.com
+DOMAIN-SUFFIX,1fichier.com
