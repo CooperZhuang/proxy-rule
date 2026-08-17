@@ -13,7 +13,8 @@ proxy-rule/
 │   ├── game-cdn-direct.txt       # 游戏平台下载 CDN 直连（手工维护）
 │   ├── custom-direct.txt         # 手写自定义直连规则（手工维护）
 │   ├── custom-fallback.txt       # 手写自定义规则 → 兜底分流组（手工维护）
-│   └── universal/                # Surge / Loon 通用格式副本（爬虫自动生成）
+│   ├── surge/                   # Surge 专项规则集（爬虫自动生成）
+│   └── loon/                    # Loon 专项规则集（爬虫自动生成）
 ├── crawler/
 │   ├── update_rules.py           # 规则更新爬虫
 │   └── requirements.txt
@@ -30,7 +31,8 @@ proxy-rule/
 | `custom-direct.txt` | 手写直连规则（金山西山居、time.is 等） | `DIRECT` |
 | `custom-fallback.txt` | 手写规则（网盘类） | `🐟 兜底分流` |
 
-所有规则集在 `rules/universal/` 下都有 Surge / Loon 通用格式副本，由爬虫自动同步。
+所有规则集在 `rules/surge/` 与 `rules/loon/` 下都有对应客户端的专项副本，由爬虫自动同步；
+两个目录相互独立，便于将来 Surge / Loon 格式各自演化（专项专用）。
 
 `teams-us.txt` 的数据源为微软官方发布的 365 端点清单：
 <https://learn.microsoft.com/office365/enterprise/urls-and-ip-address-ranges>
@@ -40,32 +42,32 @@ proxy-rule/
 
 ## 在 Surge / Loon 中使用
 
-`rules/universal/` 下的规则集为两客户端通用格式：每条规则自带策略
+`rules/surge/` 与 `rules/loon/` 下各有对应客户端的专项规则集：每条规则自带策略
 （与 Clash 分组名一致：`🇺🇲 美国节点` / `DIRECT` / `🐟 兜底分流`），
 IP 规则已追加 `no-resolve`。策略名可在 `crawler/update_rules.py` 的
-`UNIVERSAL_POLICIES` 中修改，改后重新运行爬虫即可。
+`CLIENT_POLICIES` 中修改，改后重新运行爬虫即可。
 
 **Surge**（`[Rule]` 段）：
 
 ```
-Rule Set = https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/universal/teams-us.txt
-Rule Set = https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/universal/steam-direct.txt
-Rule Set = https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/universal/game-cdn-direct.txt
-Rule Set = https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/universal/custom-direct.txt
-Rule Set = https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/universal/custom-fallback.txt
+Rule Set = https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/surge/teams-us.txt
+Rule Set = https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/surge/steam-direct.txt
+Rule Set = https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/surge/game-cdn-direct.txt
+Rule Set = https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/surge/custom-direct.txt
+Rule Set = https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/surge/custom-fallback.txt
 ```
 
 **Loon**（`[Rule]` 段）：
 
 ```
-RULE-SET,https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/universal/teams-us.txt
-RULE-SET,https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/universal/steam-direct.txt
-RULE-SET,https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/universal/game-cdn-direct.txt
-RULE-SET,https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/universal/custom-direct.txt
-RULE-SET,https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/universal/custom-fallback.txt
+RULE-SET,https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/loon/teams-us.txt
+RULE-SET,https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/loon/steam-direct.txt
+RULE-SET,https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/loon/game-cdn-direct.txt
+RULE-SET,https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/loon/custom-direct.txt
+RULE-SET,https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/loon/custom-fallback.txt
 ```
 
-raw.githubusercontent 备用链接：`https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/universal/<file>`
+raw.githubusercontent 备用链接：`https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/surge/<file>`（Loon 同理换成 `rules/loon/`）
 
 ## 在 Clash / mihomo 中使用
 
@@ -145,8 +147,10 @@ Clash 侧 `interval: 43200`（12 小时）自动拉取最新规则。
 - 需要调整 Teams 覆盖范围：修改 `crawler/update_rules.py` 中的
   `TEAMS_DOMAIN_AREAS` / `TEAMS_IP_AREAS` / `CERT_CRL_DOMAINS` 后重新运行爬虫。
 - 手工规则直接编辑 `rules/*.txt`（`teams-us.txt` 除外，会被爬虫覆盖）；
-  修改后运行一次爬虫即可同步 `rules/universal/` 通用格式。
-- Surge/Loon 策略名：编辑 `crawler/update_rules.py` 的 `UNIVERSAL_POLICIES`。
+  修改后运行一次爬虫即可同步 `rules/surge/` 与 `rules/loon/` 专项格式。
+- Surge/Loon 策略名：编辑 `crawler/update_rules.py` 的 `CLIENT_POLICIES`。
+- Surge 与 Loon 格式如需分叉：在 `crawler/update_rules.py` 的 `_write_client_set`
+  中按客户端分支即可（`SURGE_DIR` / `LOON_DIR` 相互独立）。
 
 ## License
 

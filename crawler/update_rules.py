@@ -55,16 +55,28 @@ CERT_CRL_DOMAINS = {
     "entrust.net", "secure.globalsign.com", "msocsp.com",
 }
 
-# ---- Surge / Loon 通用格式 ----
-# 各规则集在 Surge/Loon 通用格式中的策略名（与 Clash 分组名保持一致）
-UNIVERSAL_POLICIES = {
+# ---- Surge / Loon 专项格式 ----
+# 各规则集在 Surge/Loon 中的策略名（与 Clash 分组名保持一致）
+CLIENT_POLICIES = {
     "teams-us": "🇺🇲 美国节点",
     "steam-direct": "DIRECT",
     "game-cdn-direct": "DIRECT",
     "custom-direct": "DIRECT",
     "custom-fallback": "🐟 兜底分流",
 }
-UNIVERSAL_DIR = RULES_DIR / "universal"
+# 每个客户端独立目录，便于将来格式分叉（专项专用）
+SURGE_DIR = RULES_DIR / "surge"
+LOON_DIR = RULES_DIR / "loon"
+CLIENT_HEADERS = {
+    "surge": (
+        "# Surge 规则集 (由 crawler/update_rules.py 生成)",
+        "# 用法: [Rule] 段 `Rule Set = <url>`",
+    ),
+    "loon": (
+        "# Loon 规则集 (由 crawler/update_rules.py 生成)",
+        "# 用法: [Rule] 段 `RULE-SET,<url>`",
+    ),
+}
 
 # ---- Steam 上游 ----
 STEAM_UPSTREAMS = [
@@ -114,8 +126,8 @@ def _normalize_ip(ip: str) -> str | None:
     return s
 
 
-def _to_universal(line: str, policy: str) -> str | None:
-    """Clash classical 规则行 → Surge/Loon 通用格式（带策略，IP 规则追加 no-resolve）。"""
+def _to_client(line: str, policy: str) -> str | None:
+    """Clash classical 规则行 → Surge/Loon 客户端格式（带策略，IP 规则追加 no-resolve）。"""
     s = line.strip()
     if s.startswith("IP-CIDR6,") or s.startswith("IP-CIDR,"):
         return f"{s},{policy},no-resolve"
@@ -124,27 +136,34 @@ def _to_universal(line: str, policy: str) -> str | None:
     return None  # 注释/空行等跳过
 
 
-def update_universal() -> None:
-    """为每个 Clash 规则集生成 Surge/Loon 通用格式副本。"""
-    UNIVERSAL_DIR.mkdir(parents=True, exist_ok=True)
-    for name, policy in UNIVERSAL_POLICIES.items():
+def _write_client_set(client: str, out_dir: pathlib.Path) -> None:
+    """为单个客户端生成全部规则集的专项格式。"""
+    out_dir.mkdir(parents=True, exist_ok=True)
+    header, usage = CLIENT_HEADERS[client]
+    for name, policy in CLIENT_POLICIES.items():
         src = RULES_DIR / f"{name}.txt"
         if not src.exists():
-            print(f"[universal] 跳过缺失的 {name}.txt")
+            print(f"[{client}] 跳过缺失的 {name}.txt")
             continue
         out_lines = [
-            "# Surge / Loon 通用规则集 (由 crawler/update_rules.py 生成)",
+            header,
             f"# 来源: rules/{name}.txt   策略: {policy}",
-            "# 用法: Surge `Rule Set = <url>`; Loon `RULE-SET,<url>`",
+            usage,
             "",
         ]
         for line in src.read_text(encoding="utf-8").splitlines():
-            conv = _to_universal(line, policy)
+            conv = _to_client(line, policy)
             if conv:
                 out_lines.append(conv)
-        dst = UNIVERSAL_DIR / f"{name}.txt"
+        dst = out_dir / f"{name}.txt"
         dst.write_text("\n".join(out_lines) + "\n", encoding="utf-8")
-        print(f"[universal] 已写入 {dst.relative_to(REPO_ROOT)} ({len(out_lines) - 4} 条)")
+        print(f"[{client}] 已写入 {dst.relative_to(REPO_ROOT)} ({len(out_lines) - 4} 条)")
+
+
+def update_clients() -> None:
+    """Surge 与 Loon 分别生成专项规则集。"""
+    _write_client_set("surge", SURGE_DIR)
+    _write_client_set("loon", LOON_DIR)
 
 
 def _ipv4_sort_key(ip: str) -> tuple:
@@ -237,7 +256,7 @@ def main() -> None:
         update_teams()
     if not args.skip_steam:
         update_steam()
-    update_universal()  # 始终从当前 Clash 规则集同步 Surge/Loon 通用格式
+    update_clients()  # 始终从当前 Clash 规则集同步 Surge/Loon 专项格式
     print("[done] 更新完成")
 
 
