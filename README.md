@@ -13,7 +13,7 @@ proxy-rule/
 │   │   ├── steam-direct.txt      #   Steam 直连（基础手工维护 + 上游自动合并）
 │   │   ├── game-cdn-direct.txt   #   游戏平台下载 CDN 直连（手工维护）
 │   │   ├── custom-direct.txt     #   手写自定义直连规则（手工维护）
-│   │   └── custom-fallback.txt   #   手写自定义规则 → 兜底分流组（手工维护）
+│   │   └── custom-fallback.txt   #   手写自定义规则 → 兜底（手工维护）
 │   ├── surge/                    # Surge 专项规则集（*.txt，爬虫自动生成）
 │   └── loon/                     # Loon 专项规则集（*.lsr，爬虫自动生成）
 ├── crawler/
@@ -23,6 +23,8 @@ proxy-rule/
 ```
 
 ## 规则说明
+
+表内路径均为 `rules/clash/` 下；`rules/surge/`（*.txt，内嵌策略）、`rules/loon/`（*.lsr，裸规则）为对应客户端专项副本。
 
 | 文件 | 内容 | Clash 目标 |
 |---|---|---|
@@ -40,6 +42,21 @@ proxy-rule/
 
 生成时会剔除证书链校验（CRL/OCSP）端点（digicert/globalsign/verisign 等）及含通配符的条目
 （如 `autodiscover.*.onmicrosoft.com`，由已有的 `onmicrosoft.com` 覆盖）。
+
+## 组名约定
+
+Clash / Surge / Loon 三端统一精简组名（无 emoji 前缀）：
+
+| 类型 | 组名 |
+|---|---|
+| 地区自动优选（url-test） | `香港` `台湾` `日本` `韩国` `新国` `美国` `游戏` `全球` |
+| Loon 手动选择（select） | `香港手动` `台湾手动` `日本手动` `韩国手动` `新国手动` `美国手动` `游戏手动` `全球手动` |
+| 兜底（FINAL / fallback） | `兜底` |
+| Clash 功能组 | `手动` `加速` `苹果` `AI` `网易云` `电报` `拦截` `自动` |
+| 内置策略 | `DIRECT` `REJECT-DROP` `REJECT`（Loon 另有 `Apple Push`） |
+
+- 规则集引用的组：`teams-us` → `美国`；`custom-fallback` → `兜底`；其余直连规则 → `DIRECT`
+- Surge 内嵌策略名在 `SURGE_POLICIES` 维护；Loon 策略在 `[Remote Rule]` 导入时指定
 
 ## 在 Surge / Loon 中使用
 
@@ -124,7 +141,7 @@ rules:
   - RULE-SET,game_cdn_direct,DIRECT
 ```
 
-raw.githubusercontent 备用链接：`https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/<file>`
+raw.githubusercontent 备用链接：`https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/clash/<file>`
 
 ## 本地更新规则
 
@@ -151,8 +168,8 @@ Clash 侧 `interval: 43200`（12 小时）自动拉取最新规则。
   修改后运行一次爬虫即可同步 `rules/surge/*.txt` 与 `rules/loon/*.lsr` 专项格式。
 - Surge 内嵌策略名：编辑 `crawler/update_rules.py` 的 `SURGE_POLICIES`。
 - Loon 策略在配置导入时指定（裸规则），与规则文件解耦。
-- Surge 与 Loon 格式如需分叉：在 `crawler/update_rules.py` 的 `_write_client_set`
-  中按客户端分支即可（`SURGE_DIR` / `LOON_DIR` 相互独立）。
+- Surge 与 Loon 格式各自独立：`crawler/update_rules.py` 的 `_write_surge` / `_write_loon`
+  分别生成，互不影响（`SURGE_DIR` / `LOON_DIR`）。
 
 ## License
 

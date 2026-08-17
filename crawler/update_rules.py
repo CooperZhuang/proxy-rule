@@ -3,17 +3,20 @@
 """
 proxy-rule 规则更新爬虫 (https://github.com/CooperZhuang/proxy-rule)
 
-自动更新 rules/ 目录下的分流规则：
+自动更新 rules/ 目录下的分流规则（按客户端分专项目录）：
 
-1. rules/teams-us.txt —— 从 Microsoft 365 官方端点 JSON 自动提取
+1. rules/clash/teams-us.txt —— 从 Microsoft 365 官方端点 JSON 自动提取
    数据源: https://learn.microsoft.com/office365/enterprise/urls-and-ip-address-ranges
    - 域名: Teams / Common / Skype / Exchange / SharePoint 服务区域
            （覆盖 Teams 本体、登录、OneDrive/SharePoint、Outlook 等依赖）
    - IP  : Teams / Skype 服务区域的媒体与基础网络段
-   输出 classical 文本规则集, 在 Clash 中指向: 🇺🇲 美国节点
+   输出 classical 文本规则集, 在 Clash 中指向: 美国
 
-2. rules/steam-direct.txt —— 本仓库手工维护基础列表 + 上游 Femoon/clash-rules 合并去重
+2. rules/clash/steam-direct.txt —— 本仓库手工维护基础列表 + 上游 Femoon/clash-rules 合并去重
    数据源: https://github.com/Femoon/clash-rules
+
+3. rules/surge/*.txt —— Surge 专项规则集（内嵌策略, IP 规则追加 no-resolve）
+4. rules/loon/*.lsr —— Loon 专项规则集（裸规则, 策略在 [Remote Rule] 导入时用 policy= 指定）
 
 用法:
     python crawler/update_rules.py              # 全量更新
