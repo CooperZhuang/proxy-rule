@@ -1,6 +1,6 @@
 # Surge 规则集 (由 crawler/update_rules.py 生成)
-# 来源: rules/clash/custom-fallback.txt   策略: 🐟 兜底分流
+# 来源: rules/clash/custom-fallback.txt   策略: 兜底
 # 用法: [Rule] 段 `Rule Set = <url>`
 
-DOMAIN-SUFFIX,1cloudfile.com,🐟 兜底分流
-DOMAIN-SUFFIX,1fichier.com,🐟 兜底分流
+DOMAIN-SUFFIX,1cloudfile.com,兜底
+DOMAIN-SUFFIX,1fichier.com,兜底

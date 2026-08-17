@@ -59,11 +59,11 @@ CERT_CRL_DOMAINS = {
 # Surge: 规则集内嵌策略（TYPE,value,策略[,no-resolve]），策略名与 Clash 分组名保持一致
 # Loon:  裸规则列表（TYPE,value），策略在 [Remote Rule] 导入时用 policy= 指定（kelee.one / skk.moe 惯例）
 SURGE_POLICIES = {
-    "teams-us": "🇺🇲 美国节点",
+    "teams-us": "美国",
     "steam-direct": "DIRECT",
     "game-cdn-direct": "DIRECT",
     "custom-direct": "DIRECT",
-    "custom-fallback": "🐟 兜底分流",
+    "custom-fallback": "兜底",
 }
 # 每个客户端独立目录，便于将来格式分叉（专项专用）
 CLASH_DIR = RULES_DIR / "clash"

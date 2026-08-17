@@ -1,173 +1,173 @@
 # Surge 规则集 (由 crawler/update_rules.py 生成)
-# 来源: rules/clash/teams-us.txt   策略: 🇺🇲 美国节点
+# 来源: rules/clash/teams-us.txt   策略: 美国
 # 用法: [Rule] 段 `Rule Set = <url>`
 
-DOMAIN-SUFFIX,aadrm.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,account.activedirectory.windowsazure.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,account.live.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,accounts.accesscontrol.windows.net,🇺🇲 美国节点
-DOMAIN-SUFFIX,acompli.net,🇺🇲 美国节点
-DOMAIN-SUFFIX,activation.sls.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,activity.windows.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,adl.windows.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,admin.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,admin.onedrive.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,adminwebservice.microsoftonline.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,ajax.aspnetcdn.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,aka.ms,🇺🇲 美国节点
-DOMAIN-SUFFIX,amp.azure.net,🇺🇲 美国节点
-DOMAIN-SUFFIX,api.passwordreset.microsoftonline.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,apis.live.net,🇺🇲 美国节点
-DOMAIN-SUFFIX,appex-rf.msn.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,appex.bing.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,appsforoffice.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,aria.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,assets-yammer.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,assets.onestore.ms,🇺🇲 美国节点
-DOMAIN-SUFFIX,auth.gfx.ms,🇺🇲 美国节点
-DOMAIN-SUFFIX,auth.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,autologon.microsoftazuread-sso.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,azure-apim.net,🇺🇲 美国节点
-DOMAIN-SUFFIX,azurerms.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,becws.microsoftonline.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,c.bing.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,c.bing.net,🇺🇲 美国节点
-DOMAIN-SUFFIX,c.live.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,c1.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,ccs.login.microsoftonline.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,cdn.odc.officeapps.live.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,cdn.onenote.net,🇺🇲 美国节点
-DOMAIN-SUFFIX,cdn.uci.officeapps.live.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,clientconfig.microsoftonline-p.net,🇺🇲 美国节点
-DOMAIN-SUFFIX,cloud.microsoft,🇺🇲 美国节点
-DOMAIN-SUFFIX,companymanager.microsoftonline.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,compliance.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,cortana.ai,🇺🇲 美国节点
-DOMAIN-SUFFIX,crl.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,dc.services.visualstudio.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,defender.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,device.login.microsoftonline.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,dgps.support.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,docs.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,ecn.dev.virtualearth.net,🇺🇲 美国节点
-DOMAIN-SUFFIX,enterpriseregistration.windows.net,🇺🇲 美国节点
-DOMAIN-SUFFIX,eus-www.sway-cdn.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,eus-www.sway-extensions.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,events.data.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,flow.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,g.live.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,go.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,graph.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,graph.windows.net,🇺🇲 美国节点
-DOMAIN-SUFFIX,hip.live.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,informationprotection.azure.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,informationprotection.hosting.portal.azure.net,🇺🇲 美国节点
-DOMAIN-SUFFIX,join.secure.skypeassets.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,keydelivery.mediaservices.windows.net,🇺🇲 美国节点
-DOMAIN-SUFFIX,login-us.microsoftonline.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,login.live.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,login.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,login.microsoftonline-p.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,login.microsoftonline.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,login.windows-ppe.net,🇺🇲 美国节点
-DOMAIN-SUFFIX,login.windows.net,🇺🇲 美国节点
-DOMAIN-SUFFIX,logincert.microsoftonline.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,loginex.microsoftonline.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,lync.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,mail.protection.outlook.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,mem.gfx.ms,🇺🇲 美国节点
-DOMAIN-SUFFIX,microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,microsoftonline-p.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,microsoftonline.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,microsoftusercontent.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,mlccdnprod.azureedge.net,🇺🇲 美国节点
-DOMAIN-SUFFIX,msauth.net,🇺🇲 美国节点
-DOMAIN-SUFFIX,msauthimages.net,🇺🇲 美国节点
-DOMAIN-SUFFIX,mscrl.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,msdn.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,msecnd.net,🇺🇲 美国节点
-DOMAIN-SUFFIX,msftauth.net,🇺🇲 美国节点
-DOMAIN-SUFFIX,msftauthimages.net,🇺🇲 美国节点
-DOMAIN-SUFFIX,msftidentity.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,msidentity.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,msocdn.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,mx.microsoft,🇺🇲 美国节点
-DOMAIN-SUFFIX,nexus.microsoftonline-p.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,o15.officeredir.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,o365weve.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,ocos-office365-s2s.msedge.net,🇺🇲 美国节点
-DOMAIN-SUFFIX,office.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,office.live.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,office.net,🇺🇲 美国节点
-DOMAIN-SUFFIX,office15client.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,office365.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,officeapps.live.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,officecdn.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,officeclient.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,officepreviewredir.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,officeredir.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,officespeech.platform.bing.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,oneclient.sfx.ms,🇺🇲 美国节点
-DOMAIN-SUFFIX,onenote.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,oneocsp.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,online.office.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,onmicrosoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,otelrules.azureedge.net,🇺🇲 美国节点
-DOMAIN-SUFFIX,outlook.cloud.microsoft,🇺🇲 美国节点
-DOMAIN-SUFFIX,outlook.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,outlook.office.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,outlook.office365.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,outlookmobile.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,partnerservices.getmicrosoftkey.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,passwordreset.microsoftonline.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,phonefactor.net,🇺🇲 美国节点
-DOMAIN-SUFFIX,platform.linkedin.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,portal.cloudappsecurity.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,powerapps.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,powerautomate.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,prod.msocdn.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,protection.office.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,protection.outlook.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,provisioningapi.microsoftonline.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,purview.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,r.office.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,security.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,sharepoint.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,sharepointonline.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,shellprod.msocdn.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,signup.live.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,skype.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,smtp.office365.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,spoprod-a.akamaihd.net,🇺🇲 美国节点
-DOMAIN-SUFFIX,static.microsoft,🇺🇲 美国节点
-DOMAIN-SUFFIX,storage.live.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,streaming.mediaservices.windows.net,🇺🇲 美国节点
-DOMAIN-SUFFIX,support.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,svc.ms,🇺🇲 美国节点
-DOMAIN-SUFFIX,sway.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,teams.cloud.microsoft,🇺🇲 美国节点
-DOMAIN-SUFFIX,teams.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,technet.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,tse1.mm.bing.net,🇺🇲 美国节点
-DOMAIN-SUFFIX,usercontent.microsoft,🇺🇲 美国节点
-DOMAIN-SUFFIX,virtualearth.net,🇺🇲 美国节点
-DOMAIN-SUFFIX,wns.windows.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,wus-www.sway-cdn.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,wus-www.sway-extensions.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,www.bing.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,www.microsoft.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,www.microsoft365.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,www.onedrive.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,www.outlook.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,www.sway.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,yammer.com,🇺🇲 美国节点
-DOMAIN-SUFFIX,yammerusercontent.com,🇺🇲 美国节点
-IP-CIDR,52.112.0.0/14,🇺🇲 美国节点,no-resolve
-IP-CIDR,52.122.0.0/15,🇺🇲 美国节点,no-resolve
-IP-CIDR6,2603:1027::/48,🇺🇲 美国节点,no-resolve
-IP-CIDR6,2603:1037::/48,🇺🇲 美国节点,no-resolve
-IP-CIDR6,2603:1047::/48,🇺🇲 美国节点,no-resolve
-IP-CIDR6,2603:1057::/48,🇺🇲 美国节点,no-resolve
-IP-CIDR6,2603:1063::/38,🇺🇲 美国节点,no-resolve
-IP-CIDR6,2620:1ec:40::/42,🇺🇲 美国节点,no-resolve
-IP-CIDR6,2620:1ec:6::/48,🇺🇲 美国节点,no-resolve
+DOMAIN-SUFFIX,aadrm.com,美国
+DOMAIN-SUFFIX,account.activedirectory.windowsazure.com,美国
+DOMAIN-SUFFIX,account.live.com,美国
+DOMAIN-SUFFIX,accounts.accesscontrol.windows.net,美国
+DOMAIN-SUFFIX,acompli.net,美国
+DOMAIN-SUFFIX,activation.sls.microsoft.com,美国
+DOMAIN-SUFFIX,activity.windows.com,美国
+DOMAIN-SUFFIX,adl.windows.com,美国
+DOMAIN-SUFFIX,admin.microsoft.com,美国
+DOMAIN-SUFFIX,admin.onedrive.com,美国
+DOMAIN-SUFFIX,adminwebservice.microsoftonline.com,美国
+DOMAIN-SUFFIX,ajax.aspnetcdn.com,美国
+DOMAIN-SUFFIX,aka.ms,美国
+DOMAIN-SUFFIX,amp.azure.net,美国
+DOMAIN-SUFFIX,api.passwordreset.microsoftonline.com,美国
+DOMAIN-SUFFIX,apis.live.net,美国
+DOMAIN-SUFFIX,appex-rf.msn.com,美国
+DOMAIN-SUFFIX,appex.bing.com,美国
+DOMAIN-SUFFIX,appsforoffice.microsoft.com,美国
+DOMAIN-SUFFIX,aria.microsoft.com,美国
+DOMAIN-SUFFIX,assets-yammer.com,美国
+DOMAIN-SUFFIX,assets.onestore.ms,美国
+DOMAIN-SUFFIX,auth.gfx.ms,美国
+DOMAIN-SUFFIX,auth.microsoft.com,美国
+DOMAIN-SUFFIX,autologon.microsoftazuread-sso.com,美国
+DOMAIN-SUFFIX,azure-apim.net,美国
+DOMAIN-SUFFIX,azurerms.com,美国
+DOMAIN-SUFFIX,becws.microsoftonline.com,美国
+DOMAIN-SUFFIX,c.bing.com,美国
+DOMAIN-SUFFIX,c.bing.net,美国
+DOMAIN-SUFFIX,c.live.com,美国
+DOMAIN-SUFFIX,c1.microsoft.com,美国
+DOMAIN-SUFFIX,ccs.login.microsoftonline.com,美国
+DOMAIN-SUFFIX,cdn.odc.officeapps.live.com,美国
+DOMAIN-SUFFIX,cdn.onenote.net,美国
+DOMAIN-SUFFIX,cdn.uci.officeapps.live.com,美国
+DOMAIN-SUFFIX,clientconfig.microsoftonline-p.net,美国
+DOMAIN-SUFFIX,cloud.microsoft,美国
+DOMAIN-SUFFIX,companymanager.microsoftonline.com,美国
+DOMAIN-SUFFIX,compliance.microsoft.com,美国
+DOMAIN-SUFFIX,cortana.ai,美国
+DOMAIN-SUFFIX,crl.microsoft.com,美国
+DOMAIN-SUFFIX,dc.services.visualstudio.com,美国
+DOMAIN-SUFFIX,defender.microsoft.com,美国
+DOMAIN-SUFFIX,device.login.microsoftonline.com,美国
+DOMAIN-SUFFIX,dgps.support.microsoft.com,美国
+DOMAIN-SUFFIX,docs.microsoft.com,美国
+DOMAIN-SUFFIX,ecn.dev.virtualearth.net,美国
+DOMAIN-SUFFIX,enterpriseregistration.windows.net,美国
+DOMAIN-SUFFIX,eus-www.sway-cdn.com,美国
+DOMAIN-SUFFIX,eus-www.sway-extensions.com,美国
+DOMAIN-SUFFIX,events.data.microsoft.com,美国
+DOMAIN-SUFFIX,flow.microsoft.com,美国
+DOMAIN-SUFFIX,g.live.com,美国
+DOMAIN-SUFFIX,go.microsoft.com,美国
+DOMAIN-SUFFIX,graph.microsoft.com,美国
+DOMAIN-SUFFIX,graph.windows.net,美国
+DOMAIN-SUFFIX,hip.live.com,美国
+DOMAIN-SUFFIX,informationprotection.azure.com,美国
+DOMAIN-SUFFIX,informationprotection.hosting.portal.azure.net,美国
+DOMAIN-SUFFIX,join.secure.skypeassets.com,美国
+DOMAIN-SUFFIX,keydelivery.mediaservices.windows.net,美国
+DOMAIN-SUFFIX,login-us.microsoftonline.com,美国
+DOMAIN-SUFFIX,login.live.com,美国
+DOMAIN-SUFFIX,login.microsoft.com,美国
+DOMAIN-SUFFIX,login.microsoftonline-p.com,美国
+DOMAIN-SUFFIX,login.microsoftonline.com,美国
+DOMAIN-SUFFIX,login.windows-ppe.net,美国
+DOMAIN-SUFFIX,login.windows.net,美国
+DOMAIN-SUFFIX,logincert.microsoftonline.com,美国
+DOMAIN-SUFFIX,loginex.microsoftonline.com,美国
+DOMAIN-SUFFIX,lync.com,美国
+DOMAIN-SUFFIX,mail.protection.outlook.com,美国
+DOMAIN-SUFFIX,mem.gfx.ms,美国
+DOMAIN-SUFFIX,microsoft.com,美国
+DOMAIN-SUFFIX,microsoftonline-p.com,美国
+DOMAIN-SUFFIX,microsoftonline.com,美国
+DOMAIN-SUFFIX,microsoftusercontent.com,美国
+DOMAIN-SUFFIX,mlccdnprod.azureedge.net,美国
+DOMAIN-SUFFIX,msauth.net,美国
+DOMAIN-SUFFIX,msauthimages.net,美国
+DOMAIN-SUFFIX,mscrl.microsoft.com,美国
+DOMAIN-SUFFIX,msdn.microsoft.com,美国
+DOMAIN-SUFFIX,msecnd.net,美国
+DOMAIN-SUFFIX,msftauth.net,美国
+DOMAIN-SUFFIX,msftauthimages.net,美国
+DOMAIN-SUFFIX,msftidentity.com,美国
+DOMAIN-SUFFIX,msidentity.com,美国
+DOMAIN-SUFFIX,msocdn.com,美国
+DOMAIN-SUFFIX,mx.microsoft,美国
+DOMAIN-SUFFIX,nexus.microsoftonline-p.com,美国
+DOMAIN-SUFFIX,o15.officeredir.microsoft.com,美国
+DOMAIN-SUFFIX,o365weve.com,美国
+DOMAIN-SUFFIX,ocos-office365-s2s.msedge.net,美国
+DOMAIN-SUFFIX,office.com,美国
+DOMAIN-SUFFIX,office.live.com,美国
+DOMAIN-SUFFIX,office.net,美国
+DOMAIN-SUFFIX,office15client.microsoft.com,美国
+DOMAIN-SUFFIX,office365.com,美国
+DOMAIN-SUFFIX,officeapps.live.com,美国
+DOMAIN-SUFFIX,officecdn.microsoft.com,美国
+DOMAIN-SUFFIX,officeclient.microsoft.com,美国
+DOMAIN-SUFFIX,officepreviewredir.microsoft.com,美国
+DOMAIN-SUFFIX,officeredir.microsoft.com,美国
+DOMAIN-SUFFIX,officespeech.platform.bing.com,美国
+DOMAIN-SUFFIX,oneclient.sfx.ms,美国
+DOMAIN-SUFFIX,onenote.com,美国
+DOMAIN-SUFFIX,oneocsp.microsoft.com,美国
+DOMAIN-SUFFIX,online.office.com,美国
+DOMAIN-SUFFIX,onmicrosoft.com,美国
+DOMAIN-SUFFIX,otelrules.azureedge.net,美国
+DOMAIN-SUFFIX,outlook.cloud.microsoft,美国
+DOMAIN-SUFFIX,outlook.com,美国
+DOMAIN-SUFFIX,outlook.office.com,美国
+DOMAIN-SUFFIX,outlook.office365.com,美国
+DOMAIN-SUFFIX,outlookmobile.com,美国
+DOMAIN-SUFFIX,partnerservices.getmicrosoftkey.com,美国
+DOMAIN-SUFFIX,passwordreset.microsoftonline.com,美国
+DOMAIN-SUFFIX,phonefactor.net,美国
+DOMAIN-SUFFIX,platform.linkedin.com,美国
+DOMAIN-SUFFIX,portal.cloudappsecurity.com,美国
+DOMAIN-SUFFIX,powerapps.com,美国
+DOMAIN-SUFFIX,powerautomate.com,美国
+DOMAIN-SUFFIX,prod.msocdn.com,美国
+DOMAIN-SUFFIX,protection.office.com,美国
+DOMAIN-SUFFIX,protection.outlook.com,美国
+DOMAIN-SUFFIX,provisioningapi.microsoftonline.com,美国
+DOMAIN-SUFFIX,purview.microsoft.com,美国
+DOMAIN-SUFFIX,r.office.microsoft.com,美国
+DOMAIN-SUFFIX,security.microsoft.com,美国
+DOMAIN-SUFFIX,sharepoint.com,美国
+DOMAIN-SUFFIX,sharepointonline.com,美国
+DOMAIN-SUFFIX,shellprod.msocdn.com,美国
+DOMAIN-SUFFIX,signup.live.com,美国
+DOMAIN-SUFFIX,skype.com,美国
+DOMAIN-SUFFIX,smtp.office365.com,美国
+DOMAIN-SUFFIX,spoprod-a.akamaihd.net,美国
+DOMAIN-SUFFIX,static.microsoft,美国
+DOMAIN-SUFFIX,storage.live.com,美国
+DOMAIN-SUFFIX,streaming.mediaservices.windows.net,美国
+DOMAIN-SUFFIX,support.microsoft.com,美国
+DOMAIN-SUFFIX,svc.ms,美国
+DOMAIN-SUFFIX,sway.com,美国
+DOMAIN-SUFFIX,teams.cloud.microsoft,美国
+DOMAIN-SUFFIX,teams.microsoft.com,美国
+DOMAIN-SUFFIX,technet.microsoft.com,美国
+DOMAIN-SUFFIX,tse1.mm.bing.net,美国
+DOMAIN-SUFFIX,usercontent.microsoft,美国
+DOMAIN-SUFFIX,virtualearth.net,美国
+DOMAIN-SUFFIX,wns.windows.com,美国
+DOMAIN-SUFFIX,wus-www.sway-cdn.com,美国
+DOMAIN-SUFFIX,wus-www.sway-extensions.com,美国
+DOMAIN-SUFFIX,www.bing.com,美国
+DOMAIN-SUFFIX,www.microsoft.com,美国
+DOMAIN-SUFFIX,www.microsoft365.com,美国
+DOMAIN-SUFFIX,www.onedrive.com,美国
+DOMAIN-SUFFIX,www.outlook.com,美国
+DOMAIN-SUFFIX,www.sway.com,美国
+DOMAIN-SUFFIX,yammer.com,美国
+DOMAIN-SUFFIX,yammerusercontent.com,美国
+IP-CIDR,52.112.0.0/14,美国,no-resolve
+IP-CIDR,52.122.0.0/15,美国,no-resolve
+IP-CIDR6,2603:1027::/48,美国,no-resolve
+IP-CIDR6,2603:1037::/48,美国,no-resolve
+IP-CIDR6,2603:1047::/48,美国,no-resolve
+IP-CIDR6,2603:1057::/48,美国,no-resolve
+IP-CIDR6,2603:1063::/38,美国,no-resolve
+IP-CIDR6,2620:1ec:40::/42,美国,no-resolve
+IP-CIDR6,2620:1ec:6::/48,美国,no-resolve

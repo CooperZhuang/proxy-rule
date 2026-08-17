@@ -9,7 +9,7 @@
 proxy-rule/
 ├── rules/                        # 分流规则集（按客户端分专项目录）
 │   ├── clash/                    # Clash / mihomo（*.txt）
-│   │   ├── teams-us.txt          #   Microsoft 365/Teams 依赖端点 → 🇺🇲 美国节点（自动生成）
+│   │   ├── teams-us.txt          #   Microsoft 365/Teams 依赖端点 → 美国（自动生成）
 │   │   ├── steam-direct.txt      #   Steam 直连（基础手工维护 + 上游自动合并）
 │   │   ├── game-cdn-direct.txt   #   游戏平台下载 CDN 直连（手工维护）
 │   │   ├── custom-direct.txt     #   手写自定义直连规则（手工维护）
@@ -26,11 +26,11 @@ proxy-rule/
 
 | 文件 | 内容 | Clash 目标 |
 |---|---|---|
-| `teams-us.txt` | Microsoft 365 官方端点 JSON 提取：Teams / Common / Skype / Exchange / SharePoint 服务区域域名 + Teams/Skype 媒体 IP 段 | `🇺🇲 美国节点` |
+| `teams-us.txt` | Microsoft 365 官方端点 JSON 提取：Teams / Common / Skype / Exchange / SharePoint 服务区域域名 + Teams/Skype 媒体 IP 段 | `美国` |
 | `steam-direct.txt` | Steam 商店/CDN/社区国内直连域名（基础列表 + Femoon/clash-rules 上游合并） | `DIRECT` |
 | `game-cdn-direct.txt` | 微软 / Xbox / Ubisoft / Epic 国内下载 CDN | `DIRECT` |
 | `custom-direct.txt` | 手写直连规则（金山西山居、time.is 等） | `DIRECT` |
-| `custom-fallback.txt` | 手写规则（网盘类） | `🐟 兜底分流` |
+| `custom-fallback.txt` | 手写规则（网盘类） | `兜底` |
 
 所有规则集在 `rules/surge/` 与 `rules/loon/` 下都有对应客户端的专项副本，由爬虫自动同步；
 两个目录相互独立，便于将来 Surge / Loon 格式各自演化（专项专用）。
@@ -43,7 +43,7 @@ proxy-rule/
 
 ## 在 Surge / Loon 中使用
 
-**Surge**：`rules/surge/` 规则集内嵌策略（与 Clash 分组名一致：`🇺🇲 美国节点` / `DIRECT` / `🐟 兜底分流`），
+**Surge**：`rules/surge/` 规则集内嵌策略（与 Clash 分组名一致：`美国` / `DIRECT` / `兜底`），
 IP 规则已追加 `no-resolve`。策略名在 `crawler/update_rules.py` 的 `SURGE_POLICIES` 中修改。
 
 ```
@@ -60,11 +60,11 @@ Rule Set = https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/surge/
 
 ```
 [Remote Rule]
-https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/loon/teams-us.lsr, policy=美国时延优选, tag=proxy-rule Teams→US, enabled=true
+https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/loon/teams-us.lsr, policy=美国, tag=proxy-rule Teams→US, enabled=true
 https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/loon/steam-direct.lsr, policy=DIRECT, tag=proxy-rule Steam直连, enabled=true
 https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/loon/game-cdn-direct.lsr, policy=DIRECT, tag=proxy-rule 游戏CDN直连, enabled=true
 https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/loon/custom-direct.lsr, policy=DIRECT, tag=proxy-rule 自定义直连, enabled=true
-https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/loon/custom-fallback.lsr, policy=兜底后备策略, tag=proxy-rule 自定义兜底, enabled=true
+https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/loon/custom-fallback.lsr, policy=兜底, tag=proxy-rule 自定义兜底, enabled=true
 ```
 
 raw.githubusercontent 备用链接：`https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/surge/<file>`（Loon 同理换成 `rules/loon/*.lsr`）。
@@ -117,9 +117,9 @@ rule-providers:
 
 ```yaml
 rules:
-  - RULE-SET,teams_us,🇺🇲 美国节点
+  - RULE-SET,teams_us,美国
   - RULE-SET,custom_direct,DIRECT
-  - RULE-SET,custom_fallback,🐟 兜底分流
+  - RULE-SET,custom_fallback,兜底
   - RULE-SET,steam_direct,DIRECT
   - RULE-SET,game_cdn_direct,DIRECT
 ```
