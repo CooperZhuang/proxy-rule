@@ -56,8 +56,9 @@ CERT_CRL_DOMAINS = {
 }
 
 # ---- Surge / Loon 专项格式 ----
-# 各规则集在 Surge/Loon 中的策略名（与 Clash 分组名保持一致）
-CLIENT_POLICIES = {
+# Surge: 规则集内嵌策略（TYPE,value,策略[,no-resolve]），策略名与 Clash 分组名保持一致
+# Loon:  裸规则列表（TYPE,value），策略在 [Remote Rule] 导入时用 policy= 指定（kelee.one / skk.moe 惯例）
+SURGE_POLICIES = {
     "teams-us": "🇺🇲 美国节点",
     "steam-direct": "DIRECT",
     "game-cdn-direct": "DIRECT",
@@ -68,21 +69,6 @@ CLIENT_POLICIES = {
 CLASH_DIR = RULES_DIR / "clash"
 SURGE_DIR = RULES_DIR / "surge"
 LOON_DIR = RULES_DIR / "loon"
-# 每客户端规则文件后缀（专项专用）
-CLIENT_EXT = {
-    "surge": "txt",    # Surge 规则集
-    "loon": "lsr",     # Loon 规则集为 .lsr 格式
-}
-CLIENT_HEADERS = {
-    "surge": (
-        "# Surge 规则集 (由 crawler/update_rules.py 生成)",
-        "# 用法: [Rule] 段 `Rule Set = <url>`",
-    ),
-    "loon": (
-        "# Loon 规则集 (由 crawler/update_rules.py 生成)",
-        "# 用法: [Rule] 段 `RULE-SET,<url>`",
-    ),
-}
 
 # ---- Steam 上游 ----
 STEAM_UPSTREAMS = [
@@ -132,8 +118,8 @@ def _normalize_ip(ip: str) -> str | None:
     return s
 
 
-def _to_client(line: str, policy: str) -> str | None:
-    """Clash classical 规则行 → Surge/Loon 客户端格式（带策略，IP 规则追加 no-resolve）。"""
+def _surge_rule(line: str, policy: str) -> str | None:
+    """Clash classical 规则行 → Surge 格式（内嵌策略，IP 规则追加 no-resolve）。"""
     s = line.strip()
     if s.startswith("IP-CIDR6,") or s.startswith("IP-CIDR,"):
         return f"{s},{policy},no-resolve"
@@ -142,34 +128,64 @@ def _to_client(line: str, policy: str) -> str | None:
     return None  # 注释/空行等跳过
 
 
-def _write_client_set(client: str, out_dir: pathlib.Path) -> None:
-    """为单个客户端生成全部规则集的专项格式。"""
-    out_dir.mkdir(parents=True, exist_ok=True)
-    header, usage = CLIENT_HEADERS[client]
-    for name, policy in CLIENT_POLICIES.items():
+def _loon_rule(line: str) -> str | None:
+    """Clash classical 规则行 → Loon 裸规则（策略在导入时通过 policy= 指定）。"""
+    s = line.strip()
+    if s.startswith(("IP-CIDR6,", "IP-CIDR,", "DOMAIN-SUFFIX,", "DOMAIN,")):
+        return s
+    return None  # 注释/空行等跳过
+
+
+def _write_surge() -> None:
+    """生成 Surge 专项规则集（内嵌策略）。"""
+    SURGE_DIR.mkdir(parents=True, exist_ok=True)
+    for name, policy in SURGE_POLICIES.items():
         src = CLASH_DIR / f"{name}.txt"
         if not src.exists():
-            print(f"[{client}] 跳过缺失的 {name}.txt")
+            print(f"[surge] 跳过缺失的 {name}.txt")
             continue
         out_lines = [
-            header,
+            "# Surge 规则集 (由 crawler/update_rules.py 生成)",
             f"# 来源: rules/clash/{name}.txt   策略: {policy}",
-            usage,
+            "# 用法: [Rule] 段 `Rule Set = <url>`",
             "",
         ]
         for line in src.read_text(encoding="utf-8").splitlines():
-            conv = _to_client(line, policy)
+            conv = _surge_rule(line, policy)
             if conv:
                 out_lines.append(conv)
-        dst = out_dir / f"{name}.{CLIENT_EXT[client]}"
+        dst = SURGE_DIR / f"{name}.txt"
         dst.write_text("\n".join(out_lines) + "\n", encoding="utf-8")
-        print(f"[{client}] 已写入 {dst.relative_to(REPO_ROOT)} ({len(out_lines) - 4} 条)")
+        print(f"[surge] 已写入 {dst.relative_to(REPO_ROOT)} ({len(out_lines) - 4} 条)")
+
+
+def _write_loon() -> None:
+    """生成 Loon 专项规则集（裸规则，policy= 在导入时指定）。"""
+    LOON_DIR.mkdir(parents=True, exist_ok=True)
+    for name in SURGE_POLICIES:
+        src = CLASH_DIR / f"{name}.txt"
+        if not src.exists():
+            print(f"[loon] 跳过缺失的 {name}.txt")
+            continue
+        out_lines = [
+            "# Loon 规则集 (由 crawler/update_rules.py 生成)",
+            f"# 来源: rules/clash/{name}.txt",
+            "# 用法: [Remote Rule] `url, policy=<策略组>, tag=..., enabled=true`",
+            "",
+        ]
+        for line in src.read_text(encoding="utf-8").splitlines():
+            conv = _loon_rule(line)
+            if conv:
+                out_lines.append(conv)
+        dst = LOON_DIR / f"{name}.lsr"
+        dst.write_text("\n".join(out_lines) + "\n", encoding="utf-8")
+        print(f"[loon] 已写入 {dst.relative_to(REPO_ROOT)} ({len(out_lines) - 4} 条)")
 
 
 def update_clients() -> None:
     """Surge 与 Loon 分别生成专项规则集。"""
-    _write_client_set("surge", SURGE_DIR)
-    _write_client_set("loon", LOON_DIR)
+    _write_surge()
+    _write_loon()
 
 
 def _ipv4_sort_key(ip: str) -> tuple:

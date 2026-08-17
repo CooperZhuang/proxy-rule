@@ -1,6 +1,6 @@
 # Loon 规则集 (由 crawler/update_rules.py 生成)
-# 来源: rules/clash/custom-direct.txt   策略: DIRECT
-# 用法: [Rule] 段 `RULE-SET,<url>`
+# 来源: rules/clash/custom-direct.txt
+# 用法: [Remote Rule] `url, policy=<策略组>, tag=..., enabled=true`
 
-DOMAIN,www.ijinshan.com,DIRECT
-DOMAIN,time.is,DIRECT
+DOMAIN,www.ijinshan.com
+DOMAIN,time.is

@@ -1,9 +1,9 @@
 # Loon 规则集 (由 crawler/update_rules.py 生成)
-# 来源: rules/clash/game-cdn-direct.txt   策略: DIRECT
-# 用法: [Rule] 段 `RULE-SET,<url>`
+# 来源: rules/clash/game-cdn-direct.txt
+# 用法: [Remote Rule] `url, policy=<策略组>, tag=..., enabled=true`
 
-DOMAIN-SUFFIX,dl.delivery.mp.microsoft.com,DIRECT
-DOMAIN-SUFFIX,uplaypc-s-ubisoft.cdn.ubionline.com.cn,DIRECT
-DOMAIN-SUFFIX,epicgames-download1-1251447533.file.myqcloud.com,DIRECT
-DOMAIN-SUFFIX,assets1.xboxlive.cn,DIRECT
-DOMAIN-SUFFIX,assets2.xboxlive.cn,DIRECT
+DOMAIN-SUFFIX,dl.delivery.mp.microsoft.com
+DOMAIN-SUFFIX,uplaypc-s-ubisoft.cdn.ubionline.com.cn
+DOMAIN-SUFFIX,epicgames-download1-1251447533.file.myqcloud.com
+DOMAIN-SUFFIX,assets1.xboxlive.cn
+DOMAIN-SUFFIX,assets2.xboxlive.cn

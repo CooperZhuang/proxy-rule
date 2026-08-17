@@ -43,14 +43,11 @@ proxy-rule/
 
 ## 在 Surge / Loon 中使用
 
-`rules/surge/` 与 `rules/loon/` 下各有对应客户端的专项规则集：每条规则自带策略
-（与 Clash 分组名一致：`🇺🇲 美国节点` / `DIRECT` / `🐟 兜底分流`），
-IP 规则已追加 `no-resolve`。策略名可在 `crawler/update_rules.py` 的
-`CLIENT_POLICIES` 中修改，改后重新运行爬虫即可。
-
-**Surge**（`[Rule]` 段）：
+**Surge**：`rules/surge/` 规则集内嵌策略（与 Clash 分组名一致：`🇺🇲 美国节点` / `DIRECT` / `🐟 兜底分流`），
+IP 规则已追加 `no-resolve`。策略名在 `crawler/update_rules.py` 的 `SURGE_POLICIES` 中修改。
 
 ```
+[Rule]
 Rule Set = https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/surge/teams-us.txt
 Rule Set = https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/surge/steam-direct.txt
 Rule Set = https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/surge/game-cdn-direct.txt
@@ -58,14 +55,16 @@ Rule Set = https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/surge/
 Rule Set = https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/surge/custom-fallback.txt
 ```
 
-**Loon**（`[Rule]` 段）：
+**Loon**：`rules/loon/` 为裸规则列表（不含策略），策略在 `[Remote Rule]` 导入时用 `policy=` 指定
+（与 kelee.one / skk.moe 规则集惯例一致），可自由路由到任意策略组：
 
 ```
-RULE-SET,https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/loon/teams-us.lsr
-RULE-SET,https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/loon/steam-direct.lsr
-RULE-SET,https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/loon/game-cdn-direct.lsr
-RULE-SET,https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/loon/custom-direct.lsr
-RULE-SET,https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/loon/custom-fallback.lsr
+[Remote Rule]
+https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/loon/teams-us.lsr, policy=美国时延优选, tag=proxy-rule Teams→US, enabled=true
+https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/loon/steam-direct.lsr, policy=DIRECT, tag=proxy-rule Steam直连, enabled=true
+https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/loon/game-cdn-direct.lsr, policy=DIRECT, tag=proxy-rule 游戏CDN直连, enabled=true
+https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/loon/custom-direct.lsr, policy=DIRECT, tag=proxy-rule 自定义直连, enabled=true
+https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/loon/custom-fallback.lsr, policy=兜底后备策略, tag=proxy-rule 自定义兜底, enabled=true
 ```
 
 raw.githubusercontent 备用链接：`https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/surge/<file>`（Loon 同理换成 `rules/loon/*.lsr`）
@@ -149,7 +148,8 @@ Clash 侧 `interval: 43200`（12 小时）自动拉取最新规则。
   `TEAMS_DOMAIN_AREAS` / `TEAMS_IP_AREAS` / `CERT_CRL_DOMAINS` 后重新运行爬虫。
 - 手工规则直接编辑 `rules/clash/*.txt`（`teams-us.txt` 除外，会被爬虫覆盖）；
   修改后运行一次爬虫即可同步 `rules/surge/*.txt` 与 `rules/loon/*.lsr` 专项格式。
-- Surge/Loon 策略名：编辑 `crawler/update_rules.py` 的 `CLIENT_POLICIES`。
+- Surge 内嵌策略名：编辑 `crawler/update_rules.py` 的 `SURGE_POLICIES`。
+- Loon 策略在配置导入时指定（裸规则），与规则文件解耦。
 - Surge 与 Loon 格式如需分叉：在 `crawler/update_rules.py` 的 `_write_client_set`
   中按客户端分支即可（`SURGE_DIR` / `LOON_DIR` 相互独立）。
 
