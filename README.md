@@ -148,7 +148,7 @@ raw.githubusercontent 备用链接：`https://raw.githubusercontent.com/CooperZh
 ## 配置备份
 
 `clash/config.yaml` 为本机 mihomo 配置的公开备份（去除了节点订阅部分，不含订阅 URL）。
-本机仍以 Clash Verge 本地配置方式使用（节点由本地 `proxy-providers` 从 机场订阅 拉取），
+本机仍以 Clash Verge 本地配置方式使用（节点由本地 `proxy-providers` 从机场订阅拉取），
 该文件仅作备份/参考；如需独立运行，自行在 `proxy-providers` 填入订阅即可。
 
 ## 本地更新规则
