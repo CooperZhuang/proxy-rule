@@ -1,0 +1,9 @@
+# Surge / Loon 通用规则集 (由 crawler/update_rules.py 生成)
+# 来源: rules/game-cdn-direct.txt   策略: DIRECT
+# 用法: Surge `Rule Set = <url>`; Loon `RULE-SET,<url>`
+
+DOMAIN-SUFFIX,dl.delivery.mp.microsoft.com,DIRECT
+DOMAIN-SUFFIX,uplaypc-s-ubisoft.cdn.ubionline.com.cn,DIRECT
+DOMAIN-SUFFIX,epicgames-download1-1251447533.file.myqcloud.com,DIRECT
+DOMAIN-SUFFIX,assets1.xboxlive.cn,DIRECT
+DOMAIN-SUFFIX,assets2.xboxlive.cn,DIRECT

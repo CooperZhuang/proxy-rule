@@ -1,0 +1,6 @@
+# Surge / Loon 通用规则集 (由 crawler/update_rules.py 生成)
+# 来源: rules/custom-direct.txt   策略: DIRECT
+# 用法: Surge `Rule Set = <url>`; Loon `RULE-SET,<url>`
+
+DOMAIN,www.ijinshan.com,DIRECT
+DOMAIN,time.is,DIRECT

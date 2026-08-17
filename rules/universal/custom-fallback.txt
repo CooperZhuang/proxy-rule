@@ -1,0 +1,6 @@
+# Surge / Loon 通用规则集 (由 crawler/update_rules.py 生成)
+# 来源: rules/custom-fallback.txt   策略: 🐟 兜底分流
+# 用法: Surge `Rule Set = <url>`; Loon `RULE-SET,<url>`
+
+DOMAIN-SUFFIX,1cloudfile.com,🐟 兜底分流
+DOMAIN-SUFFIX,1fichier.com,🐟 兜底分流

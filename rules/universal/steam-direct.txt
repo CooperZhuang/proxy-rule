@@ -1,0 +1,35 @@
+# Surge / Loon 通用规则集 (由 crawler/update_rules.py 生成)
+# 来源: rules/steam-direct.txt   策略: DIRECT
+# 用法: Surge `Rule Set = <url>`; Loon `RULE-SET,<url>`
+
+DOMAIN,steamcdn-a.akamaihd.net,DIRECT
+DOMAIN-SUFFIX,8686c.com,DIRECT
+DOMAIN-SUFFIX,alibaba.cdn.steampipe.steamcontent.com,DIRECT
+DOMAIN-SUFFIX,cdn-ali.content.steamchina.com,DIRECT
+DOMAIN-SUFFIX,cdn-qc.content.steamchina.com,DIRECT
+DOMAIN-SUFFIX,cdn-ws.content.steamchina.com,DIRECT
+DOMAIN-SUFFIX,cdn.akamai.steamstatic.com,DIRECT
+DOMAIN-SUFFIX,client-download.steampowered.com,DIRECT
+DOMAIN-SUFFIX,cm.steampowered.com,DIRECT
+DOMAIN-SUFFIX,content.steampowered.com,DIRECT
+DOMAIN-SUFFIX,csgo.wmsj.cn,DIRECT
+DOMAIN-SUFFIX,dl.steam.clngaa.com,DIRECT
+DOMAIN-SUFFIX,dl.steam.ksyna.com,DIRECT
+DOMAIN-SUFFIX,dota2.wmsj.cn,DIRECT
+DOMAIN-SUFFIX,edgecast.steamstatic.com,DIRECT
+DOMAIN-SUFFIX,lv.queniujq.cn,DIRECT
+DOMAIN-SUFFIX,media.steampowered.com,DIRECT
+DOMAIN-SUFFIX,st.dl.bscstorage.net,DIRECT
+DOMAIN-SUFFIX,st.dl.eccdnx.com,DIRECT
+DOMAIN-SUFFIX,st.dl.pinyuncloud.com,DIRECT
+DOMAIN-SUFFIX,steamcdn.com,DIRECT
+DOMAIN-SUFFIX,steamchina.com,DIRECT
+DOMAIN-SUFFIX,steamcontent.com,DIRECT
+DOMAIN-SUFFIX,steampipe.steamcontent.tnkjmec.com,DIRECT
+DOMAIN-SUFFIX,steamserver.net,DIRECT
+DOMAIN-SUFFIX,steamstore-a.akamaihd.net,DIRECT
+DOMAIN-SUFFIX,steamstore.akamaized.net,DIRECT
+DOMAIN-SUFFIX,steamusercontent.com,DIRECT
+DOMAIN-SUFFIX,trts.baishancdnx.cn,DIRECT
+DOMAIN-SUFFIX,wmsjsteam.com,DIRECT
+DOMAIN-SUFFIX,xz.pphimalayanrt.com,DIRECT
