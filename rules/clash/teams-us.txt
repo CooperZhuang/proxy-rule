@@ -1,5 +1,5 @@
 # 由 crawler/update_rules.py 自动生成, 请勿手动编辑
-# 生成时间: 2026-08-31 10:41:02 UTC
+# 生成时间: 2026-09-01 09:16:57 UTC
 
 # 服务区域(域名): Common, Exchange, SharePoint, Skype, Teams
 # 服务区域(IP):   Skype, Teams
