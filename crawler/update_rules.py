@@ -58,6 +58,9 @@ TEAMS_EXTRA_DOMAINS = {
 }
 # 其余 Office 组件走直连（登录 / Exchange / SharePoint/OneDrive）
 OFFICE_AREA_DOMAINS = {"Common", "Exchange", "SharePoint"}
+# 直连不可用的存储类域名实测（国内 DIRECT 打不开，保持原有代理规则）
+#   www.onedrive.com / sharepoint.com DIRECT 超时；onedrive.live.com 403
+OFFICE_DIRECT_EXCLUDE_SUFFIXES = {"onedrive.com", "sharepoint.com", "sharepointonline.com"}
 
 # 证书链校验（CRL/OCSP）端点：不属于 Teams 流量，剔除
 CERT_CRL_DOMAINS = {
@@ -256,6 +259,11 @@ def update_microsoft() -> None:
     # Teams 域名优先级高于 Office 直连（如 teams.cdn.office.net 会被 office.net 后缀吃掉），
     # 这里从直连集合里剔除所有 Teams 域名，避免依赖规则集顺序。
     office_domains -= teams_domains
+    # OneDrive / SharePoint 国内直连不可用，剔出直连集合，交回原有代理规则处理
+    office_domains = {
+        d for d in office_domains
+        if not any(d == x or d.endswith("." + x) for x in OFFICE_DIRECT_EXCLUDE_SUFFIXES)
+    }
 
     _write_microsoft_set(
         "teams",
@@ -267,7 +275,8 @@ def update_microsoft() -> None:
     )
     _write_microsoft_set(
         "office-direct",
-        f"Microsoft 365 其余组件：登录 / Exchange / SharePoint（服务区域: {', '.join(sorted(OFFICE_AREA_DOMAINS))}）",
+        f"Microsoft 365 其余组件：登录 / Exchange（服务区域: {', '.join(sorted(OFFICE_AREA_DOMAINS))}；"
+        f"已剔除 OneDrive/SharePoint：{', '.join(sorted(OFFICE_DIRECT_EXCLUDE_SUFFIXES))}）",
         "DIRECT",
         office_domains,
         set(),

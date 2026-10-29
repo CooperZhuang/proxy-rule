@@ -1,9 +1,9 @@
 # 由 crawler/update_rules.py 自动生成, 请勿手动编辑
-# 生成时间: 2026-10-29 16:21:25 UTC
+# 生成时间: 2026-10-29 16:32:37 UTC
 
-# Microsoft 365 其余组件：登录 / Exchange / SharePoint（服务区域: Common, Exchange, SharePoint）
+# Microsoft 365 其余组件：登录 / Exchange（服务区域: Common, Exchange, SharePoint；已剔除 OneDrive/SharePoint：onedrive.com, sharepoint.com, sharepointonline.com）
 # 建议策略: DIRECT
-# 域名 150 条 / IPv4 0 段 / IPv6 0 段
+# 域名 146 条 / IPv4 0 段 / IPv6 0 段
 
 DOMAIN-SUFFIX,aadrm.com
 DOMAIN-SUFFIX,account.activedirectory.windowsazure.com
@@ -13,7 +13,6 @@ DOMAIN-SUFFIX,acompli.net
 DOMAIN-SUFFIX,activation.sls.microsoft.com
 DOMAIN-SUFFIX,activity.windows.com
 DOMAIN-SUFFIX,admin.microsoft.com
-DOMAIN-SUFFIX,admin.onedrive.com
 DOMAIN-SUFFIX,adminwebservice.microsoftonline.com
 DOMAIN-SUFFIX,ajax.aspnetcdn.com
 DOMAIN-SUFFIX,amp.azure.net
@@ -129,8 +128,6 @@ DOMAIN-SUFFIX,provisioningapi.microsoftonline.com
 DOMAIN-SUFFIX,purview.microsoft.com
 DOMAIN-SUFFIX,r.office.microsoft.com
 DOMAIN-SUFFIX,security.microsoft.com
-DOMAIN-SUFFIX,sharepoint.com
-DOMAIN-SUFFIX,sharepointonline.com
 DOMAIN-SUFFIX,shellprod.msocdn.com
 DOMAIN-SUFFIX,signup.live.com
 DOMAIN-SUFFIX,smtp.office365.com
@@ -150,7 +147,6 @@ DOMAIN-SUFFIX,wus-www.sway-extensions.com
 DOMAIN-SUFFIX,www.bing.com
 DOMAIN-SUFFIX,www.microsoft.com
 DOMAIN-SUFFIX,www.microsoft365.com
-DOMAIN-SUFFIX,www.onedrive.com
 DOMAIN-SUFFIX,www.outlook.com
 DOMAIN-SUFFIX,www.sway.com
 DOMAIN-SUFFIX,yammer.com

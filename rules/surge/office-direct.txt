@@ -10,7 +10,6 @@ DOMAIN-SUFFIX,acompli.net,DIRECT
 DOMAIN-SUFFIX,activation.sls.microsoft.com,DIRECT
 DOMAIN-SUFFIX,activity.windows.com,DIRECT
 DOMAIN-SUFFIX,admin.microsoft.com,DIRECT
-DOMAIN-SUFFIX,admin.onedrive.com,DIRECT
 DOMAIN-SUFFIX,adminwebservice.microsoftonline.com,DIRECT
 DOMAIN-SUFFIX,ajax.aspnetcdn.com,DIRECT
 DOMAIN-SUFFIX,amp.azure.net,DIRECT
@@ -126,8 +125,6 @@ DOMAIN-SUFFIX,provisioningapi.microsoftonline.com,DIRECT
 DOMAIN-SUFFIX,purview.microsoft.com,DIRECT
 DOMAIN-SUFFIX,r.office.microsoft.com,DIRECT
 DOMAIN-SUFFIX,security.microsoft.com,DIRECT
-DOMAIN-SUFFIX,sharepoint.com,DIRECT
-DOMAIN-SUFFIX,sharepointonline.com,DIRECT
 DOMAIN-SUFFIX,shellprod.msocdn.com,DIRECT
 DOMAIN-SUFFIX,signup.live.com,DIRECT
 DOMAIN-SUFFIX,smtp.office365.com,DIRECT
@@ -147,7 +144,6 @@ DOMAIN-SUFFIX,wus-www.sway-extensions.com,DIRECT
 DOMAIN-SUFFIX,www.bing.com,DIRECT
 DOMAIN-SUFFIX,www.microsoft.com,DIRECT
 DOMAIN-SUFFIX,www.microsoft365.com,DIRECT
-DOMAIN-SUFFIX,www.onedrive.com,DIRECT
 DOMAIN-SUFFIX,www.outlook.com,DIRECT
 DOMAIN-SUFFIX,www.sway.com,DIRECT
 DOMAIN-SUFFIX,yammer.com,DIRECT
