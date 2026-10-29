@@ -4,3 +4,7 @@
 
 DOMAIN,www.ijinshan.com,DIRECT
 DOMAIN,time.is,DIRECT
+DOMAIN-SUFFIX,oray.com,DIRECT
+DOMAIN-SUFFIX,oray.net,DIRECT
+DOMAIN-SUFFIX,sunlogin.com,DIRECT
+DOMAIN-SUFFIX,kookong.com,DIRECT

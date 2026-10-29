@@ -3,3 +3,8 @@
 # 示例（需配 classical 规则集时启用）: DOMAIN-KEYWORD,google,🇸🇬 狮城节点
 DOMAIN,www.ijinshan.com
 DOMAIN,time.is
+# 向日葵 / 贝锐：域名解析会在多个 IP 间轮转，GEOIP 判定不稳定（时而 DIRECT、时而兜底走日本），固定直连
+DOMAIN-SUFFIX,oray.com
+DOMAIN-SUFFIX,oray.net
+DOMAIN-SUFFIX,sunlogin.com
+DOMAIN-SUFFIX,kookong.com
