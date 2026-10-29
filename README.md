@@ -198,19 +198,37 @@ Clash 侧 `interval: 43200`（12 小时）自动拉取最新规则。
 - Surge 与 Loon 格式各自独立：`crawler/update_rules.py` 的 `_write_surge` / `_write_loon`
   分别生成，互不影响（`SURGE_DIR` / `LOON_DIR`）。
 
-## Surge 侧的 AI 分流与自检
+## Surge 侧的 AI 分流与解锁体检
 
-Surge 6 起组级 `url=` 测速参数已失效（官方文档明确 legacy 参数无效），AI 分流不能用"组级探针"实现。
-当前做法是在 profile 里建 `AI` 组：
+Surge 6 起组级 `url=` 测速参数已失效（官方文档明确 legacy 参数无效），所以"组级探针"这条路走不通。
+可行做法是**脚本 + cron**：Surge 脚本 API 支持按指定策略发请求，也能切换 select 组。
+
+### 1. AI 组（select，成员为地区组）
 
 ```
-AI = smart, include-all-proxies=1, policy-regex-filter=^(?!.*Premium)(?!.*(港|HK)).*(美|US|日本|JP|NTT|新加坡|SG|台|TW).*$
+AI = select, "🇺🇸 美国节点", "🇯🇵 日本节点", "🇸🇬 新加坡节点", "🇨🇳 台湾节点"
 ```
 
-只纳入美/日/新/台节点（香港被 OpenAI 屏蔽），smart 组按真实连接质量 + per-site 记忆选节点：
-某节点连不上 chatgpt.com 时会被**针对该站点**降权并自动换节点，不需要手工维护可用列表。
+必须是 `select` 组：`$surge.setSelectGroupPolicy` 只能改手动选择组。地区组本身仍是 smart
+（组内选节点用真实连接质量），所以上层锁地区、底层自适应。
 
-人工核对各地区组此刻能否访问 AI（需要 Surge Mac 6+ 自带的 CLI）：
+### 2. cron 脚本 `tools/surge_ai_unlock_check.js`
+
+- 用 `$httpClient.get({url, policy})` 并行探测四个地区组到 `chatgpt.com/robots.txt`（硬性条件）
+  和 `gemini.google.com/robots.txt`（参考项）
+- 在通过 ChatGPT 探测的地区组里取最快的一个，`$surge.setSelectGroupPolicy("AI", 地区组)` 切换
+- 结果写 `$surge.logbook`、系统通知，并持久化到
+  `~/Library/Application Support/com.nssurge.surge-mac/SGJSVMPersistentStore/ai_unlock_last`
+- profile `[Script]` 声明（每 30 分钟一次）：
+
+```
+[Script]
+ai-unlock-check = type=cron,cronexp="*/30 * * * *",script-path=/Users/<you>/.surge/scripts/ai-unlock-check.js,timeout=120
+```
+
+改完脚本源码要 `surge-cli restart-engine`（只 reload 配置不会重读脚本源码）。
+
+### 3. 手动核对（不依赖脚本）
 
 ```bash
 SURGE_CLI_PASSWORD=<控制器密码> tools/surge_ai_check.sh
@@ -218,8 +236,14 @@ SURGE_CLI_PASSWORD=<控制器密码> tools/surge_ai_check.sh
 SURGE_CLI_PASSWORD=... tools/surge_ai_check.sh "🇺🇸 美国节点" "🇯🇵 日本节点"
 ```
 
-脚本用 `surge-cli http probe <url> <policy>` 逐个策略测 `chatgpt.com` / `gemini.google.com` /
+用 `surge-cli http probe <url> <policy>` 逐个策略测 `chatgpt.com` / `gemini.google.com` /
 `copilot.microsoft.com`，以 200/204 为准（403 多为 Cloudflare 对 HEAD 的拦截，不代表线路不通）。
+
+### 关于模块 / 插件
+
+模块（`.sgmodule`）和 Surge 6 的插件系统只是把 `[Script]` / `[Rule]` / MITM 打包分发，
+检测逻辑本身仍要写脚本来实现。纯模块无法"指定策略发请求 + 改组选择"，必须依赖脚本 API。
+需要跨设备复用时，可以把上面的脚本 + 声明打包成插件目录（`surge-cli plugin validate / load-unpacked / pack`）。
 
 ## License
 
