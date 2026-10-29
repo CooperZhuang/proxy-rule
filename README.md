@@ -198,6 +198,29 @@ Clash 侧 `interval: 43200`（12 小时）自动拉取最新规则。
 - Surge 与 Loon 格式各自独立：`crawler/update_rules.py` 的 `_write_surge` / `_write_loon`
   分别生成，互不影响（`SURGE_DIR` / `LOON_DIR`）。
 
+## Surge 侧的 AI 分流与自检
+
+Surge 6 起组级 `url=` 测速参数已失效（官方文档明确 legacy 参数无效），AI 分流不能用"组级探针"实现。
+当前做法是在 profile 里建 `AI` 组：
+
+```
+AI = smart, include-all-proxies=1, policy-regex-filter=^(?!.*Premium)(?!.*(港|HK)).*(美|US|日本|JP|NTT|新加坡|SG|台|TW).*$
+```
+
+只纳入美/日/新/台节点（香港被 OpenAI 屏蔽），smart 组按真实连接质量 + per-site 记忆选节点：
+某节点连不上 chatgpt.com 时会被**针对该站点**降权并自动换节点，不需要手工维护可用列表。
+
+人工核对各地区组此刻能否访问 AI（需要 Surge Mac 6+ 自带的 CLI）：
+
+```bash
+SURGE_CLI_PASSWORD=<控制器密码> tools/surge_ai_check.sh
+# 指定策略
+SURGE_CLI_PASSWORD=... tools/surge_ai_check.sh "🇺🇸 美国节点" "🇯🇵 日本节点"
+```
+
+脚本用 `surge-cli http probe <url> <policy>` 逐个策略测 `chatgpt.com` / `gemini.google.com` /
+`copilot.microsoft.com`，以 200/204 为准（403 多为 Cloudflare 对 HEAD 的拦截，不代表线路不通）。
+
 ## License
 
 MIT
