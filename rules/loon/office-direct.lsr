@@ -1,9 +1,6 @@
-# 由 crawler/update_rules.py 自动生成, 请勿手动编辑
-# 生成时间: 2026-10-29 10:46:20 UTC
-
-# 服务区域(域名): Common, Exchange, SharePoint, Skype, Teams
-# 服务区域(IP):   Skype, Teams
-# 域名 160 条 / IPv4 2 段 / IPv6 7 段
+# Loon 规则集 (由 crawler/update_rules.py 生成)
+# 来源: rules/clash/office-direct.txt
+# 用法: [Remote Rule] `url, policy=<策略组>, tag=..., enabled=true`
 
 DOMAIN-SUFFIX,aadrm.com
 DOMAIN-SUFFIX,account.activedirectory.windowsazure.com
@@ -12,12 +9,10 @@ DOMAIN-SUFFIX,accounts.accesscontrol.windows.net
 DOMAIN-SUFFIX,acompli.net
 DOMAIN-SUFFIX,activation.sls.microsoft.com
 DOMAIN-SUFFIX,activity.windows.com
-DOMAIN-SUFFIX,adl.windows.com
 DOMAIN-SUFFIX,admin.microsoft.com
 DOMAIN-SUFFIX,admin.onedrive.com
 DOMAIN-SUFFIX,adminwebservice.microsoftonline.com
 DOMAIN-SUFFIX,ajax.aspnetcdn.com
-DOMAIN-SUFFIX,aka.ms
 DOMAIN-SUFFIX,amp.azure.net
 DOMAIN-SUFFIX,api.passwordreset.microsoftonline.com
 DOMAIN-SUFFIX,apis.live.net
@@ -65,8 +60,6 @@ DOMAIN-SUFFIX,graph.windows.net
 DOMAIN-SUFFIX,hip.live.com
 DOMAIN-SUFFIX,informationprotection.azure.com
 DOMAIN-SUFFIX,informationprotection.hosting.portal.azure.net
-DOMAIN-SUFFIX,join.secure.skypeassets.com
-DOMAIN-SUFFIX,keydelivery.mediaservices.windows.net
 DOMAIN-SUFFIX,login-us.microsoftonline.com
 DOMAIN-SUFFIX,login.live.com
 DOMAIN-SUFFIX,login.microsoft.com
@@ -76,14 +69,12 @@ DOMAIN-SUFFIX,login.windows-ppe.net
 DOMAIN-SUFFIX,login.windows.net
 DOMAIN-SUFFIX,logincert.microsoftonline.com
 DOMAIN-SUFFIX,loginex.microsoftonline.com
-DOMAIN-SUFFIX,lync.com
 DOMAIN-SUFFIX,mail.protection.outlook.com
 DOMAIN-SUFFIX,mem.gfx.ms
 DOMAIN-SUFFIX,microsoft.com
 DOMAIN-SUFFIX,microsoftonline-p.com
 DOMAIN-SUFFIX,microsoftonline.com
 DOMAIN-SUFFIX,microsoftusercontent.com
-DOMAIN-SUFFIX,mlccdnprod.azureedge.net
 DOMAIN-SUFFIX,msauth.net
 DOMAIN-SUFFIX,msauthimages.net
 DOMAIN-SUFFIX,mscrl.microsoft.com
@@ -139,17 +130,13 @@ DOMAIN-SUFFIX,sharepoint.com
 DOMAIN-SUFFIX,sharepointonline.com
 DOMAIN-SUFFIX,shellprod.msocdn.com
 DOMAIN-SUFFIX,signup.live.com
-DOMAIN-SUFFIX,skype.com
 DOMAIN-SUFFIX,smtp.office365.com
 DOMAIN-SUFFIX,spoprod-a.akamaihd.net
 DOMAIN-SUFFIX,static.microsoft
 DOMAIN-SUFFIX,storage.live.com
-DOMAIN-SUFFIX,streaming.mediaservices.windows.net
 DOMAIN-SUFFIX,support.microsoft.com
 DOMAIN-SUFFIX,svc.ms
 DOMAIN-SUFFIX,sway.com
-DOMAIN-SUFFIX,teams.cloud.microsoft
-DOMAIN-SUFFIX,teams.microsoft.com
 DOMAIN-SUFFIX,technet.microsoft.com
 DOMAIN-SUFFIX,tse1.mm.bing.net
 DOMAIN-SUFFIX,usercontent.microsoft
@@ -165,12 +152,3 @@ DOMAIN-SUFFIX,www.outlook.com
 DOMAIN-SUFFIX,www.sway.com
 DOMAIN-SUFFIX,yammer.com
 DOMAIN-SUFFIX,yammerusercontent.com
-IP-CIDR,52.112.0.0/14
-IP-CIDR,52.122.0.0/15
-IP-CIDR6,2603:1027::/48
-IP-CIDR6,2603:1037::/48
-IP-CIDR6,2603:1047::/48
-IP-CIDR6,2603:1057::/48
-IP-CIDR6,2603:1063::/38
-IP-CIDR6,2620:1ec:40::/42
-IP-CIDR6,2620:1ec:6::/48

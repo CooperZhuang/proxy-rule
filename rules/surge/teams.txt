@@ -1,0 +1,28 @@
+# Surge 规则集 (由 crawler/update_rules.py 生成)
+# 来源: rules/clash/teams.txt   策略: Teams
+# 用法: [Rule] 段 `Rule Set = <url>`
+
+DOMAIN-SUFFIX,adl.windows.com,Teams
+DOMAIN-SUFFIX,aka.ms,Teams
+DOMAIN-SUFFIX,join.secure.skypeassets.com,Teams
+DOMAIN-SUFFIX,keydelivery.mediaservices.windows.net,Teams
+DOMAIN-SUFFIX,lync.com,Teams
+DOMAIN-SUFFIX,microsoftteams.com,Teams
+DOMAIN-SUFFIX,mlccdnprod.azureedge.net,Teams
+DOMAIN-SUFFIX,skype.com,Teams
+DOMAIN-SUFFIX,statics.teams.cdn.office.net,Teams
+DOMAIN-SUFFIX,streaming.mediaservices.windows.net,Teams
+DOMAIN-SUFFIX,teams.cdn.office.net,Teams
+DOMAIN-SUFFIX,teams.cloud.microsoft,Teams
+DOMAIN-SUFFIX,teams.events.data.microsoft.com,Teams
+DOMAIN-SUFFIX,teams.live.com,Teams
+DOMAIN-SUFFIX,teams.microsoft.com,Teams
+IP-CIDR,52.112.0.0/14,Teams,no-resolve
+IP-CIDR,52.122.0.0/15,Teams,no-resolve
+IP-CIDR6,2603:1027::/48,Teams,no-resolve
+IP-CIDR6,2603:1037::/48,Teams,no-resolve
+IP-CIDR6,2603:1047::/48,Teams,no-resolve
+IP-CIDR6,2603:1057::/48,Teams,no-resolve
+IP-CIDR6,2603:1063::/38,Teams,no-resolve
+IP-CIDR6,2620:1ec:40::/42,Teams,no-resolve
+IP-CIDR6,2620:1ec:6::/48,Teams,no-resolve

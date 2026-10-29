@@ -155,6 +155,15 @@ proxy-groups:
       - 台湾
       - 新国
       - DIRECT
+  - name: Teams
+    type: select
+    proxies:
+      - 香港
+      - 日本
+      - 新国
+      - 自动
+      - 手动
+      - DIRECT
   - name: 网易云
     type: select
     proxies:
@@ -452,14 +461,22 @@ rule-providers:
     interval: 43200
     url: https://ruleset.skk.moe/Clash/ip/china_ip_ipv6.txt
     path: ./sukkaw_ruleset/china_ipv6.txt
-  # [GitHub] 用户自定义规则集 proxy-rule（jsdelivr CDN；teams_us 每日自动更新）
-  teams_us:
+  # [GitHub] 用户自定义规则集 proxy-rule（jsdelivr CDN；每日自动更新）
+  # teams → 代理组 Teams；office_direct → DIRECT（登录 / Exchange / SharePoint）
+  teams:
     type: http
     behavior: classical
     format: text
     interval: 43200
-    url: https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/clash/teams-us.txt
-    path: ./sukkaw_ruleset/teams_us.txt
+    url: https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/clash/teams.txt
+    path: ./sukkaw_ruleset/teams.txt
+  office_direct:
+    type: http
+    behavior: classical
+    format: text
+    interval: 43200
+    url: https://cdn.jsdelivr.net/gh/CooperZhuang/proxy-rule@main/rules/clash/office-direct.txt
+    path: ./sukkaw_ruleset/office_direct.txt
   steam_direct:
     type: http
     behavior: classical
@@ -491,8 +508,10 @@ rule-providers:
 
 # 规则指向
 rules:
-  # ========== Microsoft Teams → 美国节点（GitHub 规则集 teams_us，每日自动更新）==========
-  - RULE-SET,teams_us,美国
+  # ========== Microsoft Teams → Teams 组（香港/日本/新国，规则集 teams）==========
+  - RULE-SET,teams,Teams
+  # ========== Microsoft 365 其余组件（登录 / Exchange / SharePoint）→ 直连（规则集 office_direct）==========
+  - RULE-SET,office_direct,DIRECT
   # ========== 手写自定义规则（GitHub 规则集 custom_*）==========
   - RULE-SET,custom_direct,DIRECT
   - RULE-SET,custom_fallback,兜底
