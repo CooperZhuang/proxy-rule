@@ -20,13 +20,11 @@ DOMAIN-SUFFIX,appex.bing.com
 DOMAIN-SUFFIX,appsforoffice.microsoft.com
 DOMAIN-SUFFIX,aria.microsoft.com
 DOMAIN-SUFFIX,assets-yammer.com
-DOMAIN-SUFFIX,assets.onestore.ms
 DOMAIN-SUFFIX,auth.gfx.ms
 DOMAIN-SUFFIX,auth.microsoft.com
 DOMAIN-SUFFIX,autologon.microsoftazuread-sso.com
 DOMAIN-SUFFIX,azure-apim.net
 DOMAIN-SUFFIX,azurerms.com
-DOMAIN-SUFFIX,becws.microsoftonline.com
 DOMAIN-SUFFIX,c.bing.com
 DOMAIN-SUFFIX,c.bing.net
 DOMAIN-SUFFIX,c.live.com
@@ -82,7 +80,6 @@ DOMAIN-SUFFIX,msecnd.net
 DOMAIN-SUFFIX,msftauth.net
 DOMAIN-SUFFIX,msftauthimages.net
 DOMAIN-SUFFIX,msftidentity.com
-DOMAIN-SUFFIX,msidentity.com
 DOMAIN-SUFFIX,msocdn.com
 DOMAIN-SUFFIX,mx.microsoft
 DOMAIN-SUFFIX,nexus.microsoftonline-p.com
@@ -118,10 +115,8 @@ DOMAIN-SUFFIX,platform.linkedin.com
 DOMAIN-SUFFIX,portal.cloudappsecurity.com
 DOMAIN-SUFFIX,powerapps.com
 DOMAIN-SUFFIX,powerautomate.com
-DOMAIN-SUFFIX,prod.msocdn.com
 DOMAIN-SUFFIX,protection.office.com
 DOMAIN-SUFFIX,protection.outlook.com
-DOMAIN-SUFFIX,provisioningapi.microsoftonline.com
 DOMAIN-SUFFIX,purview.microsoft.com
 DOMAIN-SUFFIX,r.office.microsoft.com
 DOMAIN-SUFFIX,security.microsoft.com
@@ -131,7 +126,6 @@ DOMAIN-SUFFIX,smtp.office365.com
 DOMAIN-SUFFIX,spoprod-a.akamaihd.net
 DOMAIN-SUFFIX,static.microsoft
 DOMAIN-SUFFIX,storage.live.com
-DOMAIN-SUFFIX,support.microsoft.com
 DOMAIN-SUFFIX,svc.ms
 DOMAIN-SUFFIX,sway.com
 DOMAIN-SUFFIX,technet.microsoft.com

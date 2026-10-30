@@ -20,13 +20,11 @@ DOMAIN-SUFFIX,appex.bing.com,DIRECT
 DOMAIN-SUFFIX,appsforoffice.microsoft.com,DIRECT
 DOMAIN-SUFFIX,aria.microsoft.com,DIRECT
 DOMAIN-SUFFIX,assets-yammer.com,DIRECT
-DOMAIN-SUFFIX,assets.onestore.ms,DIRECT
 DOMAIN-SUFFIX,auth.gfx.ms,DIRECT
 DOMAIN-SUFFIX,auth.microsoft.com,DIRECT
 DOMAIN-SUFFIX,autologon.microsoftazuread-sso.com,DIRECT
 DOMAIN-SUFFIX,azure-apim.net,DIRECT
 DOMAIN-SUFFIX,azurerms.com,DIRECT
-DOMAIN-SUFFIX,becws.microsoftonline.com,DIRECT
 DOMAIN-SUFFIX,c.bing.com,DIRECT
 DOMAIN-SUFFIX,c.bing.net,DIRECT
 DOMAIN-SUFFIX,c.live.com,DIRECT
@@ -82,7 +80,6 @@ DOMAIN-SUFFIX,msecnd.net,DIRECT
 DOMAIN-SUFFIX,msftauth.net,DIRECT
 DOMAIN-SUFFIX,msftauthimages.net,DIRECT
 DOMAIN-SUFFIX,msftidentity.com,DIRECT
-DOMAIN-SUFFIX,msidentity.com,DIRECT
 DOMAIN-SUFFIX,msocdn.com,DIRECT
 DOMAIN-SUFFIX,mx.microsoft,DIRECT
 DOMAIN-SUFFIX,nexus.microsoftonline-p.com,DIRECT
@@ -118,10 +115,8 @@ DOMAIN-SUFFIX,platform.linkedin.com,DIRECT
 DOMAIN-SUFFIX,portal.cloudappsecurity.com,DIRECT
 DOMAIN-SUFFIX,powerapps.com,DIRECT
 DOMAIN-SUFFIX,powerautomate.com,DIRECT
-DOMAIN-SUFFIX,prod.msocdn.com,DIRECT
 DOMAIN-SUFFIX,protection.office.com,DIRECT
 DOMAIN-SUFFIX,protection.outlook.com,DIRECT
-DOMAIN-SUFFIX,provisioningapi.microsoftonline.com,DIRECT
 DOMAIN-SUFFIX,purview.microsoft.com,DIRECT
 DOMAIN-SUFFIX,r.office.microsoft.com,DIRECT
 DOMAIN-SUFFIX,security.microsoft.com,DIRECT
@@ -131,7 +126,6 @@ DOMAIN-SUFFIX,smtp.office365.com,DIRECT
 DOMAIN-SUFFIX,spoprod-a.akamaihd.net,DIRECT
 DOMAIN-SUFFIX,static.microsoft,DIRECT
 DOMAIN-SUFFIX,storage.live.com,DIRECT
-DOMAIN-SUFFIX,support.microsoft.com,DIRECT
 DOMAIN-SUFFIX,svc.ms,DIRECT
 DOMAIN-SUFFIX,sway.com,DIRECT
 DOMAIN-SUFFIX,technet.microsoft.com,DIRECT

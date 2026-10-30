@@ -4,11 +4,9 @@
 
 DOMAIN-SUFFIX,adl.windows.com,Teams
 DOMAIN-SUFFIX,aka.ms,Teams
-DOMAIN-SUFFIX,join.secure.skypeassets.com,Teams
 DOMAIN-SUFFIX,keydelivery.mediaservices.windows.net,Teams
 DOMAIN-SUFFIX,lync.com,Teams
 DOMAIN-SUFFIX,microsoftteams.com,Teams
-DOMAIN-SUFFIX,mlccdnprod.azureedge.net,Teams
 DOMAIN-SUFFIX,skype.com,Teams
 DOMAIN-SUFFIX,statics.teams.cdn.office.net,Teams
 DOMAIN-SUFFIX,streaming.mediaservices.windows.net,Teams
