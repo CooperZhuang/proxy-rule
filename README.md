@@ -206,7 +206,7 @@ Surge 6 起组级 `url=` 测速参数已失效（官方文档明确 legacy 参�
 ### 1. AI 组（select，节点级）
 
 ```
-AI = select, include-all-proxies=1, policy-regex-filter=^(?!.*Premium)(?!.*(港|HK|hk|HongKong|Hong Kong)).*(美|US|United States|日本|JP|Japan|NTT|东京|大阪|新加坡|SG|Singapore|坡|狮城|台|TW|Taiwan).*$
+🤖 AI = select, include-all-proxies=1, policy-regex-filter=^(?!.*Premium)(?!.*(港|HK|hk|HongKong|Hong Kong)).*(美|US|United States|日本|JP|Japan|NTT|东京|大阪|新加坡|SG|Singapore|坡|狮城|台|TW|Taiwan).*$
 ```
 
 必须是 `select` 组：`$surge.setSelectGroupPolicy` 只能改手动选择组，且成员必须是节点（不能嵌套别的组，
@@ -225,7 +225,7 @@ AI = select, include-all-proxies=1, policy-regex-filter=^(?!.*Premium)(?!.*(港|
 
 1. **稳定优先**：先验证当前选中的节点，通过就保持不动（失败重试一次），避免出口 IP 变化触发风控
 2. 失败才扫描候选：每批 6 个并发跑 OpenAI 检测，收集最快的一批；再对前 5 名逐个确认 Gemini
-3. 通过则 `$surge.setSelectGroupPolicy("AI", 节点)`，写 `$surge.logbook`、系统通知
+3. 通过则 `$surge.setSelectGroupPolicy("🤖 AI", 节点)`，写 `$surge.logbook`、系统通知
 4. 结果持久化到 `SGJSVMPersistentStore/ai_verify_last`
 
 profile `[Script]` 声明（每 30 分钟一次）：
