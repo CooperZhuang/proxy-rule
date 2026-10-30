@@ -240,6 +240,14 @@ ai-unlock-check = type=cron,cronexp="*/30 * * * *",script-path=/Users/<you>/.sur
 Surge 的脚本 API 只能改「选中项」，没有增删组成员的能力。如果要求「组里只包含验证通过的节点」，
 需要外部任务生成 `policy-path` 文件再 reload（见 tools/surge_ai_unlock_check.js 文件头注释）。
 
+### 规则优先级（踩过的坑）
+
+AI 域名必须在 profile 里**显式写在前面的 DOMAIN-SUFFIX 规则**，否则会被通用列表先命中：
+
+- `gemini.google.com` / `aistudio.google.com` 会被 blackmatrix7 的 `Google.list`（→ 台湾节点）抢走
+- `copilot.microsoft.com` 会被 office-direct（含 `microsoft.com` 后缀）抢成 DIRECT
+- 因此 `[Rule]` 顶部（Teams 进程规则之后）先放这几条，再放各 RULE-SET；`ai.conf` 也提到 `Google.list` 之前
+
 ### 3. 手动核对（不依赖脚本）
 
 ```bash
