@@ -3,13 +3,13 @@
 // 逻辑：内容级检测（不信状态码 200）→ 当前节点通过就保持不动（稳定优先）→ 只在失败时换节点
 // 触发：profile [Script] 里 ai-unlock-check = type=cron
 
-var GROUP = "AI";
+var GROUP = "🤖 AI";
 var OPENAI_URL = "https://api.openai.com/v1/models";
 var GEMINI_URL = "https://gemini.google.com/app";
 var UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36";
 var BATCH = 6;          // 每批并发探测数
-var MAX_SCAN = 60;      // 一次体检最多探测多少个候选节点
-var WANT_PASS = 6;      // 收集到多少个 OpenAI 通过的就提前结束扫描
+var MAX_SCAN = 24;      // 一次体检最多探测多少个候选节点（控制耗时）
+var WANT_PASS = 4;      // 收集到多少个 OpenAI 通过的就提前结束扫描
 var STORE_KEY = "ai_verify_last";
 var CN_ANOMALY = "\u5f02\u5e38\u6d41\u91cf"; // 异常流量
 
@@ -60,6 +60,8 @@ function finish(policy, action, note) {
   $done();
 }
 
+var netErrors = 0;
+
 function scan(cands, idx, passing) {
   if (idx >= cands.length || passing.length >= WANT_PASS || idx >= MAX_SCAN) return pickGemini(passing);
   var batch = cands.slice(idx, idx + BATCH);
@@ -67,7 +69,16 @@ function scan(cands, idx, passing) {
   batch.forEach(function (p) {
     checkOpenAI(p, function (ok, ms, note) {
       if (ok) passing.push({ policy: p, ms: ms, note: note });
-      if (--left === 0) scan(cands, idx + BATCH, passing);
+      else if (note === "err") netErrors++;
+      $surge.logbook("[AI体检] 候选 " + p.slice(0, 16) + " " + (ok ? "OK " + ms + "ms" : "FAIL " + note));
+      if (--left === 0) {
+        // 连续整批都是网络错误，说明链路整体不通，别再扫了
+        if (passing.length === 0 && netErrors >= BATCH * 2) {
+          $surge.logbook("[AI体检] 连续 " + netErrors + " 个节点网络错误，提前结束扫描");
+          return pickGemini(passing);
+        }
+        scan(cands, idx + BATCH, passing);
+      }
     });
   });
 }
@@ -108,6 +119,7 @@ else {
     // 稳定优先：当前节点通过就保持，不因“别人更快”而切换，避免出口 IP 变化触发风控
     both(cur, function (ok, ms, note) {
       if (ok) return finish(cur, "keep", note);
+      $surge.logbook("[AI体检] 当前节点 " + cur.slice(0, 16) + " 未通过: " + note + "，重新扫描");
       // 偶发超时/抖动：重试一次再决定
       setTimeout(function () {
         both(cur, function (ok2, ms2, note2) {
