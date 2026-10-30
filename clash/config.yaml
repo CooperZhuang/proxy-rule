@@ -144,7 +144,7 @@ proxy-groups:
       - 台湾
       - 新国
       - DIRECT
-  - name: AI
+  - name: 🤖 AI
     type: select
     proxies:
       - 美国
@@ -155,7 +155,7 @@ proxy-groups:
       - 台湾
       - 新国
       - DIRECT
-  - name: Teams
+  - name: 💼 Teams
     type: select
     proxies:
       - 香港
@@ -508,8 +508,16 @@ rule-providers:
 
 # 规则指向
 rules:
+  # ========== AI 域名优先：避免被 stream / microsoft / Google 类规则集抢先 ==========
+  - DOMAIN-SUFFIX,gemini.google.com,🤖 AI
+  - DOMAIN-SUFFIX,aistudio.google.com,🤖 AI
+  - DOMAIN-SUFFIX,bard.google.com,🤖 AI
+  - DOMAIN-SUFFIX,copilot.microsoft.com,🤖 AI
+  - DOMAIN-SUFFIX,openai.com,🤖 AI
+  - DOMAIN-SUFFIX,claude.ai,🤖 AI
+
   # ========== Microsoft Teams → Teams 组（香港/日本/新国，规则集 teams）==========
-  - RULE-SET,teams,Teams
+  - RULE-SET,teams,💼 Teams
   # ========== Microsoft 365 其余组件（登录 / Exchange / SharePoint）→ 直连（规则集 office_direct）==========
   - RULE-SET,office_direct,DIRECT
   # ========== 手写自定义规则（GitHub 规则集 custom_*）==========
@@ -525,9 +533,9 @@ rules:
   - RULE-SET,cdn_non_ip,兜底
   - RULE-SET,steam_direct,DIRECT
   - RULE-SET,game_cdn_direct,DIRECT
+  - RULE-SET,ai_non_ip,🤖 AI
   - RULE-SET,stream_non_ip,兜底
   - RULE-SET,stream_ip,兜底
-  - RULE-SET,ai_non_ip,AI
   - RULE-SET,telegram_non_ip,电报
   - RULE-SET,telegram_ip,电报
   - RULE-SET,apple_cdn,苹果
