@@ -203,23 +203,32 @@ Clash 侧 `interval: 43200`（12 小时）自动拉取最新规则。
 Surge 6 起组级 `url=` 测速参数已失效（官方文档明确 legacy 参数无效），所以"组级探针"这条路走不通。
 可行做法是**脚本 + cron**：Surge 脚本 API 支持按指定策略发请求，也能切换 select 组。
 
-### 1. AI 组（select，成员为地区组）
+### 1. AI 组（select，节点级）
 
 ```
-AI = select, "🇺🇸 美国节点", "🇯🇵 日本节点", "🇸🇬 新加坡节点", "🇨🇳 台湾节点"
+AI = select, include-all-proxies=1, policy-regex-filter=^(?!.*Premium)(?!.*(港|HK|hk|HongKong|Hong Kong)).*(美|US|United States|日本|JP|Japan|NTT|东京|大阪|新加坡|SG|Singapore|坡|狮城|台|TW|Taiwan).*$
 ```
 
-必须是 `select` 组：`$surge.setSelectGroupPolicy` 只能改手动选择组。地区组本身仍是 smart
-（组内选节点用真实连接质量），所以上层锁地区、底层自适应。
+必须是 `select` 组：`$surge.setSelectGroupPolicy` 只能改手动选择组，且成员必须是节点（不能嵌套别的组，
+否则脚本 pin 不到）。这么写会展开成约 73 个美/日/新/台节点，脚本逐个做内容级检测后 pin 一个。
 
 ### 2. cron 脚本 `tools/surge_ai_unlock_check.js`
 
-- 用 `$httpClient.get({url, policy})` 并行探测四个地区组到 `chatgpt.com/robots.txt`（硬性条件）
-  和 `gemini.google.com/robots.txt`（参考项）
-- 在通过 ChatGPT 探测的地区组里取最快的一个，`$surge.setSelectGroupPolicy("AI", 地区组)` 切换
-- 结果写 `$surge.logbook`、系统通知，并持久化到
-  `~/Library/Application Support/com.nssurge.surge-mac/SGJSVMPersistentStore/ai_unlock_last`
-- profile `[Script]` 声明（每 30 分钟一次）：
+判定**不看状态码 200**（Google 会把「异常流量」拦截页也返回 200/429）：
+
+| 服务 | 通过条件 |
+|---|---|
+| OpenAI | `GET api.openai.com/v1/models` → 401 且 body 含 `invalid_request_error` / `Missing bearer` / `API key` |
+| Gemini | `GET gemini.google.com/app` → 200 且 body > 20 KB，且不含 `unusual traffic` / `异常流量`（429 或短页 = 被风控） |
+
+流程：
+
+1. **稳定优先**：先验证当前选中的节点，通过就保持不动（失败重试一次），避免出口 IP 变化触发风控
+2. 失败才扫描候选：每批 6 个并发跑 OpenAI 检测，收集最快的一批；再对前 5 名逐个确认 Gemini
+3. 通过则 `$surge.setSelectGroupPolicy("AI", 节点)`，写 `$surge.logbook`、系统通知
+4. 结果持久化到 `SGJSVMPersistentStore/ai_verify_last`
+
+profile `[Script]` 声明（每 30 分钟一次）：
 
 ```
 [Script]
@@ -227,6 +236,9 @@ ai-unlock-check = type=cron,cronexp="*/30 * * * *",script-path=/Users/<you>/.sur
 ```
 
 改完脚本源码要 `surge-cli restart-engine`（只 reload 配置不会重读脚本源码）。
+
+Surge 的脚本 API 只能改「选中项」，没有增删组成员的能力。如果要求「组里只包含验证通过的节点」，
+需要外部任务生成 `policy-path` 文件再 reload（见 tools/surge_ai_unlock_check.js 文件头注释）。
 
 ### 3. 手动核对（不依赖脚本）
 
