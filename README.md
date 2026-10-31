@@ -281,6 +281,41 @@ DOMAIN,api.github.com,🐙 GitHub
 实测（release zip 10.8MB）：节点选择 0.33 MB/s → 🐙 GitHub 8.2–9.7 MB/s；tarball 15.4 MB/s。
 GitHub 单连接本身也限速，大文件用多线程下载器（aria2c -x8 -s8）还能叠加。
 
+### 跨设备一致性（macOS Surge / macOS Clash / Windows Clash Verge）
+
+同名分组与规则在三端保持一致，差异只在平台适配：
+
+| 项 | macOS Surge | macOS Clash（mihomo-party） | Windows Clash Verge |
+|---|---|---|---|
+| Teams 进程 | PROCESS-NAME 路径 | PROCESS-NAME,MSTeams | PROCESS-NAME,ms-teams.exe / Teams.exe |
+| 端口规则 | AND((PROTOCOL,TCP),(DEST-PORT,22)) | DST-PORT,22 | DST-PORT,22 |
+| GitHub 组 | 🐙 GitHub（上海电信转香港） | 🐙 GitHub（同上） | 🐙 GitHub（同上） |
+| 媒体组 | 🔓 媒体解锁（[M]+倍率1.0） | 同 | 同 |
+
+Windows 侧 Clash Verge 的两个文件都要改，否则下次 Verge 重新生成会覆盖：
+
+```
+%APPDATA%\io.github.clash-verge-rev.clash-verge-rev\profiles\<当前profile>.yaml      # 源，持久
+C:\ProgramData\clash-verge-service\users\<hash>\runtime\config.yaml              # 核心实际加载
+```
+
+改完用核心 API 热重载（secret 见 runtime config 的 `secret`）：
+
+```powershell
+$h = @{ Authorization = 'Bearer <secret>' }
+$body = @{ path = 'C:\ProgramData\clash-verge-service\users\<hash>\runtime\config.yaml' } | ConvertTo-Json -Compress
+Invoke-RestMethod -Method Put -Uri 'http://127.0.0.1:9097/configs?force=true' -Headers $h -Body $body -ContentType 'application/json'
+```
+
+Loon 侧没有节点级过滤 API，但它的节点名同样带 `[倍率:x]` / `[M]`，所以用 `[Remote Filter]` 的
+`NameRegex` 过滤器 + `url-test` 组实现了同名分组：
+
+```
+高倍节点 = NameRegex, FilterKey = "^(?=.*倍率:(?:1\.[5-9]|[2-9](?:\.[0-9])?\]))(?!.*Premium).*$"
+媒体节点 = NameRegex, FilterKey = "^(?=.*\[M\])(?=.*倍率:1\])(?!.*Premium).*$"
+上海电信转香港节点 = NameRegex, FilterKey = "^(?=.*上海电信转香港).*$"
+```
+
 ### 关于模块 / 插件
 
 模块（`.sgmodule`）和 Surge 6 的插件系统只是把 `[Script]` / `[Rule]` / MITM 打包分发，
