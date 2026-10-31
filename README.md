@@ -408,7 +408,7 @@ Loon 脚本仍未启用：Loon 无 CLI/配置校验，且运行时与 Surge 的 
 
 - **Loon 分组不加 emoji**：Loon 用 `img-url` 图标（地区组已有 HK/TW/JP/KR/SG/US/Global 图标），组名保持纯文本：`香港/日本/新国/美国/台湾/韩国`、`香港手动`、`兜底`、`AI`、`Teams`、`高倍节点`、`低倍节点`、`媒体解锁`、`GitHub`。
 - **AI 组用 url-test + chatgpt 探针**：`AI = url-test,美国节点,日本节点,新国节点,台湾节点,url = https://chatgpt.com/robots.txt`，只有能完成 ChatGPT 请求的节点会被选中。
-- **Loon 脚本暂未启用**：实测远程 `script-path`（raw.githubusercontent）拉取失败（`remoteScript` 目录为空、日志 `Finish execute script ... result:3`）；改成绝对/相对本地路径则无法随 iCloud 配置同步到 iPhone。等你有一个稳定可公网访问的脚本托管地址再接。
+- **Loon 脚本暂未启用（四种路径都试过）**：配置里 `script-path` 写相对路径（Configs 目录、iCloud/Loon/Script）、绝对路径、remote URL，Loon 都返回 `Finish execute script ... result:3`，`scriptLog` 为空。查其存储结构：Loon 只从自己的脚本库（`/Library/Application Support/com.loon.Loon/{localScripts,scripts}` + `loon_record.db.scriptRecords`）加载，必须经 App 的"从URL下载/本地添加"导入后才会执行。脚本已放仓库 `loon/`，等你用 App 导入即可接上。
 - 实测（Loon TUN 直连，不经 Surge）：youtube 200、chatgpt 200、GitHub release 5.0 MB/s、百度/QQ/B站 200（python 报证书错是因为插件对 baidu 开了 MITM，浏览器正常）。
 
 ### 关于模块 / 插件
