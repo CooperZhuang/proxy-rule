@@ -1,5 +1,4 @@
-# 全局扩展覆写配置（Merge）— 对所有 profile 生效
-# 分组/规则等数组内容交给 Script.js 动态注入（这里只放跨平台的静态设置）
+# 全局扩展覆写（Merge）— 所有 profile 生效；数组内容交给 Script.js
 tcp-concurrent: true
 unified-delay: true
 find-process-mode: strict

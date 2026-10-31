@@ -384,6 +384,26 @@ MITM 扩展：hostname 增加 doubleclick / googlesyndication / googleadservices
 | mihomo-party 覆写层 | 应用未运行、`override.yaml` items schema 无法离线验证，写错会影响 Mac 备用配置 |
 | Loon 脚本实机启用 | Loon 未运行，脚本语法/MITM 无法验证；已在 `[Script]` 处留注释模板 |
 
+### mihomo sub-rules 与两机全局层（2026-10-31 补）
+
+`sub-rules` 实测语义（用 mihomo 1.19.32 核心跑出来的）：子规则里每条规则**自带策略**，`SUB-RULE,(condition),name` 引用时**不带策略**；子规则内没有命中会**继续走外层规则**（不需要在子规则里写 MATCH 兜底）。
+
+据此把两机 Clash 的 16 条自定义规则收进 `sub-rules.custom-route`，主 `rules` 只保留：
+
+~~~yaml
+rules:
+  - SUB-RULE,(NETWORK,tcp),custom-route
+  - SUB-RULE,(NETWORK,udp),custom-route
+~~~
+
+验证：PC runtime 96→82 条规则、Mac Clash Verge profile 76 条，两边各自用本机核心 `-t` 通过；PC 热重载后 chatgpt/teams/github 请求正常。
+
+两机（Windows Clash Verge + macOS Clash Verge）都放了同一套 `Merge.yaml` + `Script.js`（见 `clash/verge/`）：脚本负责 emoji 归一、补高阶组、注入 sub-rules、规则去重；Merge 放跨平台静态项。
+
+注意：Mac 上原先改的 `~/Library/Application Support/mihomo-party/work/config.yaml` 属于**已卸载应用**的遗留数据；Mac 实际在用的是 Clash Verge（`io.github.clash-verge-rev.clash-verge-rev`），已改为在该目录落地。
+
+Loon 脚本仍未启用：Loon 无 CLI/配置校验，且运行时与 Surge 的 TUN 冲突会中断当前网络，只能等你方便时手动开 Loon 验证。
+
 ### 关于模块 / 插件
 
 模块（`.sgmodule`）和 Surge 6 的插件系统只是把 `[Script]` / `[Rule]` / MITM 打包分发，
