@@ -259,6 +259,28 @@ SURGE_CLI_PASSWORD=... tools/surge_ai_check.sh "🇺🇸 美国节点" "🇯🇵
 用 `surge-cli http probe <url> <policy>` 逐个策略测 `chatgpt.com` / `gemini.google.com` /
 `copilot.microsoft.com`，以 200/204 为准（403 多为 Cloudflare 对 HEAD 的拦截，不代表线路不通）。
 
+### GitHub 下载提速（踩过的坑）
+
+github.com 网页走代理没问题，但 release 资产下载**实际落在 release-assets.githubusercontent.com**，
+它会被 cdn.conf 规则命中 → 🚀 节点选择，而香港组 smart 选中的便宜节点到 GitHub CDN 只有
+0.17–0.33 MB/s，看起来就是「下载很慢」。
+
+处理方式：建一个 🐙 GitHub 自动测速组，只收「上海电信转香港 HKC/HKT/BGP」这 8 个 1.0x 节点
+（实测单连接 5–13 MB/s），然后把下载相关域名全部指过去：
+
+```
+🐙 GitHub = url-test, include-all-proxies=1, policy-regex-filter=^上海电信转香港(HKC|HKT|BGP).*$, interval = 600, tolerance = 100
+
+DOMAIN-SUFFIX,codeload.github.com,🐙 GitHub
+DOMAIN-SUFFIX,objects.githubusercontent.com,🐙 GitHub
+DOMAIN-SUFFIX,release-assets.githubusercontent.com,🐙 GitHub
+DOMAIN-SUFFIX,raw.githubusercontent.com,🐙 GitHub
+DOMAIN,api.github.com,🐙 GitHub
+```
+
+实测（release zip 10.8MB）：节点选择 0.33 MB/s → 🐙 GitHub 8.2–9.7 MB/s；tarball 15.4 MB/s。
+GitHub 单连接本身也限速，大文件用多线程下载器（aria2c -x8 -s8）还能叠加。
+
 ### 关于模块 / 插件
 
 模块（`.sgmodule`）和 Surge 6 的插件系统只是把 `[Script]` / `[Rule]` / MITM 打包分发，
