@@ -2,27 +2,27 @@
 // 不管底层是哪个订阅/profile，都统一成同一套分组命名、分组能力和规则顺序。
 
 const EMOJI = {
-  "手动": "🖱️ 手动",
-  "加速": "⚡ 加速",
+  "手动": "🖱️ 手动选择",
+  "加速": "🚀 节点选择",
   "苹果": "🍎 苹果",
   "AI": "🤖 AI",
   "网易云": "🎵 网易云",
   "电报": "📲 电报",
-  "拦截": "🛑 拦截",
+  "拦截": "🛑 广告拦截",
   "兜底": "🐟 兜底",
-  "自动": "♻️ 自动",
+  "自动": "♻️ 自动选择",
   "香港": "🇭🇰 香港",
   "日本": "🇯🇵 日本",
   "美国": "🇺🇸 美国",
   "台湾": "🇹🇼 台湾",
-  "新国": "🇸🇬 新国",
+  "新国": "🇸🇬 新加坡",
   "Teams": "💼 Teams",
 };
 
 const EXTRA_GROUPS = [
   { name: "💼 Teams", filter: "(?i)(香港|日本|新加坡|新国|SG|HK|JP)", url: "https://teams.microsoft.com/robots.txt" },
   { name: "🤖 AI", filter: "(?i)^(?!.*(香港|HK|深港|沪港|广港)).*(美国|US|日本|JP|NTT|新加坡|新国|SG|台湾|TW).*$", url: "https://chatgpt.com/robots.txt" },
-  { name: "🔓 媒体解锁", filter: "(?i).*\\[M\\].*倍率:1\\]$", url: "https://www.gstatic.com/generate_204" },
+  { name: "🎬 媒体解锁", filter: "(?i).*\\[M\\].*倍率:1\\]$", url: "https://www.gstatic.com/generate_204" },
   { name: "⚡ 高倍节点", filter: "倍率:(1\\.[5-9]|[2-9](\\.[0-9])?)\\]$", url: "https://www.gstatic.com/generate_204" },
   { name: "🪫 低倍节点", filter: "(?i)^(?!.*Premium).*倍率:(0\\.[0-9]|1)\\]$", url: "https://www.gstatic.com/generate_204" },
   { name: "🐙 GitHub", filter: "(?i)上海电信转香港(HKC|HKT|BGP)", url: "https://www.gstatic.com/generate_204" },
