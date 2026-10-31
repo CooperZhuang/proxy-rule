@@ -362,6 +362,28 @@ node -e "const fs=require('fs'); const s=fs.readFileSync('Script.js','utf8'); co
 | 🇺🇸 美国 |
 | 🇹🇼 台湾 |
 | 🇸🇬 新加坡 |
+### Surge 侧的脚本 / 面板 / 计量网络（2026-10-31 补）
+
+`tools/surge/` 下三个脚本配合 profile 里的声明使用：
+
+| 文件 | profile 声明 | 作用 |
+|---|---|---|
+| `status-panel.js` | `[Panel]` + `type=generic` | 两个信息面板：AI 体检状态（当前节点/候选数/上次结果）、网络与出口（SSID/IP/关键组选择） |
+| `network-event.js` | `type=event,event-name=network-changed / engine-started / profile-reloaded` | 网络变化时记录 SSID+内网 IP，变化时发通知；同一路径重复声明即共用脚本 |
+| `ssid-rule.js` | `type=rule` + `[Rule] SCRIPT,ssid-rule,...` | 计量网络（iPhone 热点 172.20.10.0/28 或指定 SSID）下，未命中规则的流量改走低倍节点，省流量/倍率；家里网络不匹配，仍走 FINAL |
+
+另外 AI 体检脚本同时用 `type=event,event-name=network-changed` 声明了一份，网络切换后立即重跑，不必等 30 分钟 cron。
+
+MITM 扩展：hostname 增加 doubleclick / googlesyndication / googleadservices / adservice.google 四个广告域，并在 `[URL Rewrite]` 用 `reject` 丢弃，实测广告请求被拒、正常站点无影响。
+
+#### 本轮未做（附原因）
+
+| 项 | 原因 |
+|---|---|
+| mihomo `sub-rules` 收敛规则 | 官方 wiki 当前不可达，SUB-RULE 语义无法离线验证；只影响维护性、不影响功能，不值得拿线上配置试错 |
+| mihomo-party 覆写层 | 应用未运行、`override.yaml` items schema 无法离线验证，写错会影响 Mac 备用配置 |
+| Loon 脚本实机启用 | Loon 未运行，脚本语法/MITM 无法验证；已在 `[Script]` 处留注释模板 |
+
 ### 关于模块 / 插件
 
 模块（`.sgmodule`）和 Surge 6 的插件系统只是把 `[Script]` / `[Rule]` / MITM 打包分发，
