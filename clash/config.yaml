@@ -119,96 +119,96 @@ FilterSG: &FilterSG '^(?=.*((?i)🇸🇬|新加坡|狮|(\b(SG|SGP|Singapore)(\d+
 
 # 策略组（恢复原 default.yaml 完整结构；地区组采用 iKeLee 增强筛选）
 proxy-groups:
-  - name: 手动
+  - name: 🖱️ 手动
     type: select
     include-all-providers: true
-  - name: 加速
+  - name: ⚡ 加速
     type: select
     proxies:
-      - 自动
-      - 手动
-      - 香港
-      - 日本
-      - 美国
-      - 台湾
-      - 新国
+      - ♻️ 自动
+      - 🖱️ 手动
+      - 🇭🇰 香港
+      - 🇯🇵 日本
+      - 🇺🇸 美国
+      - 🇹🇼 台湾
+      - 🇸🇬 新国
       - DIRECT
-  - name: 苹果
+  - name: 🍎 苹果
     type: select
     proxies:
-      - 自动
-      - 手动
-      - 香港
-      - 日本
-      - 美国
-      - 台湾
-      - 新国
+      - ♻️ 自动
+      - 🖱️ 手动
+      - 🇭🇰 香港
+      - 🇯🇵 日本
+      - 🇺🇸 美国
+      - 🇹🇼 台湾
+      - 🇸🇬 新国
       - DIRECT
   - name: 🤖 AI
     type: select
     proxies:
-      - 美国
-      - 自动
-      - 手动
-      - 香港
-      - 日本
-      - 台湾
-      - 新国
+      - 🇺🇸 美国
+      - ♻️ 自动
+      - 🖱️ 手动
+      - 🇭🇰 香港
+      - 🇯🇵 日本
+      - 🇹🇼 台湾
+      - 🇸🇬 新国
       - DIRECT
   - name: 💼 Teams
     type: select
     proxies:
-      - 香港
-      - 日本
-      - 新国
-      - 自动
-      - 手动
+      - 🇭🇰 香港
+      - 🇯🇵 日本
+      - 🇸🇬 新国
+      - ♻️ 自动
+      - 🖱️ 手动
       - DIRECT
-  - name: 网易云
+  - name: 🎵 网易云
     type: select
     proxies:
       - DIRECT
-      - 自动
-      - 手动
-      - 香港
-      - 日本
-      - 美国
-      - 台湾
-      - 新国
-  - name: 电报
+      - ♻️ 自动
+      - 🖱️ 手动
+      - 🇭🇰 香港
+      - 🇯🇵 日本
+      - 🇺🇸 美国
+      - 🇹🇼 台湾
+      - 🇸🇬 新国
+  - name: 📲 电报
     type: select
     proxies:
-      - 自动
-      - 手动
-      - 香港
-      - 日本
-      - 美国
-      - 台湾
-      - 新国
+      - ♻️ 自动
+      - 🖱️ 手动
+      - 🇭🇰 香港
+      - 🇯🇵 日本
+      - 🇺🇸 美国
+      - 🇹🇼 台湾
+      - 🇸🇬 新国
       - DIRECT
-  - name: 拦截
+  - name: 🛑 拦截
     type: select
     proxies:
       - REJECT
-  - name: 兜底
+  - name: 🐟 兜底
     type: select
     proxies:
-      - 香港
-      - 自动
-      - 手动
-      - 日本
-      - 美国
-      - 台湾
-      - 新国
+      - 🇭🇰 香港
+      - ♻️ 自动
+      - 🖱️ 手动
+      - 🇯🇵 日本
+      - 🇺🇸 美国
+      - 🇹🇼 台湾
+      - 🇸🇬 新国
       - DIRECT
-  - name: 自动
+  - name: ♻️ 自动
     type: url-test
     lazy: true
     url: https://www.gstatic.com/generate_204
     interval: 900
     tolerance: 20
     include-all-providers: true
-  - name: 香港
+  - name: 🇭🇰 香港
     filter: *FilterHK
     type: url-test
     lazy: true
@@ -216,7 +216,7 @@ proxy-groups:
     interval: 900
     tolerance: 20
     include-all-providers: true
-  - name: 日本
+  - name: 🇯🇵 日本
     filter: *FilterJP
     type: url-test
     lazy: true
@@ -224,7 +224,7 @@ proxy-groups:
     interval: 900
     tolerance: 20
     include-all-providers: true
-  - name: 美国
+  - name: 🇺🇸 美国
     filter: *FilterUS
     type: url-test
     lazy: true
@@ -232,7 +232,7 @@ proxy-groups:
     interval: 900
     tolerance: 20
     include-all-providers: true
-  - name: 台湾
+  - name: 🇹🇼 台湾
     filter: *FilterTW
     type: url-test
     lazy: true
@@ -240,7 +240,7 @@ proxy-groups:
     interval: 900
     tolerance: 20
     include-all-providers: true
-  - name: 新国
+  - name: 🇸🇬 新国
     filter: *FilterSG
     type: url-test
     lazy: true
@@ -522,37 +522,37 @@ rules:
   - RULE-SET,office_direct,DIRECT
   # ========== 手写自定义规则（GitHub 规则集 custom_*）==========
   - RULE-SET,custom_direct,DIRECT
-  - RULE-SET,custom_fallback,兜底
-  - RULE-SET,reject_non_ip,拦截
-  - RULE-SET,reject_domainset,拦截
-  - RULE-SET,reject_ip,拦截
+  - RULE-SET,custom_fallback,🐟 兜底
+  - RULE-SET,reject_non_ip,🛑 拦截
+  - RULE-SET,reject_domainset,🛑 拦截
+  - RULE-SET,reject_ip,🛑 拦截
   - RULE-SET,reject_non_ip_drop,REJECT-DROP
-  - RULE-SET,reject_non_ip_no_drop,拦截
-  - RULE-SET,sogouinput,拦截
-  - RULE-SET,cdn_domainset,兜底
-  - RULE-SET,cdn_non_ip,兜底
+  - RULE-SET,reject_non_ip_no_drop,🛑 拦截
+  - RULE-SET,sogouinput,🛑 拦截
+  - RULE-SET,cdn_domainset,🐟 兜底
+  - RULE-SET,cdn_non_ip,🐟 兜底
   - RULE-SET,steam_direct,DIRECT
   - RULE-SET,game_cdn_direct,DIRECT
   - RULE-SET,ai_non_ip,🤖 AI
-  - RULE-SET,stream_non_ip,兜底
-  - RULE-SET,stream_ip,兜底
-  - RULE-SET,telegram_non_ip,电报
-  - RULE-SET,telegram_ip,电报
-  - RULE-SET,apple_cdn,苹果
-  - RULE-SET,apple_services,苹果
-  - RULE-SET,apple_cn_non_ip,苹果
-  - RULE-SET,microsoft_cdn_non_ip,苹果
-  - RULE-SET,microsoft_non_ip,苹果
-  - RULE-SET,download_domainset,苹果
-  - RULE-SET,download_non_ip,苹果
-  - RULE-SET,neteasemusic_non_ip,网易云
-  - RULE-SET,neteasemusic_ip,网易云
+  - RULE-SET,stream_non_ip,🐟 兜底
+  - RULE-SET,stream_ip,🐟 兜底
+  - RULE-SET,telegram_non_ip,📲 电报
+  - RULE-SET,telegram_ip,📲 电报
+  - RULE-SET,apple_cdn,🍎 苹果
+  - RULE-SET,apple_services,🍎 苹果
+  - RULE-SET,apple_cn_non_ip,🍎 苹果
+  - RULE-SET,microsoft_cdn_non_ip,🍎 苹果
+  - RULE-SET,microsoft_non_ip,🍎 苹果
+  - RULE-SET,download_domainset,🍎 苹果
+  - RULE-SET,download_non_ip,🍎 苹果
+  - RULE-SET,neteasemusic_non_ip,🎵 网易云
+  - RULE-SET,neteasemusic_ip,🎵 网易云
   - RULE-SET,lan_non_ip,DIRECT
   - RULE-SET,lan_ip,DIRECT
   - RULE-SET,domestic_non_ip,DIRECT
   - RULE-SET,direct_non_ip,DIRECT
-  - RULE-SET,global_non_ip,兜底
+  - RULE-SET,global_non_ip,🐟 兜底
   - RULE-SET,domestic_ip,DIRECT
   - RULE-SET,china_ip,DIRECT
   - GEOIP,CN,DIRECT
-  - MATCH,兜底
+  - MATCH,🐟 兜底

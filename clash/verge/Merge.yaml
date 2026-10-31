@@ -1,0 +1,14 @@
+# 全局扩展覆写配置（Merge）— 对所有 profile 生效
+# 分组/规则等数组内容交给 Script.js 动态注入（这里只放跨平台的静态设置）
+tcp-concurrent: true
+unified-delay: true
+find-process-mode: strict
+global-client-fingerprint: chrome
+profile:
+  store-selected: true
+  store-fake-ip: true
+dns:
+  proxy-server-nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+    - tls://223.5.5.5

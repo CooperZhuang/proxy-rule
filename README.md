@@ -316,6 +316,33 @@ Loon 侧没有节点级过滤 API，但它的节点名同样带 `[倍率:x]` / `
 上海电信转香港节点 = NameRegex, FilterKey = "^(?=.*上海电信转香港).*$"
 ```
 
+### Clash Verge 全局扩展层（Windows PC）
+
+`clash/verge/` 下是两个可直接放进 Verge 的全局扩展文件，作用是对**所有** profile 统一改造，
+不依赖具体订阅模板，换机场也不用重配：
+
+| 文件 | 作用 |
+|---|---|
+| `Merge.yaml` | 静态设置：tcp-concurrent、unified-delay、find-process-mode、chrome 指纹、DNS、store-selected |
+| `Script.js` | 动态改造：组名 emoji 归一、补齐 🤖 AI/🔓 媒体解锁/⚡ 高倍/🪫 低倍/🐙 GitHub/💼 Teams、规则置顶与去重、DST-PORT 插到 MATCH 前、测试地址 https 化 |
+
+安装位置（Verge 2.5.x）：
+
+```
+%APPDATA%\io.github.clash-verge-rev.clash-verge-rev\profiles\Merge.yaml
+%APPDATA%\io.github.clash-verge-rev.clash-verge-rev\profiles\Script.js
+```
+
+改完要让 Verge 重新生成运行时配置（在 UI 里点一次当前 profile，或重启 Verge）；只改文件不会立即生效。
+想立即验证脚本逻辑，可以脱离 YAML 直接跑：
+
+```powershell
+node -e "const fs=require('fs'); const s=fs.readFileSync('Script.js','utf8'); const m=new Function(s+';return main;')(); console.log(JSON.stringify(m({rules:['MATCH,DIRECT'],'proxy-groups':[{name:'手动',proxies:['DIRECT']}]}),null,1))"
+```
+
+脚本对跨平台差异做了兼容：`PROCESS-NAME` 同时写 `ms-teams.exe`（Windows）和 `MSTeams`（macOS），
+`DST-PORT` 两端通用；分组过滤按节点名里的 `[倍率:x]` / `[M]` 判断，因此在任何机场订阅上都成立。
+
 ### 关于模块 / 插件
 
 模块（`.sgmodule`）和 Surge 6 的插件系统只是把 `[Script]` / `[Rule]` / MITM 打包分发，
