@@ -11,6 +11,13 @@ var results = [], pending = CANDIDATES.length;
 
 function log(s) { console.log("[AI体检] " + s); }
 
+function currentSelection() {
+  try {
+    var cfg = JSON.parse($config.getConfig() || "{}");
+    return (cfg.policy_select && cfg.policy_select[GROUP]) || "";
+  } catch (e) { return ""; }
+}
+
 function probe(policy, url, cb) {
   var t0 = Date.now();
   $httpClient.get({ url: url, node: policy, timeout: 8000, headers: { "User-Agent": UA } }, function (err, resp, data) {
@@ -20,7 +27,8 @@ function probe(policy, url, cb) {
 
 function checkOne(policy, cb) {
   probe(policy, OPENAI, function (ok, status, body, ms) {
-    var pass = ok && status === 401 && (body.indexOf("invalid_request_error") >= 0 || body.indexOf("Missing bearer") >= 0);
+    // 401 说明请求已到达 OpenAI（缺 key）；403/429 等是被地区拦截
+    var pass = ok && status === 401;
     if (!pass) return cb(false, ms, "openai=" + status);
     probe(policy, GEMINI, function (ok2, status2, body2, ms2) {
       var blocked = !ok2 || status2 !== 200 || body2.length < 20000 ||
@@ -40,8 +48,8 @@ CANDIDATES.forEach(function (p) {
 
 function decide() {
   var good = results.filter(function (r) { return r.ok; }).sort(function (a, b) { return a.ms - b.ms; });
-  var current = "";
-  try { current = $config.getSelectedPolicy(GROUP) || ""; } catch (e) {}
+  var current = currentSelection();
+  log("当前 " + (current || "未选"));
   var record = function (action, chosen) {
     $persistentStore.write(JSON.stringify({ time: new Date().toISOString(), action: action, current: current, chosen: chosen, results: results }), KEY);
     $done();
@@ -58,7 +66,7 @@ function decide() {
   }
   var okSet = false;
   try { okSet = $config.getConfig(GROUP, best.policy) ? true : false; } catch (e) { okSet = false; }
-  log("切换 " + current + " -> " + best.policy + (okSet ? "" : " [设置失败]"));
+  log("切换 " + (current || "-") + " -> " + best.policy + (okSet ? "" : " [设置失败]"));
   if (okSet) $notification.post("AI 解锁体检", "已切换", best.policy + " " + best.ms + "ms");
   record(okSet ? "switched" : "switch-failed", best.policy);
 }
