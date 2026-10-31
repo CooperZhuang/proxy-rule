@@ -408,7 +408,14 @@ Loon 脚本仍未启用：Loon 无 CLI/配置校验，且运行时与 Surge 的 
 
 - **Loon 分组不加 emoji**：Loon 用 `img-url` 图标（地区组已有 HK/TW/JP/KR/SG/US/Global 图标），组名保持纯文本：`香港/日本/新国/美国/台湾/韩国`、`香港手动`、`兜底`、`AI`、`Teams`、`高倍节点`、`低倍节点`、`媒体解锁`、`GitHub`。
 - **AI 组用 url-test + chatgpt 探针**：`AI = url-test,美国节点,日本节点,新国节点,台湾节点,url = https://chatgpt.com/robots.txt`，只有能完成 ChatGPT 请求的节点会被选中。
-- **Loon 脚本暂未启用（四种路径都试过）**：配置里 `script-path` 写相对路径（Configs 目录、iCloud/Loon/Script）、绝对路径、remote URL，Loon 都返回 `Finish execute script ... result:3`，`scriptLog` 为空。查其存储结构：Loon 只从自己的脚本库（`/Library/Application Support/com.loon.Loon/{localScripts,scripts}` + `loon_record.db.scriptRecords`）加载，必须经 App 的"从URL下载/本地添加"导入后才会执行。脚本已放仓库 `loon/`，等你用 App 导入即可接上。
+- **Loon 脚本已启用**：`[Script]` 里直接写 remote URL 即可，Loon 会下载并缓存到
+  `/Library/Application Support/com.loon.Loon/scripts/<md5(url)>.js` 再执行：
+  `cron "*/30 * * * *" script-path=https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/loon/ai-check.js,tag=AI体检,enable=true,timeout=120`
+- **缓存坑**：Loon 按 URL 的 md5 缓存，URL 内容更新不会重新拉取；改脚本后要么换 URL（加 `?v=`），
+  要么把新内容直接写入 `<md5(url)>.js` 预置缓存。首次执行若还没下载完会返回 result:3，之后才正常。
+- `loon/ai-check.js` 从 `$config.getConfig().all_policy_groups` 自动找 AI 组名（兼容无 emoji 命名），
+  内容级检测四个地区组（OpenAI 401 + Gemini 200），当前节点不慢于最优 1.3 倍时保持，避免来回切。
+- 实测：`result:0`，脚本日志 `[AI体检] 使用组名 AI` → 四组探测 → `切换 ... -> 日本节点`。
 - 实测（Loon TUN 直连，不经 Surge）：youtube 200、chatgpt 200、GitHub release 5.0 MB/s、百度/QQ/B站 200（python 报证书错是因为插件对 baidu 开了 MITM，浏览器正常）。
 
 ### 关于模块 / 插件
