@@ -60,7 +60,12 @@ CANDIDATES.forEach(function (p) {
 
 function decide() {
   var good = results.filter(function (r) { return r.ok; }).sort(function (a, b) { return a.ms - b.ms; });
-  var current = currentSelection(groupName);
+  var current = "";
+  try {
+    var prev = JSON.parse($persistentStore.read(KEY) || "{}");
+    if (prev && prev.chosen) current = prev.chosen;
+  } catch (e) {}
+  if (!current) current = currentSelection(groupName);
   var record = function (action, chosen) {
     $persistentStore.write(JSON.stringify({ time: new Date().toISOString(), action: action, current: current, chosen: chosen, results: results }), KEY);
     $done();
