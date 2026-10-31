@@ -1,22 +1,14 @@
-// Loon AI 体检（cron）：内容级检测四个地区组，把 AI（select）切到可用节点
-// 稳定优先：当前选择通过检测且不比最优慢太多时保持，避免来回切
-var GROUP = "AI";
+// Loon AI 体检（cron）：内容级检测各地区组，把 🤖 AI 组切到可用的那个
+// 依赖：🤖 AI = select,美国节点,日本节点,新国节点,台湾节点
+var GROUP = "🤖 AI";
 var CANDIDATES = ["美国节点", "日本节点", "新国节点", "台湾节点"];
 var OPENAI = "https://api.openai.com/v1/models";
 var GEMINI = "https://gemini.google.com/app";
 var UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/131.0 Safari/537.36";
 var KEY = "loon_ai_last";
-var HYSTERESIS = 1.3;
 var results = [], pending = CANDIDATES.length;
 
 function log(s) { console.log("[AI体检] " + s); }
-
-function currentSelection() {
-  try {
-    var cfg = JSON.parse($config.getConfig() || "{}");
-    return (cfg.policy_select && cfg.policy_select[GROUP]) || "";
-  } catch (e) { return ""; }
-}
 
 function probe(policy, url, cb) {
   var t0 = Date.now();
@@ -27,8 +19,7 @@ function probe(policy, url, cb) {
 
 function checkOne(policy, cb) {
   probe(policy, OPENAI, function (ok, status, body, ms) {
-    // 401 说明请求已到达 OpenAI（缺 key）；403/429 等是被地区拦截
-    var pass = ok && status === 401;
+    var pass = ok && status === 401 && (body.indexOf("invalid_request_error") >= 0 || body.indexOf("Missing bearer") >= 0);
     if (!pass) return cb(false, ms, "openai=" + status);
     probe(policy, GEMINI, function (ok2, status2, body2, ms2) {
       var blocked = !ok2 || status2 !== 200 || body2.length < 20000 ||
@@ -48,25 +39,23 @@ CANDIDATES.forEach(function (p) {
 
 function decide() {
   var good = results.filter(function (r) { return r.ok; }).sort(function (a, b) { return a.ms - b.ms; });
-  var current = currentSelection();
-  log("当前 " + (current || "未选"));
-  var record = function (action, chosen) {
-    $persistentStore.write(JSON.stringify({ time: new Date().toISOString(), action: action, current: current, chosen: chosen, results: results }), KEY);
-    $done();
-  };
+  var current = "";
+  try { current = $config.getSelectedPolicy(GROUP) || ""; } catch (e) {}
   if (good.length === 0) {
     log("全部不可用，保持 " + current);
-    return record("none-available", current);
+    $persistentStore.write(JSON.stringify({ time: new Date().toISOString(), action: "none-available", current: current, results: results }), KEY);
+    return $done();
   }
-  var best = good[0];
-  var currentOk = good.filter(function (r) { return r.policy === current; })[0];
-  if (currentOk && currentOk.ms <= best.ms * HYSTERESIS) {
-    log("保持 " + current + "（" + currentOk.ms + "ms，最优 " + best.policy + " " + best.ms + "ms）");
-    return record("keep", current);
+  var best = good[0].policy;
+  if (best === current) {
+    log("保持 " + current + "（" + good[0].ms + "ms）");
+    $persistentStore.write(JSON.stringify({ time: new Date().toISOString(), action: "keep", current: current, results: results }), KEY);
+    return $done();
   }
   var okSet = false;
-  try { okSet = $config.getConfig(GROUP, best.policy) ? true : false; } catch (e) { okSet = false; }
-  log("切换 " + (current || "-") + " -> " + best.policy + (okSet ? "" : " [设置失败]"));
-  if (okSet) $notification.post("AI 解锁体检", "已切换", best.policy + " " + best.ms + "ms");
-  record(okSet ? "switched" : "switch-failed", best.policy);
+  try { okSet = $config.getConfig(GROUP, best) ? true : false; } catch (e) { okSet = false; }
+  log("切换 " + current + " -> " + best + (okSet ? "" : " [设置失败]"));
+  if (okSet) $notification.post("AI 解锁体检", "已切换", best + " " + good[0].ms + "ms");
+  $persistentStore.write(JSON.stringify({ time: new Date().toISOString(), action: okSet ? "switched" : "switch-failed", current: current, chosen: best, results: results }), KEY);
+  $done();
 }
