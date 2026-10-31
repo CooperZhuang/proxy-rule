@@ -290,7 +290,7 @@ GitHub 单连接本身也限速，大文件用多线程下载器（aria2c -x8 -s
 | Teams 进程 | PROCESS-NAME 路径 | PROCESS-NAME,MSTeams | PROCESS-NAME,ms-teams.exe / Teams.exe |
 | 端口规则 | AND((PROTOCOL,TCP),(DEST-PORT,22)) | DST-PORT,22 | DST-PORT,22 |
 | GitHub 组 | 🐙 GitHub（上海电信转香港） | 🐙 GitHub（同上） | 🐙 GitHub（同上） |
-| 媒体组 | 🔓 媒体解锁（[M]+倍率1.0） | 同 | 同 |
+| 媒体组 | 🎬 媒体解锁（[M]+倍率1.0） | 同 | 同 |
 
 Windows 侧 Clash Verge 的两个文件都要改，否则下次 Verge 重新生成会覆盖：
 
@@ -324,7 +324,7 @@ Loon 侧没有节点级过滤 API，但它的节点名同样带 `[倍率:x]` / `
 | 文件 | 作用 |
 |---|---|
 | `Merge.yaml` | 静态设置：tcp-concurrent、unified-delay、find-process-mode、chrome 指纹、DNS、store-selected |
-| `Script.js` | 动态改造：组名 emoji 归一、补齐 🤖 AI/🔓 媒体解锁/⚡ 高倍/🪫 低倍/🐙 GitHub/💼 Teams、规则置顶与去重、DST-PORT 插到 MATCH 前、测试地址 https 化 |
+| `Script.js` | 动态改造：组名 emoji 归一、补齐 🤖 AI/🎬 媒体解锁/⚡ 高倍/🪫 低倍/🐙 GitHub/💼 Teams、规则置顶与去重、DST-PORT 插到 MATCH 前、测试地址 https 化 |
 
 安装位置（Verge 2.5.x）：
 
@@ -343,6 +343,25 @@ node -e "const fs=require('fs'); const s=fs.readFileSync('Script.js','utf8'); co
 脚本对跨平台差异做了兼容：`PROCESS-NAME` 同时写 `ms-teams.exe`（Windows）和 `MSTeams`（macOS），
 `DST-PORT` 两端通用；分组过滤按节点名里的 `[倍率:x]` / `[M]` 判断，因此在任何机场订阅上都成立。
 
+### 统一分组命名
+
+| 分组 |
+|---|
+| 🖱️ 手动选择 |
+| 🚀 节点选择 |
+| 🍎 苹果 |
+| 🤖 AI |
+| 💼 Teams |
+| 🎵 网易云 |
+| 📲 电报 |
+| 🛑 广告拦截 |
+| 🐟 兜底 |
+| ♻️ 自动选择 |
+| 🇭🇰 香港 |
+| 🇯🇵 日本 |
+| 🇺🇸 美国 |
+| 🇹🇼 台湾 |
+| 🇸🇬 新加坡 |
 ### 关于模块 / 插件
 
 模块（`.sgmodule`）和 Surge 6 的插件系统只是把 `[Script]` / `[Rule]` / MITM 打包分发，
