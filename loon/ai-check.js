@@ -1,6 +1,6 @@
 // Loon AI 体检（cron）：内容级检测四个地区组，把 AI（select）切到可用节点
-var GROUP = "AI";
-var CANDIDATES = ["美国节点", "日本节点", "新国节点", "台湾节点"];
+var GROUP = "AI"; // select 组，成员是地区策略组（美国/日本/新国/台湾）
+var CANDIDATES = ["美国", "日本", "新国", "台湾"]; // 必须是策略组名，不能写节点过滤器名
 var OPENAI = "https://api.openai.com/v1/models";
 var GEMINI = "https://gemini.google.com/app";
 var UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/131.0 Safari/537.36";
