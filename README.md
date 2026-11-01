@@ -411,6 +411,16 @@ Loon 脚本仍未启用：Loon 无 CLI/配置校验，且运行时与 Surge 的 
 - **Loon 脚本已启用**：`[Script]` 里直接写 remote URL 即可，Loon 会下载并缓存到
   `/Library/Application Support/com.loon.Loon/scripts/<md5(url)>.js` 再执行：
   `cron "*/30 * * * *" script-path=https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/loon/ai-check.js,tag=AI体检,enable=true,timeout=120`
+- **AI 组必须是「策略组」，不能填节点过滤器名**（2026-11-01 修）：`AI = select,美国,日本,新国,台湾`。
+  之前写成 `select,美国节点,日本节点,新国节点,台湾节点`，这些是 `[Remote Filter]` 的 NameRegex 节点过滤资源，不是策略组，
+  Loon 解析策略时找不到 → 每次脚本切换都会报 `Policy match error: Can not find policy:<X>节点, use the global first node`，
+  实际流量回落到全局第一个节点。Mac 端日志里同样出现（每小时 4 条），手机端同样，属于跨端同一个配置问题。
+- `loon/ai-check.js` 的 `CANDIDATES` 同步为组名 `["美国","日本","新国","台湾"]`，探测时 `node` 传组名即可。
+- 改脚本后要让两端重新拉取：URL 加 `?v=`（Loon 按 `md5(URL)` 缓存脚本），本次为 `ai-check.js?v=20261101c`。
+- Loon 0.5.0 (Mac) 与 3.5.3 (iOS) 都支持新版脚本语法，配置里统一用：
+  `cron "*/30 * * * *" then script("<url>") with tag="AI体检", timeout=120`。
+- Mac 端重载配置的可靠方式：`osascript -e 'quit app "Loon"' && open -a Loon` 有时不会把配置推给系统扩展；
+  用 `scutil --nc stop "Loon for Mac"; scutil --nc start "Loon for Mac"` 会重启隧道扩展并 `Load ... scripts` 重新加载。
 - **缓存坑**：Loon 按 URL 的 md5 缓存，URL 内容更新不会重新拉取；改脚本后要么换 URL（加 `?v=`），
   要么把新内容直接写入 `<md5(url)>.js` 预置缓存。首次执行若还没下载完会返回 result:3，之后才正常。
 - `loon/ai-check.js` 从 `$config.getConfig().all_policy_groups` 自动找 AI 组名（兼容无 emoji 命名），
