@@ -1,14 +1,16 @@
-# Loon 插件现状（2026-11-01 10:50 载入后）
+# Loon 插件现状（2026-11-01 10:57 载入后）
 
-配置：`Configs/default-optimized.lcf`（已与隧道实际载入的 `config/.tunnelConf/default.lcf` 一致）
+配置：`Configs/default-optimized.lcf`（已同步到隧道实际载入的 `config/.tunnelConf/default.lcf`）
 
-载入统计：**Load 42690 rules. 160 scripts. 1028 rewrites.**（上一版 42613/119/849；本轮用户启用后 +77 规则 +41 脚本 +179 重写）
+载入统计：**Load 42684 rules. 152 scripts. 1028 rewrites.**
 
-插件：**67 启用 / 11 禁用 / 12 已从配置移除**（原 90 项）
+历史对比：45 基础 42613/119/849 → 用户全开后 42690/160/1028 → 本轮收敛（关 heiliao/youtube_2/JD_Price/iRingo×2）42684/152/1028
 
-已知异常：插件 `heiliao.sgmodule` 载入时报「存在 2 条异常脚本配置无法解析」。
+插件：**62 启用 / 16 禁用 / 12 已移除**（原 90 项）
 
-## 一、启用（67）
+本轮处理：heiliao.sgmodule、youtube_2.lpx、JD_Price.lpx、iRingo.Maps.plugin、iRingo.WeatherKit.plugin 已禁用；天气类只留 AppleWeatherEnhancer。BoxJs 按用户要求保持禁用（JD_Price 因此一并禁用）。
+
+## 一、启用（62）
 
 | # | 插件 | 类型 | 建议 | 说明 |
 |---|---|---|---|---|
@@ -56,7 +58,6 @@
 | 82 | IThome_remove_ads.lpx | App 去广告 | 推荐恢复 | IT之家 |
 | 83 | QiDian_remove_ads.lpx | App 去广告 | 推荐恢复 | 起点读书 |
 | 2 | UmetripAds.sgmodule | App 去广告 | 按需 | 原配置 enabled=false；航旅纵横 H5 |
-| 9 | JD_Price.lpx | 功能增强 | 按需 | 京东价格走势，依赖 BoxJs |
 | 13 | XWebAds.plugin | App 去广告 | 按需 | 腾讯 X5 内核广告位 |
 | 16 | javdbapp.ads.sgmodule | App 去广告 | 按需 | 成人站点，自用再开 |
 | 17 | missav.ads.sgmodule | App 去广告 | 按需 | 成人站点，自用再开 |
@@ -75,28 +76,29 @@
 | 75 | DragonRead_remove_ads.lpx | App 去广告 | 按需 | 原配置 enabled=false；龙读 |
 | 87 | Remove_ads_by_keli.lpx | App 去广告 | 按需 | 可莉去广告合集（覆盖杂项 App） |
 | 90 | Node_detection_tool.lpx | 工具 | 按需 | 节点检测/测速，按需 |
-| 3 | youtube_2.lpx | App 去广告 | 不建议 | 原配置 enabled=false；旧版，用 YouTube_remove_ads 即可 |
-| 34 | iRingo.Maps.plugin | 功能增强 | 不建议 | 同上 |
-| 36 | iRingo.WeatherKit.plugin | 功能增强 | 不建议 | 同上；已有 AppleWeatherEnhancer |
-| 37 | heiliao.sgmodule | App 去广告 | 不建议 | 启动即报脚本无法解析，上次排查时移除 |
 
-## 二、禁用（11）
+## 二、禁用（16）
 
 | # | 插件 | 类型 | 建议 | 说明 |
 |---|---|---|---|---|
 | 6 | ZhuanZhuan_remove_ads.lpx | App 去广告 | 按需 | 转转 |
 | 7 | CosmosPodcast_remove_ads.lpx | App 去广告 | 按需 | 小宇宙播客 |
+| 9 | JD_Price.lpx | 功能增强 | 按需 | 京东价格走势，依赖 BoxJs |
 | 15 | hlwxx_remove_ads.plugin | App 去广告 | 按需 | 小众站点，自用再开 |
 | 28 | jd_price2.plugin | 功能增强 | 按需 | 京东价格（新版），依赖 BoxJs |
 | 51 | BoxJs.lpx | 工具 | 按需 | 原配置 enabled=false；要用 BoxJs 面板/京东价格脚本才需要 |
 | 53 | keep.plugin | App 去广告 | 按需 | 原配置 enabled=false；用 Keep 再开 |
 | 88 | QuickSearch.lpx | 功能增强 | 按需 | 快捷搜索 |
+| 3 | youtube_2.lpx | App 去广告 | 不建议 | 原配置 enabled=false；旧版，用 YouTube_remove_ads 即可 |
+| 34 | iRingo.Maps.plugin | 功能增强 | 不建议 | 同上 |
 | 35 | iRingo.Siri.plugin | 功能增强 | 不建议 | 同上 |
+| 36 | iRingo.WeatherKit.plugin | 功能增强 | 不建议 | 同上；已有 AppleWeatherEnhancer |
+| 37 | heiliao.sgmodule | App 去广告 | 不建议 | 启动即报脚本无法解析，上次排查时移除 |
 | 52 | DNS.plugin | 拦截防护 | 不建议 | 原配置 enabled=false；已有 Block_HTTPDNS+Prevent_DNS_Leaks+加密 DNS |
 | 57 | Switch_repository_source.lpx | 工具 | 不建议 | 原配置 enabled=false；会改订阅源，易与多端同步冲突 |
 | 60 | Switch_github_mirror.lpx | 工具 | 不建议 | 原配置 enabled=false；会改下载镜像，排障时难定位 |
 
-## 三、已从配置移除（12）
+## 三、已移除（12）
 
 | # | 插件 | 类型 | 建议 | 说明 |
 |---|---|---|---|---|
@@ -113,11 +115,9 @@
 | 47 | Script-Hub.lpx | 脚本引擎 | 不建议 | 与 ScriptHub.Loon.plugin 功能重复 |
 | 999 | blockAds.plugin | 其他 | 已禁用 | 按用户要求停用（原来覆盖 730+ App、规则最多） |
 
-## 待处理
+## 遗留待确认
 
-1. `heiliao.sgmodule`：载入报错，建议禁用（原来启动即报脚本无法解析）
-2. `youtube_2.lpx` 与 `YouTube_remove_ads.lpx` 同时启用，YouTube 处理重复，建议只留后者
-3. `JD_Price.lpx` 启用但 `BoxJs.lpx` 禁用、`jd_price2.plugin` 禁用：价格功能不完整，要么开 BoxJs 要么关 JD_Price
-4. iRingo 只启用了 Maps/WeatherKit，Location 被移除、Siri 禁用：WeatherKit 与 `AppleWeatherEnhancer` 可能重复改天气接口；Maps 通常依赖 Location，建议补齐或只留一个天气类
-5. `Umetrip_remove_ads.lpx` 与 `UmetripAds.sgmodule` 同时启用，航旅纵横 App/H5 两层，可只留一个
-6. 广谱插件（javdbapp、missav、XWebAds、Remove_ads_by_keli）让 MITM 域名升到约 718 个，是开销/崩溃暴露面主要来源，想降压优先关这些
+1. `heiliao.sgmodule` 已禁用，但 Loon 载入时仍会对该插件文件报「2 条异常脚本配置无法解析」（禁用只是不应用，解析警告还在）；要彻底无告警需把它从 [Plugin] 删掉
+2. `Umetrip_remove_ads.lpx` 与 `UmetripAds.sgmodule` 仍同时启用，可只留一个
+3. 广谱插件（javdbapp、missav、XWebAds、Remove_ads_by_keli）贡献大部分 MITM 域名，想降开销/崩溃面优先关
+4. `jd_price2.plugin`、`BoxJs.lpx` 保持禁用（不用 BoxJs，价格类功能不启用）
