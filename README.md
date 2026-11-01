@@ -428,6 +428,19 @@ Loon 脚本仍未启用：Loon 无 CLI/配置校验，且运行时与 Surge 的 
 - 实测：`result:0`，脚本日志 `[AI体检] 使用组名 AI` → 四组探测 → `切换 ... -> 日本节点`。
 - 实测（Loon TUN 直连，不经 Surge）：youtube 200、chatgpt 200、GitHub release 5.0 MB/s、百度/QQ/B站 200（python 报证书错是因为插件对 baidu 开了 MITM，浏览器正常）。
 
+### AI 组设计（2026-11-02 修正）
+
+- **AI 组用 `url-test`，探测 URL 就是 Gemini 页面**：
+  `AI = url-test,美国节点,日本节点,新国节点,台湾节点,url = https://gemini.google.com/app,interval = 300,tolerance = 50`
+  这样能自动把「能连 Google 但访问不了 Gemini/Google AI 接口」的节点踢出局。
+- 起因：之前 AI 组是 `select` + 脚本切换，实测 `$config.getConfig(group, member)` 在 Loon Mac 0.5.0 上并不会真正改选中项
+  （`policy_select` 仍返回原节点），结果长期停在一个阻断 Google AI 的 AnyTLS 节点上：`google.com` 正常但
+  `gemini.google.com` / `aistudio.google.com` / `generativelanguage.googleapis.com` 全部 TLS 失败。
+- 同时把 `Google.lsr` 的策略从 `台湾` 改成 `AI`，让 `accounts.google.com`、`www.google.com` 与 Gemini 走同一出口，
+  避免 Google 会话跨地区导致 Gemini 判定地区不可用。
+- `loon/ai-check.js` 已改为**巡检脚本**（只探测和通知，不切换策略），cron */30。
+- 另修：`高倍节点`/`低倍节点` 的过滤器与组同名造成自引用，过滤器已改名为 `高倍节点池`/`低倍节点池`。
+
 ### 关于模块 / 插件
 
 模块（`.sgmodule`）和 Surge 6 的插件系统只是把 `[Script]` / `[Rule]` / MITM 打包分发，
