@@ -6,7 +6,8 @@ var GEMINI_API = "https://generativelanguage.googleapis.com/v1beta/models";
 var GOOGLE = "https://www.google.com/generate_204";
 var UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/131.0 Safari/537.36";
 var KEY = "loon_ai_monitor";
-var BLOCK = ["not available in your country", "isn't available in your country", "unsupported region", "unusual traffic", "region is not supported"];
+var BLOCK = ["not available in your country", "isn't available in your country", "unsupported region", "unusual traffic", "region is not supported", "目前不支持你所在的地区", "不支持你所在的地区", "Gemini 目前不支持"];
+var TRACE = "https://www.cloudflare.com/cdn-cgi/trace";
 var results = [], pending = CANDIDATES.length, fails = 0;
 function log(s) { console.log("[AI巡检] " + s); }
 function hasAny(b, a) { for (var i = 0; i < a.length; i++) if (b.indexOf(a[i]) >= 0) return a[i]; return ""; }
