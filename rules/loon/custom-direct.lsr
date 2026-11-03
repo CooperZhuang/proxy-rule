@@ -8,3 +8,8 @@ DOMAIN-SUFFIX,oray.com
 DOMAIN-SUFFIX,oray.net
 DOMAIN-SUFFIX,sunlogin.com
 DOMAIN-SUFFIX,kookong.com
+# 国内 AI 域名：GEOIP 判定受 DNS 抖动影响，固定直连
+DOMAIN-SUFFIX,deepseek.com
+DOMAIN-SUFFIX,doubao.com
+DOMAIN-SUFFIX,moonshot.cn
+DOMAIN-SUFFIX,bigmodel.cn
