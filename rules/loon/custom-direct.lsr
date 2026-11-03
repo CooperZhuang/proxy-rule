@@ -8,15 +8,12 @@ DOMAIN-SUFFIX,oray.com
 DOMAIN-SUFFIX,oray.net
 DOMAIN-SUFFIX,sunlogin.com
 DOMAIN-SUFFIX,kookong.com
-# 国内 AI 域名：GEOIP 判定受 DNS 抖动影响，固定直连
 DOMAIN-SUFFIX,deepseek.com
 DOMAIN-SUFFIX,doubao.com
 DOMAIN-SUFFIX,moonshot.cn
 DOMAIN-SUFFIX,bigmodel.cn
-# 豆包/字节语音输入：国内服务，避免走兜底
 DOMAIN-SUFFIX,speech.bytedance.com
 DOMAIN-SUFFIX,frontier-ime.doubao.com
-# iCloud 全量直连：AppleIntelligence 规则集把 gateway.icloud.com 指到美国节点，会拖垮照片同步
 DOMAIN-SUFFIX,icloud.com
 DOMAIN-SUFFIX,icloud.com.cn
 DOMAIN-SUFFIX,me.com
