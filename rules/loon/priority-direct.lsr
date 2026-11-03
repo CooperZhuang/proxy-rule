@@ -1,0 +1,11 @@
+# 优先级直连规则集：放在 [Remote Rule] 最后，用来覆盖上游规则集里的同名条目
+# iCloud 全部直连：CloudKit 会话与内容必须同区域，混用会被判异常
+DOMAIN-SUFFIX,icloud.com
+DOMAIN-SUFFIX,icloud.com.cn
+DOMAIN-SUFFIX,icloud-content.com
+DOMAIN-SUFFIX,icloud-content.com.cn
+DOMAIN-SUFFIX,apple.com.cn
+# 字节语音输入：国内服务，不应走代理
+DOMAIN-SUFFIX,speech.bytedance.com
+DOMAIN-SUFFIX,frontier-ime.doubao.com
+DOMAIN-SUFFIX,frontier5-ime-hl.doubao.com
