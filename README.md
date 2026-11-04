@@ -447,6 +447,68 @@ Loon 脚本仍未启用：Loon 无 CLI/配置校验，且运行时与 Surge 的 
 检测逻辑本身仍要写脚本来实现。纯模块无法"指定策略发请求 + 改组选择"，必须依赖脚本 API。
 需要跨设备复用时，可以把上面的脚本 + 声明打包成插件目录（`surge-cli plugin validate / load-unpacked / pack`）。
 
+
+## Surge 主配置（2026-11-04，从 Loon 迁移）
+
+Loon 在实际使用中出现"单个 App 的连接风暴把隧道扩展烧到 128% CPU"这类问题，生产环境不再使用。
+规则体系整体迁到 Surge，Loon 配置保留作参考。
+
+### 目录
+
+| 文件 | 作用 |
+|---|---|
+| `surge/profile.template.conf` | Surge profile 模板（占位符 + 完整分组/规则/Rewrite/Script/MITM） |
+| `surge/rulesets.domain.inc` | 域名规则集，顺序即优先级 |
+| `surge/rulesets.ip.inc` | IP 规则集（必须排在域名规则之后） |
+| `surge/build.py` | 渲染模板 → Surge Profiles 目录，并调 `surge-cli -c` 校验 |
+| `surge/rulesets.md` | 每条 Loon 远程规则集到 Surge RULE-SET 的映射与实测证据 |
+
+### 生成与生效
+
+```bash
+python3 surge/build.py            # 渲染 + 写入 ~/Library/Application Support/Surge/Profiles/
+surge-cli -r 127.0.0.1:6165 --password-stdin reload
+```
+
+订阅地址、地区正则、MITM CA **都不在仓库里重复维护**，由 `build.py` 从 Loon 配置
+（`[Remote Proxy]` / `[Remote Filter]` / `[Mitm]`）读取后注入；渲染产物不入库。
+
+### 与 Loon 配置的关键差异
+
+1. **节点来源**：`[Remote Proxy]` + `[Remote Filter]` → 一个 `policy-path` 组
+   `全部节点`（订阅加 `&list=surge` 直接取 Surge 格式），其余组用
+   `include-other-group=全部节点` + `policy-regex-filter` 复用，只下载一次。
+   实测 124 个节点，各地区组/倍率组成员数与 Loon 过滤器逐一核对一致。
+2. **AI 组从 url-test 换成 smart**：Surge 6 起组级 `url=` 已失效；smart 用真实连接质量
+   打分 + 按站点记忆 + 失败重试，比 Loon 的固定 `chatgpt.com` 测速 URL 更贴合"哪个节点真能过 AI"。
+3. **规则优先级必须重排**：Loon 是"远端规则集优先于内联规则"，Surge 完全靠行序。
+   且实测本机对 `www.google.com` 的 DNS 结果被污染成 Facebook/Twitter 的 IP
+   （69.171.235.22 / 31.13.92.37 / 104.244.42.197），Surge 求值 IP 规则时会先解析域名，
+   污染的 IP 会被 `Facebook.lsr` 的 `IP-ASN,32934` 命中。所以新配置的顺序是：
+   **进程规则 → 内联域名规则 → 域名规则集（Google 最前）→ IP 规则集（ASN.China/LAN/GEOIP）→ FINAL**。
+4. **Google 故意不设全局 `DOMAIN-SUFFIX,google.com,香港`**：Loon 里远端 `Google.lsr`
+   （policy=台湾）优先于内联规则，实际 Google 搜索走台湾、只有 Gemini 与账号走香港；
+   保持这个差异不改变原有体感（想让全部 Google 走香港，模板里有注释行可直接启用）。
+5. **GitHub 内联规则提到规则集之前**，否则会被 `GitHub.lsr` 抢走而落回兜底，
+   失去"1.0x 上海电信转香港节点下载 10–13MB/s"的效果。实测现在
+   `api.github.com` / `release-assets.githubusercontent.com` 都命中 GitHub 组。
+6. **kelee 规则集改走镜像**：`rule.kelee.one` 对本机直连与代理均返回 Cloudflare 403，
+   改用 1:1 镜像 `IamNewHands/loon-rules`（内容同源，落后 3–5 天）。后续建议抄进本仓库自托管。
+7. **Loon 有而 Surge 可直接用更好的**：`RULE-SET,LAN`（内置局域网集）、`GEOIP,CN`
+   （替掉只含一行的 `REGION_SPLITTER.lsr`）、`SCRIPT` 规则等 Surge 原生能力。
+
+### 已实测（2026-11-04）
+
+```
+profile 校验      surge-cli -c → OK
+外部资源          31 项全部 ready（28 ruleset + 1 policy-group + 2 script）
+节点              124 个；香港 31 / 台湾 8 / 日本 32 / 韩国 3 / 新国 5 / 美国 30
+分流抽查          google→台湾(Google.lsr)、gemini→香港、accounts.google→香港、
+                  api.github.com→GitHub组、netflix→媒体解锁、chatgpt→AI、
+                  baidu/deepseek/apple→DIRECT、telegram→兜底
+进程规则          PROCESS-NAME,/Applications/Microsoft Teams.app/ → Teams 组命中
+```
+
 ## License
 
 MIT

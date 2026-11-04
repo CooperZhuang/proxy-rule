@@ -1,3 +1,6 @@
 __pycache__/
 *.pyc
 .venv/
+# Surge 生成的本地产物（含订阅地址与 CA，不入库）
+surge/.http-api-key
+surge/out/
