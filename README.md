@@ -509,6 +509,15 @@ profile 校验      surge-cli -c → OK
 进程规则          PROCESS-NAME,/Applications/Microsoft Teams.app/ → Teams 组命中
 ```
 
+
+### 已定下来的两条（2026-11-04）
+
+1. **模块只装 iPhone，Mac 不装。** 手机端的净化需求由 Loon/Surge 模块覆盖；
+   `surge/modules.md` 里那 44 个 .sgmodule 是给手机用的参考清单，**不要装到 Mac 的 profile 上**。
+   Mac 侧只保留 URL Rewrite / MITM 必需项。
+2. **Surge 只用系统代理模式。** 本机不开、也走不了增强模式（TUN），
+   profile 不依赖 `enhanced-mode`，别再把"开增强模式"当选项提出来。
+
 ## License
 
 MIT
