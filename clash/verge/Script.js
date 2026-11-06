@@ -1,5 +1,9 @@
 // 全局扩展脚本 — 所有 profile 生效（Windows / macOS 通用）
 // 统一分组命名、补齐高阶分组、自定义规则收进 sub-rules、端口规则插到 MATCH 前
+//
+// ccsub 开关：false 时移除 ccsub provider，且不创建 高倍/低倍/媒体/GitHub 组与相关规则；
+//              true 时才创建这些组（组直接 filter 订阅节点，无额外包装层）
+const CCSUB_ENABLED = false;
 
 const EMOJI = {
   "手动": "🖱️ 手动选择", "加速": "🚀 节点选择", "苹果": "🍎 苹果", "AI": "🤖 AI",
@@ -12,28 +16,37 @@ const EMOJI = {
   "🇺🇲 美国节点": "🇺🇸 美国", "🇨🇳 台湾节点": "🇹🇼 台湾", "🇸🇬 狮城节点": "🇸🇬 新加坡",
 };
 
-const EXTRA_GROUPS = [
+// 与订阅无关、始终创建
+const BASE_GROUPS = [
   { name: "💼 Teams", filter: "(?i)(香港|日本|新加坡|新国|SG|HK|JP)", url: "https://teams.microsoft.com/robots.txt" },
   { name: "🤖 AI", filter: "(?i)^(?!.*(香港|HK|深港|沪港|广港)).*(美国|US|日本|JP|NTT|新加坡|新国|SG|台湾|TW).*$", url: "https://chatgpt.com/robots.txt" },
-  // fallback：专属池为空（例如临时禁用 ccsub）时退到 🐟 兜底，避免空组让 GitHub/DST-PORT 规则无出口
-  { name: "🎬 媒体解锁", filter: "(?i).*\\[M\\].*倍率:1\\]$", url: "https://www.gstatic.com/generate_204", fallback: true },
-  { name: "⚡ 高倍节点", filter: "倍率:(1\\.[5-9]|[2-9](\\.[0-9])?)\\]$", url: "https://www.gstatic.com/generate_204", fallback: true },
-  { name: "🪫 低倍节点", filter: "(?i)^(?!.*Premium).*倍率:(0\\.[0-9]|1)\\]$", url: "https://www.gstatic.com/generate_204", fallback: true },
-  { name: "🐙 GitHub", filter: "(?i)上海电信转香港(HKC|HKT|BGP)", url: "https://www.gstatic.com/generate_204", fallback: true },
 ];
 
-const TOP_RULES = [
+// 只有 ccsub 才有 [倍率:x]/[M]/上海电信转香港 标记节点
+const CCSUB_GROUPS = [
+  { name: "🎬 媒体解锁", filter: "(?i).*\\[M\\].*倍率:1\\]$", url: "https://www.gstatic.com/generate_204" },
+  { name: "⚡ 高倍节点", filter: "倍率:(1\\.[5-9]|[2-9](\\.[0-9])?)\\]$", url: "https://www.gstatic.com/generate_204" },
+  { name: "🪫 低倍节点", filter: "(?i)^(?!.*Premium).*倍率:(0\\.[0-9]|1)\\]$", url: "https://www.gstatic.com/generate_204" },
+  { name: "🐙 GitHub", filter: "(?i)上海电信转香港(HKC|HKT|BGP)", url: "https://www.gstatic.com/generate_204" },
+];
+
+const BASE_TOP_RULES = [
   "PROCESS-NAME,ms-teams.exe,💼 Teams", "PROCESS-NAME,Teams.exe,💼 Teams", "PROCESS-NAME,MSTeams,💼 Teams",
   "DOMAIN-SUFFIX,openai.com,🤖 AI", "DOMAIN-SUFFIX,chatgpt.com,🤖 AI", "DOMAIN-SUFFIX,gemini.google.com,🤖 AI",
   "DOMAIN-SUFFIX,aistudio.google.com,🤖 AI", "DOMAIN-SUFFIX,bard.google.com,🤖 AI",
   "DOMAIN-SUFFIX,claude.ai,🤖 AI", "DOMAIN-SUFFIX,anthropic.com,🤖 AI", "DOMAIN-SUFFIX,copilot.microsoft.com,🤖 AI",
+];
+
+const CCSUB_TOP_RULES = [
   "DOMAIN-SUFFIX,release-assets.githubusercontent.com,🐙 GitHub", "DOMAIN-SUFFIX,objects.githubusercontent.com,🐙 GitHub",
   "DOMAIN-SUFFIX,codeload.github.com,🐙 GitHub", "DOMAIN-SUFFIX,raw.githubusercontent.com,🐙 GitHub",
   "DOMAIN,api.github.com,🐙 GitHub",
 ];
+
+const CCSUB_PORT_RULES = ["DST-PORT,22,⚡ 高倍节点", "DST-PORT,3389,⚡ 高倍节点", "DST-PORT,5900,⚡ 高倍节点"];
+
 const SUB_RULE_NAME = "custom-route";
 const SUB_RULE_REFS = ["SUB-RULE,(NETWORK,tcp)," + SUB_RULE_NAME, "SUB-RULE,(NETWORK,udp)," + SUB_RULE_NAME];
-const PORT_RULES = ["DST-PORT,22,⚡ 高倍节点", "DST-PORT,3389,⚡ 高倍节点", "DST-PORT,5900,⚡ 高倍节点"];
 const STEAM_DIRECT = [
   "DOMAIN-SUFFIX,steamcontent.com,DIRECT", "DOMAIN-SUFFIX,steamchina.com,DIRECT",
   "DOMAIN-SUFFIX,steamcdn.com,DIRECT", "DOMAIN-SUFFIX,steamusercontent.com,DIRECT",
@@ -46,6 +59,11 @@ const STEAM_DIRECT = [
 function main(config) {
   if (!config) return config;
   const groups = config["proxy-groups"] || [];
+
+  // ccsub 开关：关掉时把 provider 从配置里剔掉，后续组/规则一并跳过
+  const providers = config["proxy-providers"] || {};
+  if (!CCSUB_ENABLED) delete providers.ccsub;
+  const useCcsub = CCSUB_ENABLED && !!providers.ccsub;
 
   const rename = {};
   groups.forEach(function (g) { if (EMOJI[g.name]) rename[g.name] = EMOJI[g.name]; });
@@ -64,27 +82,23 @@ function main(config) {
 
   const hasProviders = !!(config["proxy-providers"] && Object.keys(config["proxy-providers"]).length);
   const names = groups.map(function (g) { return g.name; });
-  EXTRA_GROUPS.forEach(function (eg) {
+  const wantGroups = BASE_GROUPS.concat(useCcsub ? CCSUB_GROUPS : []);
+  wantGroups.forEach(function (eg) {
     if (names.indexOf(eg.name) >= 0) return;
     const ng = { name: eg.name, type: "url-test", url: eg.url, interval: 600, tolerance: 50, lazy: true, filter: eg.filter };
     if (hasProviders) ng["include-all-providers"] = true; else ng["include-all"] = true;
-    if (eg.fallback) {
-      // 两层：池子组（专属节点）+ 兜底包装，避免专属池为空时规则无出口
-      ng.name = eg.name + " 池";
-      groups.push(ng);
-      groups.push({ name: eg.name, type: "fallback", proxies: [eg.name + " 池", "🐟 兜底"], interval: 60 });
-    } else {
-      groups.push(ng);
-    }
+    groups.push(ng);
   });
 
-  config["sub-rules"] = Object.assign({}, config["sub-rules"] || {}, { [SUB_RULE_NAME]: TOP_RULES });
+  const topRules = BASE_TOP_RULES.concat(useCcsub ? CCSUB_TOP_RULES : []);
+  const portRules = useCcsub ? CCSUB_PORT_RULES : [];
+  config["sub-rules"] = Object.assign({}, config["sub-rules"] || {}, { [SUB_RULE_NAME]: topRules });
   let rules = (config.rules || []).filter(function (r) { return r && r.trim() !== ""; });
-  rules = rules.filter(function (r) { return TOP_RULES.indexOf(r) < 0 && SUB_RULE_REFS.indexOf(r) < 0 && PORT_RULES.indexOf(r) < 0; });
+  rules = rules.filter(function (r) { return topRules.indexOf(r) < 0 && SUB_RULE_REFS.indexOf(r) < 0 && portRules.indexOf(r) < 0; });
   const matchIdx = rules.findIndex(function (r) { return r.indexOf("MATCH,") === 0; });
   const tail = matchIdx >= 0 ? rules.slice(matchIdx) : [];
   const head = matchIdx >= 0 ? rules.slice(0, matchIdx) : rules;
-  config.rules = SUB_RULE_REFS.concat(STEAM_DIRECT.filter(function (r) { return head.indexOf(r) < 0; }), head, PORT_RULES, tail);
+  config.rules = SUB_RULE_REFS.concat(STEAM_DIRECT.filter(function (r) { return head.indexOf(r) < 0; }), head, portRules, tail);
 
   groups.forEach(function (g) { if (g.url === "http://www.gstatic.com/generate_204") g.url = "https://www.gstatic.com/generate_204"; });
   if (!config["find-process-mode"]) config["find-process-mode"] = "strict";

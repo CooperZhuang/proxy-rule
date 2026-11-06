@@ -324,7 +324,7 @@ Loon 侧没有节点级过滤 API，但它的节点名同样带 `[倍率:x]` / `
 | 文件 | 作用 |
 |---|---|
 | `Merge.yaml` | 静态设置：tcp-concurrent、unified-delay、find-process-mode、chrome 指纹、DNS、store-selected |
-| `Script.js` | 动态改造：组名 emoji 归一、补齐 🤖 AI/🎬 媒体解锁/⚡ 高倍/🪫 低倍/🐙 GitHub/💼 Teams、规则置顶与去重、DST-PORT 插到 MATCH 前、测试地址 https 化 |
+| `Script.js` | 动态改造：组名 emoji 归一、补齐 🤖 AI/💼 Teams、规则置顶与去重、DST-PORT 插到 MATCH 前、测试地址 https 化。顶部 `CCSUB_ENABLED` 是 ccsub 开关：`false` 时移除 ccsub provider，且不创建 🎬 媒体解锁/⚡ 高倍/🪫 低倍/🐙 GitHub 组与相关规则；`true` 才创建 |
 
 安装位置（Verge 2.5.x）：
 
