@@ -140,7 +140,10 @@ def main() -> int:
     )
 
     if "officehub.ecoglobal.vip" in data["SUB_URL"]:
+        rendered = rendered.replace("{{PORT_POLICY}}", "兜底")
         rendered = strip_special(rendered)
+    else:
+        rendered = rendered.replace("{{PORT_POLICY}}", "高倍节点")
 
     if "{{" in rendered:
         leftover = sorted(set(re.findall(r"\{\{(\w+)\}\}", rendered)))
