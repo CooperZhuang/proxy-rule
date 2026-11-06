@@ -9,8 +9,8 @@ function aiPanel() {
   var lines = [];
   try {
     var d = $surge.selectGroupDetails();
-    lines.push("当前节点: " + ((d.decisions && d.decisions["AI"]) || "未选择"));
-    lines.push("候选节点: " + (((d.groups && d.groups["AI"]) || []).length) + " 个");
+    lines.push("当前节点: " + ((d.decisions && d.decisions["🤖 AI"]) || "未选择"));
+    lines.push("候选节点: " + (((d.groups && d.groups["🤖 AI"]) || []).length) + " 个");
   } catch (e) { lines.push("组状态读取失败"); }
   var last = readStore();
   if (last) {
@@ -28,7 +28,7 @@ function netPanel() {
   try {
     var d = $surge.selectGroupDetails();
     var decisions = d.decisions || {};
-    ["AI", "Teams", "兜底", "下载", "香港", "日本", "美国"].forEach(function (k) {
+    ["🤖 AI", "💼 Teams", "🐟 兜底", "⬇️ 下载", "🇭🇰 香港", "🇯🇵 日本", "🇺🇸 美国"].forEach(function (k) {
       if (decisions[k]) lines.push(k + ": " + decisions[k]);
     });
   } catch (e) {}

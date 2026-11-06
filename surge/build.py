@@ -90,12 +90,13 @@ def provider_url(sub_url: str) -> str:
 
 def strip_special(text: str) -> str:
     """订阅没有 [倍率:x]/[M]/上海电信转香港 标记时，去掉专项组与相关规则。"""
+    specials = ("⚡ 高倍节点", "🪫 低倍节点", "🎬 媒体解锁")
     out = []
     for line in text.splitlines():
-        if re.match(r"^(高倍节点|低倍节点|媒体解锁|GitHub)\s*=", line):
+        if re.match(r"^(?:%s)\s*=" % "|".join(specials), line):
             continue
         s = line.rstrip()
-        if any(s.endswith("," + g) for g in ("高倍节点", "低倍节点", "媒体解锁", "GitHub")):
+        if any(s.endswith("," + g) for g in specials):
             continue
         out.append(line)
     return "\n".join(out) + "\n"
@@ -140,10 +141,7 @@ def main() -> int:
     )
 
     if "officehub.ecoglobal.vip" in data["SUB_URL"]:
-        rendered = rendered.replace("{{PORT_POLICY}}", "兜底")
         rendered = strip_special(rendered)
-    else:
-        rendered = rendered.replace("{{PORT_POLICY}}", "高倍节点")
 
     if "{{" in rendered:
         leftover = sorted(set(re.findall(r"\{\{(\w+)\}\}", rendered)))

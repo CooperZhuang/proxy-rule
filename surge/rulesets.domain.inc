@@ -8,37 +8,37 @@
 # 要排在其它品牌集合之前。
 
 # --- Google（必须最前，见上方说明）---
-RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/Google.lsr,台湾
+RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/Google.lsr,🇹🇼 台湾
 
 # --- proxy-rule 自有规则（用 rules/clash/*.txt：rules/surge/*.txt 带策略列，Surge 判整行无效）---
-RULE-SET,https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/clash/teams.txt,Teams
+RULE-SET,https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/clash/teams.txt,💼 Teams
 RULE-SET,https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/clash/office-direct.txt,DIRECT
 RULE-SET,https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/clash/steam-direct.txt,DIRECT
 RULE-SET,https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/clash/game-cdn-direct.txt,DIRECT
 RULE-SET,https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/clash/custom-direct.txt,DIRECT
-RULE-SET,https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/clash/custom-fallback.txt,兜底
+RULE-SET,https://raw.githubusercontent.com/CooperZhuang/proxy-rule/main/rules/clash/custom-fallback.txt,🐟 兜底
 
 # --- Apple / AI ---
-RULE-SET,https://raw.githubusercontent.com/ttyyss2233/Tool/main/shadowrocket/rules/apns.list,Apple Push
-RULE-SET,https://raw.githubusercontent.com/ddgksf2013/Filter/refs/heads/master/AppleIntelligence.list,美国
-RULE-SET,https://raw.githubusercontent.com/fmz200/wool_scripts/main/Loon/rule/AI.list,AI
+RULE-SET,https://raw.githubusercontent.com/ttyyss2233/Tool/main/shadowrocket/rules/apns.list,🍎 Apple Push
+RULE-SET,https://raw.githubusercontent.com/ddgksf2013/Filter/refs/heads/master/AppleIntelligence.list,🇺🇸 美国
+RULE-SET,https://raw.githubusercontent.com/fmz200/wool_scripts/main/Loon/rule/AI.list,🤖 AI
 
 # --- kelee 系规则集：rule.kelee.one 对本机直连/代理均返回 403（Cloudflare），
 #     改用 1:1 镜像 IamNewHands/loon-rules（与 kelee 同源，落后 3–5 天）---
 RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/AppleID.lsr,DIRECT
 RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/AppStore.lsr,DIRECT
-RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/GitHub.lsr,兜底
+RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/GitHub.lsr,🐟 兜底
 RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/Apple.lsr,DIRECT
-RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/YouTube.lsr,媒体解锁
-RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/Disney.lsr,媒体解锁
-RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/Netflix.lsr,媒体解锁
-RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/TikTok.lsr,兜底
-RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/Telegram.lsr,兜底
-RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/Spotify.lsr,兜底
-RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/Twitter.lsr,兜底
-RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/Instagram.lsr,兜底
-RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/Facebook.lsr,兜底
-RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/OneDrive.lsr,兜底
-RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/Game.lsr,兜底
+RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/YouTube.lsr,🎬 媒体解锁
+RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/Disney.lsr,🎬 媒体解锁
+RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/Netflix.lsr,🎬 媒体解锁
+RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/TikTok.lsr,🐟 兜底
+RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/Telegram.lsr,🐟 兜底
+RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/Spotify.lsr,🐟 兜底
+RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/Twitter.lsr,🐟 兜底
+RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/Instagram.lsr,🐟 兜底
+RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/Facebook.lsr,🐟 兜底
+RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/OneDrive.lsr,🐟 兜底
+RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/Game.lsr,🐟 兜底
 RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/Direct.lsr,DIRECT
-RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/Global.lsr,兜底
+RULE-SET,https://raw.githubusercontent.com/IamNewHands/loon-rules/main/loon/Global.lsr,🐟 兜底
