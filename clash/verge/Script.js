@@ -15,10 +15,11 @@ const EMOJI = {
 const EXTRA_GROUPS = [
   { name: "💼 Teams", filter: "(?i)(香港|日本|新加坡|新国|SG|HK|JP)", url: "https://teams.microsoft.com/robots.txt" },
   { name: "🤖 AI", filter: "(?i)^(?!.*(香港|HK|深港|沪港|广港)).*(美国|US|日本|JP|NTT|新加坡|新国|SG|台湾|TW).*$", url: "https://chatgpt.com/robots.txt" },
-  { name: "🎬 媒体解锁", filter: "(?i).*\\[M\\].*倍率:1\\]$", url: "https://www.gstatic.com/generate_204" },
-  { name: "⚡ 高倍节点", filter: "倍率:(1\\.[5-9]|[2-9](\\.[0-9])?)\\]$", url: "https://www.gstatic.com/generate_204" },
-  { name: "🪫 低倍节点", filter: "(?i)^(?!.*Premium).*倍率:(0\\.[0-9]|1)\\]$", url: "https://www.gstatic.com/generate_204" },
-  { name: "🐙 GitHub", filter: "(?i)上海电信转香港(HKC|HKT|BGP)", url: "https://www.gstatic.com/generate_204" },
+  // fallback：专属池为空（例如临时禁用 ccsub）时退到 🐟 兜底，避免空组让 GitHub/DST-PORT 规则无出口
+  { name: "🎬 媒体解锁", filter: "(?i).*\\[M\\].*倍率:1\\]$", url: "https://www.gstatic.com/generate_204", fallback: true },
+  { name: "⚡ 高倍节点", filter: "倍率:(1\\.[5-9]|[2-9](\\.[0-9])?)\\]$", url: "https://www.gstatic.com/generate_204", fallback: true },
+  { name: "🪫 低倍节点", filter: "(?i)^(?!.*Premium).*倍率:(0\\.[0-9]|1)\\]$", url: "https://www.gstatic.com/generate_204", fallback: true },
+  { name: "🐙 GitHub", filter: "(?i)上海电信转香港(HKC|HKT|BGP)", url: "https://www.gstatic.com/generate_204", fallback: true },
 ];
 
 const TOP_RULES = [
@@ -67,7 +68,14 @@ function main(config) {
     if (names.indexOf(eg.name) >= 0) return;
     const ng = { name: eg.name, type: "url-test", url: eg.url, interval: 600, tolerance: 50, lazy: true, filter: eg.filter };
     if (hasProviders) ng["include-all-providers"] = true; else ng["include-all"] = true;
-    groups.push(ng);
+    if (eg.fallback) {
+      // 两层：池子组（专属节点）+ 兜底包装，避免专属池为空时规则无出口
+      ng.name = eg.name + " 池";
+      groups.push(ng);
+      groups.push({ name: eg.name, type: "fallback", proxies: [eg.name + " 池", "🐟 兜底"], interval: 60 });
+    } else {
+      groups.push(ng);
+    }
   });
 
   config["sub-rules"] = Object.assign({}, config["sub-rules"] || {}, { [SUB_RULE_NAME]: TOP_RULES });
