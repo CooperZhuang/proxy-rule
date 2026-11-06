@@ -78,11 +78,27 @@ def parse_loon(path: Path) -> dict[str, str]:
 
 
 def provider_url(sub_url: str) -> str:
-    """Surge 需要 name = type, ... 的节点列表格式，订阅端用 &list=surge 直接给。"""
+    """Surge 需要 name = type, ... 的节点列表格式。
+    机场原生支持 target=surge 时（如宜客）直接切 target；否则按老逻辑加 &list=surge。"""
+    if "target=clash" in sub_url:
+        return sub_url.replace("target=clash", "target=surge")
     sep = "&" if "?" in sub_url else "?"
     if "list=surge" in sub_url:
         return sub_url
     return f"{sub_url}{sep}list=surge"
+
+
+def strip_special(text: str) -> str:
+    """订阅没有 [倍率:x]/[M]/上海电信转香港 标记时，去掉专项组与相关规则。"""
+    out = []
+    for line in text.splitlines():
+        if re.match(r"^(高倍节点|低倍节点|媒体解锁|GitHub)\s*=", line):
+            continue
+        s = line.rstrip()
+        if any(s.endswith("," + g) for g in ("高倍节点", "低倍节点", "媒体解锁", "GitHub")):
+            continue
+        out.append(line)
+    return "\n".join(out) + "\n"
 
 
 def http_api_key() -> str:
@@ -122,6 +138,9 @@ def main() -> int:
     rendered = rendered.replace(
         "{{RULESETS_IP}}", RULESETS_IP_INC.read_text(encoding="utf-8").strip()
     )
+
+    if "officehub.ecoglobal.vip" in data["SUB_URL"]:
+        rendered = strip_special(rendered)
 
     if "{{" in rendered:
         leftover = sorted(set(re.findall(r"\{\{(\w+)\}\}", rendered)))
